@@ -53,6 +53,7 @@
                 @yield('content')
             </div>
         </section>
+        <p>tes</p>
     </main>
 
     <!-- resources/views/layout/footer.blade.php -->
