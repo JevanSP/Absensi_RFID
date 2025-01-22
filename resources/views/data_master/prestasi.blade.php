@@ -22,11 +22,17 @@
             </tr>
         </thead>
         <tbody>
+            @php
+                $no = 1;
+            @endphp
             <tr>
-                <td>Mark</td>
+                <td>{{ $no++ }}</td>
                 <td>Otto</td>
                 <td>@mdo</td>
-                <td>Mark</td>
+                <td>
+                    <button type="button" class="btn btn-primary bi bi-pencil"></button>
+                    <button type="button" class="btn btn-danger bi bi-trash"></button>
+                </td>
             </tr>
         </tbody>
     </table>

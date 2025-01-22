@@ -19,16 +19,20 @@
                     <tr>
                         <th>No</th>
                         <th>Kelas</th>
-                        <th>Jurusan</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
+                    @php
+                        $no = 1;
+                    @endphp
                     <tr>
-                        <td>Mark</td>
+                        <td>{{ $no++ }}</td>
                         <td>Otto</td>
-                        <td>Mark</td>
-                        <td>Otto</td>
+                        <td>
+                            <button type="button" class="btn btn-primary bi bi-pencil"></button>
+                            <button type="button" class="btn btn-danger bi bi-trash"></button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -44,10 +48,16 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @php
+                        $no = 1;
+                    @endphp
                     <tr>
-                        <td>Mark</td>
+                        <td>{{ $no++ }}</td>
                         <td>Otto</td>
-                        <td>@mdo</td>
+                        <td>
+                            <button type="button" class="btn btn-primary bi bi-pencil"></button>
+                            <button type="button" class="btn btn-danger bi bi-trash"></button>
+                        </td>
                     </tr>
                 </tbody>
             </table>

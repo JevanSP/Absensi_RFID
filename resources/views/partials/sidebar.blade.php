@@ -32,17 +32,17 @@
                     </a>
                 </li>
                 <li>
-                    <a href="components-accordion.html">
+                    <a href="{{ route('data_budaya_positif') }}">
                         <i class="bi bi-circle"></i><span>Data Budaya Positif</span>
                     </a>
                 </li>
                 <li>
-                    <a href="components-accordion.html">
+                    <a href="{{ route('data_pretasi') }}">
                         <i class="bi bi-circle"></i><span>Data Prestasi</span>
                     </a>
                 </li>
                 <li>
-                    <a href="components-accordion.html">
+                    <a href="{{ route('data_pelanggaran') }}">
                         <i class="bi bi-circle"></i><span>Data Pelanggaran</span>
                     </a>
                 </li>
