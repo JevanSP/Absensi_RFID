@@ -1,12 +1,13 @@
 @extends('layout.layout')
 @section('content')
+
     <div class="pagetitle">
         <h1>Kelas Dan Jurusan</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="home">Beranda</a></li>
-                <li class="breadcrumb-item">Tabel</li>
-                <li class="breadcrumb-item active">Kelas dan Jurusan</li>
+                <li class="breadcrumb-item">Data Master</li>
+                <li class="breadcrumb-item active">Data Kelas dan Jurusan</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->

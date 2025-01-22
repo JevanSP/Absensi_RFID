@@ -27,7 +27,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="components-accordion.html">
+                    <a href="{{ route('data_siswa') }}">
                         <i class="bi bi-circle"></i><span>Data Siswa</span>
                     </a>
                 </li>

@@ -1,15 +1,16 @@
 @extends('layout.layout')
 @section('content')
-    <div class="pagetitle">
-        <h1>Data Tables</h1>
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="home">Home</a></li>
-                <li class="breadcrumb-item">Tabel Data</li>
-                <li class="breadcrumb-item active">Siswa</li>
-            </ol>
-        </nav>
-    </div><!-- End Page Title -->
+
+<div class="pagetitle">
+    <h1>Data Siswa</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+            <li class="breadcrumb-item">Data Master</li>
+            <li class="breadcrumb-item active">Data Siswa</li>
+        </ol>
+    </nav>
+</div>
 
     <table class="table datatable">
         <thead>
@@ -33,3 +34,5 @@
             </tr>
         </tbody>
     </table>
+
+@endsection
