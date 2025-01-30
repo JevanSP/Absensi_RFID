@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nik')->unique();
             $table->string('nama_guru')->nullable();
-            $table->enum('gender', ['L', 'P'])->nullable();
+            $table->enum('jenis_kelamin', ['L', 'P'])->nullable();
             $table->timestamps();
         });
     }

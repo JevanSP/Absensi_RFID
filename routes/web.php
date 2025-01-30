@@ -1,9 +1,12 @@
 <?php
 
+use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\PelanggaranController;
 use App\Http\Controllers\PretasiController;
 use App\Http\Controllers\BudayaPositifController;
+use App\Http\Controllers\UserController;
+use App\Models\Jurusan;
 use Illuminate\Support\Facades\Route;
 
 
@@ -11,10 +14,33 @@ Route::get('/', function () {
     return view('layout.layout');
 });
 
-Route::get('/data_siswa', [SiswaController::class, 'index']) -> name('data_siswa');
 
-Route::get('/data_pelanggaran', [PelanggaranController::class, 'index']) -> name('data_pelanggaran');
+Route::get('/data_prestasi', [PretasiController::class, 'index']);
+route::get('/data_prestasi/create', [PretasiController::class, 'create']);
+route::post('/data_prestasi/store', [PretasiController::class, 'store']);
+route::post('/data_prestasi/update/{id}', [PretasiController::class, 'update']);
+route::get('/data_prestasi/destroy/{id}', [PretasiController::class, 'destroy']);
 
-Route::get('/data_pretasi', [PretasiController::class, 'index']) -> name('data_pretasi');
+Route::get('/data_pelanggaran', [PelanggaranController::class, 'index']);
+route::get('/data_pelanggaran/create', [PelanggaranController::class, 'create']);
+route::post('/data_pelanggaran/store', [PelanggaranController::class, 'store']);
+route::post('/data_pelanggaran/update/{id}', [PelanggaranController::class, 'update']);
+route::get('/data_pelanggaran/destroy/{id}', [PelanggaranController::class, 'destroy']);
 
-Route::get('/data_budaya_positif', [BudayaPositifController::class, 'index']) -> name('data_budaya_positif');
+route::get('/data_budaya_positif', [BudayaPositifController::class, 'index']);
+route::get('/data_budaya_positif/create', [BudayaPositifController::class, 'create']);
+route::post('/data_budaya_positif/store', [BudayaPositifController::class, 'store']);
+route::post('/data_budaya_positif/update/{id}', [BudayaPositifController::class, 'update']);
+route::get('/data_budaya_positif/destroy/{id}', [BudayaPositifController::class, 'destroy']);
+
+Route::get('/data_siswa', [SiswaController::class, 'index']);
+route::get('/data_siswa/create', [SiswaController::class, 'create']);
+route::post('/data_siswa/store', [SiswaController::class, 'store']);
+route::post('/data_siswa/update/{id}', [SiswaController::class, 'update']);
+route::get('/data_siswa/destroy/{id}', [SiswaController::class, 'destroy']);
+
+route::get('/data_jurusan', [JurusanController::class, 'index']);
+route::get('/data_jurusan/create', [JurusanController::class, 'create']);
+route::post('/data_jurusan/store', [JurusanController::class, 'store']);
+route::post('/data_jurusan/update/{id}', [JurusanController::class, 'update']);
+route::get('/data_jurusan/destroy/{id}', [JurusanController::class, 'destroy']);

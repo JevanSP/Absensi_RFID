@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('siswa', function (Blueprint $table) {
             $table->id();
-            $table->string('rfid_tag')->unique();  
             $table->string('nis')->unique();
             $table->string('nama_siswa')->nullable();
-            $table->enum('gender', ['L', 'P'])->nullable();
+            $table->enum('jenis_kelamin', ['L', 'P'])->nullable();
             $table->enum('kelas', ['X', 'XI', 'XII'])->nullable();
-            $table->string('jurusan')->nullable();
+            $table->foreignId('jurusan_id')->constrained('singkatan');
+            $table->string('rfid_tag')->unique();  
             $table->string('foto')->nullable();
             $table->timestamps();
         });

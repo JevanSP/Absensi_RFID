@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Siswa;
+use App\Models\Jurusan;
 
 class SiswaController extends Controller
 {
@@ -11,9 +13,14 @@ class SiswaController extends Controller
      */
     public function index()
     {
-        return view('data_master.siswa');
+        $data = array(
+            'title' => 'Siswa',
+            'data_siswa'  => Siswa::with('jurusan')->get(
+                
+            )   
+        );      
+        return view('data_master.siswa', $data);
     }
-
     /**
      * Show the form for creating a new resource.
      */
@@ -27,7 +34,17 @@ class SiswaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Siswa::create([
+            'nis' => $request->nis,
+            'nama_siswa' => $request->nama_siswa,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'kelas' => $request->kelas,
+            'jurusan_id' => $request->jurusan,
+            'rfid_tag' => $request->rfid_tag,
+            'foto' => $request->foto,
+        ]); 
+
+        return redirect('/data_siswa');
     }
 
     /**
@@ -51,7 +68,18 @@ class SiswaController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $siswa = Siswa::find($id);
+        $siswa->update([
+            'nis' => $request->nis,
+            'nama_siswa' => $request->nama_siswa,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'kelas' => $request->kelas,
+            'jurusan_id' => $request->jurusan,
+            'rfid_tag' => $request->rfid_tag,
+            'foto' => $request->foto,
+        ]);
+
+        return redirect('/data_siswa');
     }
 
     /**
@@ -59,6 +87,9 @@ class SiswaController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $data = Siswa::find($id);
+        $data->delete([
+        ]);
+        return redirect('/data_siswa');
     }
 }

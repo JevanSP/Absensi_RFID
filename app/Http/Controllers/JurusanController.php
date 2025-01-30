@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Prestasi;
+use App\Models\Jurusan;
 
-class PretasiController extends Controller
+class JurusanController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,10 +13,10 @@ class PretasiController extends Controller
     public function index()
     {
         $data = array(
-            'data_prestasi' => Prestasi::all(),
-            'title' => 'Prestasi'
+            'title' => 'Jurusan',
+            'data_jurusan'   => Jurusan::all(),
         );
-        return view('data_master.prestasi',$data);
+        return view('data_master.jurusan', $data);
     }
 
     /**
@@ -32,11 +32,12 @@ class PretasiController extends Controller
      */
     public function store(Request $request)
     {
-        Prestasi::create([
-            'prestasi' => $request->prestasi,
-            'poin' => $request->poin,
+        Jurusan::create([
+            'jurusan' => $request->jurusan,
+            'singkatan' => $request->singkatan,
         ]);
-        return redirect('/data_prestasi')->with('success', 'Data Berhasil');
+
+        return redirect('/data_jurusan');
     }
 
     /**
@@ -60,12 +61,12 @@ class PretasiController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $prestasi = Prestasi::find($id);
-        $prestasi->update([
-        'prestasi' => $request->prestasi,
-        'poin' => $request->poin,
-    ]);
-    return redirect('/data_prestasi')->with('success', 'Data Berhasil');
+        Jurusan::where('id', $id)->update([
+            'jurusan' => $request->jurusan,
+            'singkatan' => $request->singkatan,
+        ]);
+
+        return redirect('/data_jurusan');
     }
 
     /**
@@ -73,9 +74,9 @@ class PretasiController extends Controller
      */
     public function destroy(string $id)
     {
-        $data = Prestasi::find($id);
+        $data = Jurusan::find($id);
         $data->delete([
-    ]);
-    return redirect('/data_prestasi')->with('success', 'Data Berhasil');
+        ]);
+        return redirect('/data_jurusan');
     }
 }

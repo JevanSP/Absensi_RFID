@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Pelanggaran;
 
 class PelanggaranController extends Controller
 {
@@ -11,7 +12,11 @@ class PelanggaranController extends Controller
      */
     public function index()
     {
-        return view('data_master.pelanggaran');
+        $data = array(
+            'data_pelanggaran' => Pelanggaran::all(),
+            'title' => 'Pelanggaran'
+        );
+        return view('data_master.pelanggaran', $data);
     }
 
     /**
@@ -27,7 +32,11 @@ class PelanggaranController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Pelanggaran::create([
+            'pelanggaran' => $request->pelanggaran,
+            'poin' => $request->poin,
+        ]);
+        return redirect('/data_pelanggaran')->with('success', 'Data Berhasil');
     }
 
     /**
@@ -51,7 +60,12 @@ class PelanggaranController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $pelanggaran = Pelanggaran::find($id);
+        $pelanggaran->update([
+            'pelanggaran' => $request->pelanggaran,
+            'poin' => $request->poin,
+        ]);
+        return redirect('/data_pelanggaran')->with('success', 'Data Berhasil');
     }
 
     /**
@@ -59,6 +73,9 @@ class PelanggaranController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $data = Pelanggaran::find($id);
+        $data->delete([
+        ]);
+        return redirect('/data_pelanggaran')->with('success', 'Data Berhasil');
     }
 }

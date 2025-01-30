@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('admin', function (Blueprint $table) {
+        Schema::create('jurusan', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_admin')->nullable();
-            $table->enum('jenis_kelamin', ['L', 'P'])->nullable();
+            $table->string('jurusan')->nullable();
+            $table->string('singkatan')->nullable();
             $table->timestamps();
         });
     }
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('admin');
+        Schema::dropIfExists('jurusan');
     }
 };

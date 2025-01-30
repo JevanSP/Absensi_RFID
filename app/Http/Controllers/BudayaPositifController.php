@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\BudayaPositif;
 
 class BudayaPositifController extends Controller
 {
@@ -11,7 +12,11 @@ class BudayaPositifController extends Controller
      */
     public function index()
     {
-        return view('data_master.budaya_positif');
+        $data = array(
+            'data_budaya_positif' => BudayaPositif::all(),
+            'title' => 'Budaya Positif'
+        );
+        return view('data_master.budaya_positif', $data);
     }
 
     /**
@@ -27,7 +32,11 @@ class BudayaPositifController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        BudayaPositif::create([
+            'budaya_positif' => $request->budaya_positif,
+            'poin' => $request->poin,
+        ]);
+        return redirect('/data_budaya_positif')->with('success', 'Data Berhasil');
     }
 
     /**
@@ -51,7 +60,12 @@ class BudayaPositifController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $budaya_positif = BudayaPositif::find($id);
+        $budaya_positif->update([
+            'budaya_positif' => $request->budaya_positif,
+            'poin' => $request->poin,
+        ]);
+        return redirect('/data_budaya_positif')->with('success', 'Data Berhasil');
     }
 
     /**
@@ -59,6 +73,9 @@ class BudayaPositifController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $data = BudayaPositif::find($id);
+        $data->delete([
+        ]);
+        return redirect('/data_budaya_positif')->with('success', 'Data Berhasil');
     }
 }
