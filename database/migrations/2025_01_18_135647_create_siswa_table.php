@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('nama_siswa')->nullable();
             $table->enum('jenis_kelamin', ['L', 'P'])->nullable();
             $table->enum('kelas', ['X', 'XI', 'XII'])->nullable();
-            $table->foreignId('jurusan_id')->constrained('singkatan');
+            $table->foreignId('jurusan_id');
             $table->string('rfid_tag')->unique();  
             $table->string('foto')->nullable();
             $table->timestamps();
