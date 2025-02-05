@@ -10,7 +10,7 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="pages-error-404.html">
+            <a href="{{ route('data_sekolah') }}" class="nav-link collapsed">
                 <i class="bi bi-card-list"></i>
                 <span>Sekolah</span>
             </a>
@@ -56,7 +56,7 @@
             </a>
             <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="tables-general.html">
+                    <a href="{{ route('user_admin') }}">
                         <i class="bi bi-circle"></i><span>User Admin</span>
                     </a>
                 </li>

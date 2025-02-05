@@ -52,7 +52,7 @@
                         @csrf
                         <div class="form-group">
                             <label>Nama Pelanggaran</label>
-                            <input type="text" class="form-control" name="pelanggaran"required>
+                            <input type="text" class="form-control text-capitalize" name="pelanggaran"required>
                         </div>
                         <br>
                         <div class="form-group">
@@ -82,7 +82,7 @@
                         <div class="modal-body">
                             <div class="form-group">
                                 <label>Nama Pelanggaran</label>
-                                <input type="text" value="{{ $d->pelanggaran }}" class="form-control"
+                                <input type="text" value="{{ $d->pelanggaran }}" class="form-control text-capitalize"
                                     name="pelanggaran"required>
                             </div>
                             <br>

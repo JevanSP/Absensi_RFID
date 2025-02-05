@@ -58,10 +58,10 @@
                         <br>
                         <div class="form-group">
                             <label>Singkatan</label>
-                            <input type="text" class="form-control" name="singkatan"required>
+                            <input type="text" class="form-control text-capitalize" name="singkatan"required>
                         </div>
                         <br>
-                </div>
+                </div>      
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary" class="fas fa-save">Save Changes</button>
                 </div>

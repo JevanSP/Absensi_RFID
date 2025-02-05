@@ -52,7 +52,7 @@
                         @csrf
                         <div class="form-group">
                             <label>Nama {{ $title }}</label>
-                            <input type="text" class="form-control" name="budaya_positif"required>
+                            <input type="text" class="form-control text-capitalize" name="budaya_positif"required>
                         </div>
                         <br>
                         <div class="form-group">

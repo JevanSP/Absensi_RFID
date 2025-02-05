@@ -17,7 +17,8 @@ class UserController extends Controller
             'title' => 'Admin',
             'data_user' => User::where('id', '!=', Auth::id())->get(),
         );
-        return view('user.admin', $data);
+        $data_admin= user::all();
+        return view('user.admin', $data, compact('data_admin'));
     }
 
     public function guru()

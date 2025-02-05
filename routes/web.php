@@ -6,6 +6,7 @@ use App\Http\Controllers\PelanggaranController;
 use App\Http\Controllers\PretasiController;
 use App\Http\Controllers\BudayaPositifController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SekolahController;
 use App\Models\Jurusan;
 use Illuminate\Support\Facades\Route;
 
@@ -45,3 +46,7 @@ route::get('/edit_siswa/{id}', [SiswaController::class,'edit'])->name('siswa.edi
 route::post('/data_siswa/store', [SiswaController::class,'store'])->name('siswa.store');
 route::post('/data_siswa/update/{id}', [SiswaController::class,'update']);
 route::get('/data_siswa/destroy/{id}', [SiswaController::class,'destroy']);
+
+Route::get('/data_sekolah', [SekolahController::class,'index'])->name('data_sekolah');
+
+route::get('/user_admin', [UserController::class,'admin'])->name('user_admin');
