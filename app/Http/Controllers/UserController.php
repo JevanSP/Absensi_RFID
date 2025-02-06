@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Admin;
+use App\Models\Guru;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -17,7 +19,7 @@ class UserController extends Controller
             'title' => 'Admin',
             'data_user' => User::where('id', '!=', Auth::id())->get(),
         );
-        $data_admin= user::all();
+        $data_admin= User::all()->where('role', 'admin');
         return view('user.admin', $data, compact('data_admin'));
     }
 
@@ -60,12 +62,18 @@ class UserController extends Controller
         }
 
         User::create([
-            'name' => $request->name,
+            'ni' => $request->ni,
+            'nama' => $request->nama,
             'username' => $request->username,
-            'password' => bcrypt($request->password),
-            'role' => $request->role,
+            'password' => $request->password,
+            'role' => 'admin',
         ]);
         return redirect()->back();
+    }
+
+    public function addadmin()
+    {
+        
     }
 
     /**

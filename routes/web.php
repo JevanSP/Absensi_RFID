@@ -50,3 +50,5 @@ route::get('/data_siswa/destroy/{id}', [SiswaController::class,'destroy']);
 Route::get('/data_sekolah', [SekolahController::class,'index'])->name('data_sekolah');
 
 route::get('/user_admin', [UserController::class,'admin'])->name('user_admin');
+route::post('/user_addadmin', [UserController::class,'store'])->name('addadmin');
+route::get('/user_guru', [UserController::class,'guru'])->name('user_guru');

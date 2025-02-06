@@ -25,15 +25,16 @@
             @php
                 $no = 1;
             @endphp
-            @foreach ($ as $row)
+            @foreach ($data_admin as $row)
                 <tr>
                     <td class="text-center">{{ $no++ }}</td>
-                    <td class="text-capitalize">{{ $row->budaya_positif }}</td>
-                    <td class="text-center">{{ $row->poin }}</td>
+                    <td class="text-capitalize">{{ $row->ni }}</td>
+                    <td class="text-center">{{ $row->nama }}</td>
+                    <td class="text-center">{{ $row->username }}</td>
                     <td class="text-center">
-                        <button type="button" data-bs-target="#modaledit{{ $row->id }}" data-bs-toggle="modal"
+                        <button type="button" data-bs-target="#modaledit" data-bs-toggle="modal"
                             class="btn btn-primary"><i class="bi bi-pencil"></i> Edit</button>
-                        <button type="button" data-bs-target="#modaldelete{{ $row->id }}" data-bs-toggle="modal"
+                        <button type="button" data-bs-target="#modaldelete" data-bs-toggle="modal"
                             class="btn btn-danger"><i class="bi bi-trash"></i> Hapus</button>
                     </td>
                 </tr>
@@ -49,18 +50,27 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="/data_budaya_positif/store/">
+                    <form method="POST" action="{{ route('addadmin') }}">
                         @csrf
                         <div class="form-group">
-                            <label>Nama {{ $title }}</label>
-                            <input type="text" class="form-control text-capitalize" name="budaya_positif"required>
+                            <label>NIK</label>
+                            <input type="text" class="form-control text-capitalize" name="ni" required>
                         </div>
                         <br>
                         <div class="form-group">
-                            <label>Poin</label>
-                            <input type="number" class="form-control" name="poin"required>
+                            <label>Nama {{ $title }}</label>
+                            <input type="text" class="form-control text-capitalize" name="nama"required>
                         </div>
                         <br>
+                        <div class="form-group">
+                            <label>Username</label>
+                            <input type="text" class="form-control" name="username"required>
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="text" class="form-control text-capitalize" name="password"required>
+                        </div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary" class="fas fa-save">Save Changes</button>
@@ -70,7 +80,7 @@
         </div>
     </div>
 
-    @foreach ($data_budaya_positif as $d)
+    {{-- @foreach ($data_budaya_positif as $d)
         <div class="modal fade" id="modaledit{{ $d->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -126,5 +136,5 @@
                 </div>
             </div>
         </div>
-@endforeach
+@endforeach --}}
 @endsection
