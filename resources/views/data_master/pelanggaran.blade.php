@@ -10,7 +10,8 @@
             </ol>
         </nav>
     </div>
-    <button type="button" class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#modalcreate">+ TAMBAH DATA</button>
+    <button type="button" class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#modalcreate">+ TAMBAH
+        DATA</button>
     <table class="table datatable table-danger table-striped-columns border-danger">
         <thead>
             <tr>
@@ -39,7 +40,7 @@
             @endforeach
         </tbody>
     </table>
-    
+
     <div class="modal fade" id="modalcreate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -70,7 +71,8 @@
     </div>
 
     @foreach ($data_pelanggaran as $d)
-        <div class="modal fade" id="modaledit{{ $d->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="modaledit{{ $d->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -100,9 +102,9 @@
                 </div>
             </div>
         </div>
-        @endforeach
-        
-        @foreach ($data_pelanggaran as $c)
+    @endforeach
+
+    @foreach ($data_pelanggaran as $c)
         <div class="modal fade" id="modaldelete{{ $c->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog">
@@ -125,5 +127,5 @@
                 </div>
             </div>
         </div>
-@endforeach
+    @endforeach
 @endsection

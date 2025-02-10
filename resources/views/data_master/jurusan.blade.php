@@ -1,6 +1,5 @@
 @extends('layout.layout')
 @section('content')
-
     <div class="pagetitle">
         <h1>Data Jurusan</h1>
         <nav>
@@ -11,7 +10,8 @@
             </ol>
         </nav>
     </div><!-- End Page Title -->
-    <button type="button" class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#modalcreate">+ TAMBAH DATA</button>
+    <button type="button" class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#modalcreate">+ TAMBAH
+        DATA</button>
     <table class="table datatable table-warning table-striped-columns border-warning">
         <thead>
             <tr>
@@ -40,7 +40,7 @@
             @endforeach
         </tbody>
     </table>
-    
+
     <div class="modal fade" id="modalcreate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -61,7 +61,7 @@
                             <input type="text" class="form-control text-capitalize" name="singkatan"required>
                         </div>
                         <br>
-                </div>      
+                </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary" class="fas fa-save">Save Changes</button>
                 </div>
@@ -71,7 +71,8 @@
     </div>
 
     @foreach ($data_jurusan as $d)
-        <div class="modal fade" id="modaledit{{ $d->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="modaledit{{ $d->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -101,9 +102,9 @@
                 </div>
             </div>
         </div>
-        @endforeach
-        
-        @foreach ($data_jurusan as $c)
+    @endforeach
+
+    @foreach ($data_jurusan as $c)
         <div class="modal fade" id="modaldelete{{ $c->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog">
@@ -112,7 +113,7 @@
                         <h1 class="modal-title fs-5">Hapus {{ $title }}</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form method="GET" action="/data_jurusan/destroy/{{ $c->id }}"> 
+                    <form method="GET" action="/data_jurusan/destroy/{{ $c->id }}">
                         @csrf
                         <div class="modal-body">
                             <div class="form-group">
@@ -126,6 +127,5 @@
                 </div>
             </div>
         </div>
-@endforeach
-
+    @endforeach
 @endsection

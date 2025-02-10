@@ -318,8 +318,35 @@
 
 })();
 
-Swal.fire({
-  title: "Drag me!",
+function click() {
+Swal({
+  title: "Data Tersimpan",
   icon: "success",
   draggable: true
+});
+
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  let currentUrl = window.location.pathname; // Ambil URL halaman saat ini
+  let sidebarLinks = document.querySelectorAll("#sidebar-nav .nav-link");
+
+  sidebarLinks.forEach(link => {
+      let linkPath = link.getAttribute("href");
+
+      // Cek apakah URL link cocok dengan URL halaman saat ini
+      if (linkPath && currentUrl.includes(linkPath)) {
+          link.classList.add("active");
+
+          // Jika dalam submenu, buka parent menu
+          let parentMenu = link.closest(".nav-content");
+          if (parentMenu) {
+              parentMenu.classList.add("show");
+              let parentToggle = parentMenu.closest(".nav-item").querySelector("[data-bs-toggle='collapse']");
+              if (parentToggle) {
+                  parentToggle.classList.remove("collapsed");
+              }
+          }
+      }
+  });
 });

@@ -10,131 +10,128 @@
             </ol>
         </nav>
     </div>
+
     <button type="button" class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#modalcreate">+ TAMBAH DATA</button>
+
     <table class="table datatable table-success table-striped-columns border-success">
         <thead>
             <tr>
                 <th class="text-center">No</th>
-                <th class="text-center">NIK</th>
                 <th class="text-center">Nama Admin</th>
                 <th class="text-center">Username</th>
                 <th class="text-center">Aksi</th>
             </tr>
         </thead>
         <tbody>
-            @php
-                $no = 1;
-            @endphp
-            @foreach ($data_admin as $row)
+            @foreach ($users as $key => $row)
                 <tr>
-                    <td class="text-center">{{ $no++ }}</td>
-                    <td class="text-capitalize">{{ $row->ni }}</td>
+                    <td class="text-center">{{ $key + 1 }}</td>
                     <td class="text-center">{{ $row->nama }}</td>
                     <td class="text-center">{{ $row->username }}</td>
                     <td class="text-center">
-                        <button type="button" data-bs-target="#modaledit" data-bs-toggle="modal"
-                            class="btn btn-primary"><i class="bi bi-pencil"></i> Edit</button>
-                        <button type="button" data-bs-target="#modaldelete" data-bs-toggle="modal"
-                            class="btn btn-danger"><i class="bi bi-trash"></i> Hapus</button>
+                        <!-- Tombol Edit -->
+                        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modaledit{{ $row->id }}">
+                            <i class="bi bi-pencil"></i> Edit
+                        </button>
+                        <!-- Tombol Hapus -->
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modaldelete{{ $row->id }}">
+                            <i class="bi bi-trash"></i> Hapus
+                        </button>
                     </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
-    
-    <div class="modal fade" id="modalcreate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+    <!-- Modal Tambah -->
+    <div class="modal fade" id="modalcreate" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5">Tambah Data {{ $title }}</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h1 class="modal-title fs-5">Tambah {{ $title }}</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{ route('addadmin') }}">
+                    <form method="POST" action="{{ route('user.store') }}">
                         @csrf
                         <div class="form-group">
-                            <label>NIK</label>
-                            <input type="text" class="form-control text-capitalize" name="ni" required>
+                            <label>Nama Admin</label>
+                            <input type="text" class="form-control" name="nama" required>
                         </div>
-                        <br>
-                        <div class="form-group">
-                            <label>Nama {{ $title }}</label>
-                            <input type="text" class="form-control text-capitalize" name="nama"required>
-                        </div>
-                        <br>
                         <div class="form-group">
                             <label>Username</label>
-                            <input type="text" class="form-control" name="username"required>
+                            <input type="text" class="form-control" name="username" required>
                         </div>
-                        <br>
                         <div class="form-group">
                             <label>Password</label>
-                            <input type="text" class="form-control text-capitalize" name="password"required>
+                            <input type="password" class="form-control" name="password" required>
                         </div>
+                        <input type="hidden" name="role" value="admin">
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" class="fas fa-save">Save Changes</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
-                </form>
+                    </form>
             </div>
         </div>
     </div>
 
-    {{-- @foreach ($data_budaya_positif as $d)
-        <div class="modal fade" id="modaledit{{ $d->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5">Edit {{ $title }}</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <form method="POST" action="/data_budaya_positif/update/{{ $d->id }}">
-                        @csrf
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label>Nama {{ $title }}</label>
-                                <input type="text" value="{{ $d->budaya_positif }}" class="form-control"
-                                    name="budaya_positif"required>
-                            </div>
-                            <br>
-                            <div class="form-group">
-                                <label>Poin</label>
-                                <input type="number" value="{{ $d->poin }}" class="form-control"
-                                    name="poin"required>
-                            </div>
-                            <br>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary" class="fas fa-save">Save Changes</button>
-                        </div>
-                    </form>
+    <!-- Modal Edit -->
+    @foreach ($users as $d)
+    <div class="modal fade" id="modaledit{{ $d->id }}" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Edit {{ $title }}</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
+                <form method="POST" action="{{ route('user.update', $d->id) }}">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Nama Admin</label>
+                            <input type="text" value="{{ $d->nama }}" class="form-control" name="nama" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Username</label>
+                            <input type="text" value="{{ $d->username }}" class="form-control" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Password (Isi jika ingin mengubah)</label>
+                            <input type="password" class="form-control" name="password">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                    </div>
+                </form>
             </div>
         </div>
-        @endforeach
-        
-        @foreach ($data_budaya_positif as $c)
-        <div class="modal fade" id="modaldelete{{ $c->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5">Hapus {{ $title }}</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <form method="GET" action="/data_budaya_positif/destroy/{{ $c->id }}">
-                        @csrf
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <h7>Apakah anda yakin ingin menghapus data ini?</h7>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-outline-danger bi bi-trash"> Hapus</button>
-                        </div>
-                    </form>
+    </div>
+    @endforeach
+
+    <!-- Modal Delete -->
+    @foreach ($users as $c)
+    <div class="modal fade" id="modaldelete{{ $c->id }}" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Hapus {{ $title }}</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
+                <form method="POST" action="{{ route('user.destroy', $c->id) }}">
+                    @csrf
+                    @method('DELETE')
+                    <div class="modal-body">
+                        <p>Apakah anda yakin ingin menghapus <strong>{{ $c->nama }}</strong>?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger">Hapus</button>
+                    </div>
+                </form>
             </div>
         </div>
-@endforeach --}}
+    </div>
+    @endforeach
 @endsection

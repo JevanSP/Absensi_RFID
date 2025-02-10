@@ -10,7 +10,7 @@
             </ol>
         </nav>
     </div><!-- End Page Title -->
-    <button type="button" class="btn btn-primary my-3"><a href="/add_siswa">+ TAMBAH DATA</a></button>
+    <button type="button" class="btn btn-primary my-3"><a href="/add_siswa" style="color: white">+ TAMBAH DATA</a></button>
     <table class="table datatable table-secondary table-striped-columns border-secondary">
         <thead>
             <tr>

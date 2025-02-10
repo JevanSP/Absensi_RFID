@@ -48,7 +48,14 @@ route::post('/data_siswa/update/{id}', [SiswaController::class,'update']);
 route::get('/data_siswa/destroy/{id}', [SiswaController::class,'destroy']);
 
 Route::get('/data_sekolah', [SekolahController::class,'index'])->name('data_sekolah');
+// Route untuk menampilkan daftar user berdasarkan role
+Route::get('/user/{role}', [UserController::class, 'getIndexByRole'])->name('user.index');
 
-route::get('/user_admin', [UserController::class,'admin'])->name('user_admin');
-route::post('/user_addadmin', [UserController::class,'store'])->name('addadmin');
-route::get('/user_guru', [UserController::class,'guru'])->name('user_guru');
+// Route untuk menyimpan user baru
+Route::post('/user', [UserController::class, 'store'])->name('user.store');
+
+// Route untuk memperbarui user
+Route::put('/user/{user}', [UserController::class, 'update'])->name('user.update');
+
+// Route untuk menghapus user
+Route::delete('/user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
