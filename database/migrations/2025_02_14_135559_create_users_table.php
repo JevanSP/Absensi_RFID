@@ -12,8 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->bigIncrements('id'); // Primary key
-            $table->string('nama');
+            $table->id();
+            $table->foreignId('siswa_id')->nullable()->constrained('siswa')->onDelete('cascade');
+            $table->string('nama')->nullable();
             $table->string('username')->unique();
             $table->string('password');
             $table->enum('role', ['admin', 'guru', 'siswa']);
@@ -22,7 +23,7 @@ return new class extends Migration
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete(); // Foreign key ke users
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->string('token');
             $table->timestamp('created_at')->nullable();
         });

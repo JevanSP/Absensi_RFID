@@ -23,5 +23,10 @@ class Siswa extends Model
     {
         return $this->belongsTo(Jurusan::class, 'jurusan_id');
     }
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'siswa_id');
+    }
 }
 

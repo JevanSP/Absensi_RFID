@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\Siswa;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -20,7 +21,8 @@ class UserController extends Controller
 
         $users = User::where('role', $role)->get();
         $title = "Data " . ucfirst($role);
-        return view("user.$role", compact('users', 'title'));
+        $data_siswa = Siswa::whereNotIn('id', User::where('role', 'siswa')->pluck('siswa_id'))->get();
+        return view("user.$role", compact('users', 'title', 'data_siswa'));
     }
 
     /**
@@ -28,11 +30,26 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+
+        $validatedData = $request->validate([
+            'siswa_id' => 'required_if:role,siswa|exists:siswa,id',
+            'nama' => 'nullable|string',
+            'username' => 'required|string|unique:users,username',
+            'password' => 'required|string',
+            'role' => 'required|in:admin,guru,siswa',
+        ]);
+
+        if ($request->role == 'siswa') {
+            $siswa = Siswa::findOrFail($request->siswa_id);
+            $validatedData['nama'] = $siswa->nama_siswa; // Ambil nama dari tabel siswa
+        }
+
         User::create([
-            'nama' => $request->nama,
-            'username' => $request->username,
-            'password' => bcrypt($request->password),
-            'role' => $request->role,
+            'nama' => $validatedData['nama'],
+            'username' => $validatedData['username'],
+            'password' => bcrypt($validatedData['password']),
+            'role' => $validatedData['role'],
+            'siswa_id' => $request->role == 'siswa' ? $request->siswa_id : null,
         ]);
 
         return redirect("/user/{$request->role}");
@@ -43,12 +60,17 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $user->update(array_filter([
-            'nama' => $request->nama,
-            'username' => $request->username,
-            'password' => $request->password ? bcrypt($request->password) : null,
-        ]));
+        if ($request->role == 'siswa') {
+            $siswa = Siswa::findOrFail($request->siswa_id);
+            $validatedData['nama'] = $siswa->nama_siswa; // Ambil nama dari tabel siswa
+        }
 
+        $validatedData = $request->validate([
+            'nama' => 'required',
+            'username' => 'required|unique:users,username,' . $user->id,
+            'role' => 'required',
+            'siswa_id' => $request->role == 'siswa' ? 'required' : 'nullable',
+        ]);
         return back();
     }
 

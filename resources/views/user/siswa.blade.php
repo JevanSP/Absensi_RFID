@@ -54,10 +54,15 @@
                 <div class="modal-body">
                     <form method="POST" action="{{ route('user.store') }}">
                         @csrf
-                        <div class="form-group">
-                            <label>Nama Siswa</label>
-                            <input type="text" class="form-control" name="nama" required>
-                        </div>
+                        <div class="mb-3">
+                            <label for="siswa_id" class="form-label">Nama Siswa</label>
+                            <select name="siswa_id" class="form-control" required>
+                                <option value="">Pilih Siswa</option>
+                                @foreach ($data_siswa as $siswa)
+                                    <option value="{{ $siswa->id }}">{{ $siswa->nama_siswa }}</option>
+                                @endforeach
+                            </select>
+                        </div>    
                         <div class="form-group">
                             <label>Username</label>
                             <input type="text" class="form-control" name="username" required>

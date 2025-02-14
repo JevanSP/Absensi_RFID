@@ -19,6 +19,7 @@
                 <th class="text-center">No</th>
                 <th class="text-center">Nama Guru</th>
                 <th class="text-center">Username</th>
+                <th class="text-center">Password</th>
                 <th class="text-center">Aksi</th>
             </tr>
         </thead>
@@ -28,6 +29,7 @@
                     <td class="text-center">{{ $key + 1 }}</td>
                     <td class="text-center">{{ $row->nama }}</td>
                     <td class="text-center">{{ $row->username }}</td>
+                    <td class="text-center">{{ $row->password }}</td>
                     <td class="text-center">
                         <!-- Tombol Edit -->
                         <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modaledit{{ $row->id }}">
