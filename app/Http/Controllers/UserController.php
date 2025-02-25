@@ -41,7 +41,7 @@ class UserController extends Controller
 
         if ($request->role == 'siswa') {
             $siswa = Siswa::findOrFail($request->siswa_id);
-            $validatedData['nama'] = $siswa->nama_siswa; // Ambil nama dari tabel siswa
+            $validatedData['nama'] = $siswa->nama_siswa;
         }
 
         User::create([
@@ -71,6 +71,7 @@ class UserController extends Controller
             'role' => 'required',
             'siswa_id' => $request->role == 'siswa' ? 'required' : 'nullable',
         ]);
+        
         return back();
     }
 

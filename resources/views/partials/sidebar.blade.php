@@ -77,7 +77,7 @@
         <li class="nav-heading">Pages</li>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="users-profile.html">
+            <a class="nav-link {{ request()->routeIs('absen.list') ? 'active' : 'collapsed' }}" href="{{ route('absen.list') }}">
                 <i class="bi-file-earmark-person-fill"></i>
                 <span>Absensi Siswa</span>
             </a>
@@ -112,7 +112,7 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="pages-faq.html">
+            <a class="nav-link {{ request()->routeIs('pengaturan.list') ? 'active' : 'collapsed' }}" href="{{ route('pengaturan.index') }}">
                 <i class="bi bi-gear-fill"></i>
                 <span>Pengaturan</span>
             </a>

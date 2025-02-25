@@ -19,6 +19,7 @@
                 <th class="text-center">No</th>
                 <th class="text-center">Nama Siswa</th>
                 <th class="text-center">Username</th>
+                <th class="text-center">Password</th>
                 <th class="text-center">Aksi</th>
             </tr>
         </thead>
