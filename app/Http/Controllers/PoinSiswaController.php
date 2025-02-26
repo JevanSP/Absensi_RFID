@@ -2,88 +2,46 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PoinKategori;
 use App\Models\PoinSiswa;
 use Illuminate\Http\Request;
+use App\Models\Siswa;
+use Illuminate\Support\Facades\Auth;
+
 
 class PoinSiswaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function indexByCategory($category)
     {
-        $pelanggaran = PoinSiswa::where('kategori', 'pelanggaran')->get();
-        $budaya = PoinSiswa::where('kategori', 'budaya_positif')->get();
-        $prestasi = PoinSiswa::where('kategori', 'prestasi')->get();
-    
-        return view('data_master.budaya_positif', compact('budaya',));
-        return view('data_master.pelanggaran', compact('pelanggaran',));
-        return view('data_master.prestasi', compact('prestasi',));
+        $validCategories = ['pelanggaran', 'budaya_positif', 'prestasi'];
+        if (!in_array($category, $validCategories)) {
+            abort(404); 
+        }
+        $poinSiswa = PoinSiswa::where('kategori', $category)->get();
+        $title = "Data " . ucfirst(str_replace('_', ' ', $category));
+        return view("poin.$category", compact('poinSiswa', 'title'));
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * Simpan poin siswa
      */
     public function store(Request $request)
     {
-        $pelanggaran = PoinSiswa::create([
-            'kategori' => 'pelanggaran',
-            'nama_pelanggaran' => $request->nama_pelanggaran,
-            'poin' => $request->poin,
+        $request->validate([
+            'siswa_id' => 'required|exists:siswa,id',
+            'poin_kategori_id' => 'required|exists:kategori_poin,id',
+            'keterangan' => 'nullable|string',
+            'tanggal' => 'required|date',
         ]);
 
-        $budaya = PoinSiswa::create([
-            'kategori' => 'budaya_positif',
-            'nama_budaya' => $request->nama_budaya,
-            'poin' => $request->poin,
+        PoinSiswa::create([
+            'siswa_id' => $request->siswa_id,
+            'poin_kategori_id' => $request->poin_kategori_id,
+            'user_id' => Auth::id(), // Guru/Admin yang menambahkan
+            'keterangan' => $request->keterangan,
+            'tanggal' => $request->tanggal,
         ]);
 
-        $prestasi = PoinSiswa::create([
-            'kategori' => 'prestasi',
-            'nama_prestasi' => $request->nama_prestasi,
-            'poin' => $request->poin,
-        ]);
-
-        return redirect('/data_master')->with('success', 'Data Berhasil');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(PoinSiswa $poinSiswa)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(PoinSiswa $poinSiswa)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, PoinSiswa $poinSiswa)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(PoinSiswa $poinSiswa)
-    {
-        //
+        return redirect()->route('poin.create')->with('success', 'Poin siswa berhasil ditambahkan!');
     }
 }

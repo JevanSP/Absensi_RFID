@@ -32,17 +32,17 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/data_budaya_positif" class="{{ request()->is('data_budaya_positif') ? 'active' : '' }}">
+                    <a href="{{ route('poin_kategori.index', 'budaya_positif') }}" class="{{ request()->route('kategori') == 'budaya_positif' ? 'active' : '' }}">
                         <i class="bi bi-circle"></i><span>Data Budaya Positif</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/data_prestasi" class="{{ request()->is('data_prestasi') ? 'active' : '' }}">
+                    <a href="{{ route('poin_kategori.index', 'prestasi') }}" class="{{ request()->route('kategori') == 'prestasi' ? 'active' : '' }}">                        
                         <i class="bi bi-circle"></i><span>Data Prestasi</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/data_pelanggaran" class="{{ request()->is('data_pelanggaran') ? 'active' : '' }}">
+                    <a href="{{ route('poin_kategori.index', 'pelanggaran') }}" class="{{ request()->route('kategori') == 'pelanggaran' ? 'active' : '' }}">
                         <i class="bi bi-circle"></i><span>Data Pelanggaran</span>
                     </a>
                 </li>

@@ -19,7 +19,6 @@
                 <th class="text-center">Nama</th>
                 <th class="text-center">Jenis Kelamin</th>
                 <th class="text-center">Kelas</th>
-                <th class="text-center">Jurusan</th>
                 <th class="text-center">RFID</th>
                 <th class="text-center">Foto</th>
                 <th class="text-center">Aksi</th>
@@ -35,8 +34,7 @@
                     <td class="text-center">{{ $row->nis }}</td>
                     <td class="text-capitalize">{{ $row->nama_siswa }}</td>
                     <td class="text-center text-capitalize">{{ $row->jenis_kelamin }}</td>
-                    <td class="text-center">{{ $row->kelas }}</td>
-                    <td class="text-center">{{ $row->jurusan->singkatan }}</td>
+                    <td class="text-center">{{ $row->kelas }} {{ $row->jurusan->singkatan }}</td>
                     <td class="text-center">{{ $row->rfid_tag }}</td>
                     <td class="text-center">{{ $row->foto }}
                     <td class="text-center">

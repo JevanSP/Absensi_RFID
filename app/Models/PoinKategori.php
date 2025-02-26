@@ -16,6 +16,6 @@ class PoinKategori extends Model
 
     public function PoinSiswa()
     {
-        return $this->hasMany(PoinSiswa::class, 'kategori_id');
+        return $this->hasMany(PoinSiswa::class);
     }
 }

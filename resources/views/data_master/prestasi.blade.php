@@ -1,102 +1,104 @@
 @extends('layout.layout')
 @section('content')
     <div class="pagetitle">
-        <h1>Data Prestasi</h1>
+        <h1>{{ $title }}</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/dashboard">Beranda</a></li>
                 <li class="breadcrumb-item">Data Master</li>
-                <li class="breadcrumb-item active">Data Prestasi</li>
+                <li class="breadcrumb-item active">{{ $title }}</li>
             </ol>
         </nav>
     </div>
+
     <button type="button" class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#modalcreate">+ TAMBAH
         DATA</button>
-    <table class="table datatable table-primary table-striped-columns border-primary">
+
+    <table class="table datatable table-success table-striped-columns border-success">
         <thead>
             <tr>
                 <th class="text-center">No</th>
-                <th class="text-center">Nama Prestasi</th>
+                <th class="text-center">Nama {{ $title }}</th>
                 <th class="text-center">Poin</th>
                 <th class="text-center">Aksi</th>
             </tr>
         </thead>
         <tbody>
-            @php
-                $no = 1;
-            @endphp
-            @foreach ($data_prestasi as $row)
+            @php $no = 1; @endphp
+            @foreach ($poinKategori as $p)
                 <tr>
                     <td class="text-center">{{ $no++ }}</td>
-                    <td class="text-capitalize">{{ $row->prestasi }}</td>
-                    <td class="text-center">{{ $row->poin }}</td>
+                    <td class="text-capitalize">{{ $p->nama }}</td>
+                    <td class="text-center">{{ $p->poin }}</td>
                     <td class="text-center">
-                        <button type="button" data-bs-target="#modaledit{{ $row->id }}" data-bs-toggle="modal"
-                            class="btn btn-primary"><i class="bi bi-pencil"></i> Edit</button>
-                        <button type="button" data-bs-target="#modaldelete{{ $row->id }}" data-bs-toggle="modal"
-                            class="btn btn-danger"><i class="bi bi-trash"></i> Hapus</button>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#modaledit{{ $p->id }}"><i class="bi bi-pencil"></i> Edit</button>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                            data-bs-target="#modaldelete{{ $p->id }}"><i class="bi bi-trash"></i> Hapus</button>
                     </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
 
-    <div class="modal fade" id="modalcreate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalcreate" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5">Tambah Data {{ $title }}</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h1 class="modal-title fs-5">Tambah Data Poin Kategori</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="/data_prestasi/store/">
+                    <form method="POST" action="{{ route('poin_kategori.store') }}">
                         @csrf
+                        <input type="hidden" name="kategori" value="prestasi">
                         <div class="form-group">
                             <label>Nama {{ $title }}</label>
-                            <input type="text" class="form-control text-capitalize" name="prestasi"required>
+                            <input type="text" class="form-control text-capitalize" name="nama" required>
                         </div>
                         <br>
                         <div class="form-group">
                             <label>Poin</label>
-                            <input type="number" class="form-control" name="poin"required>
+                            <input type="number" class="form-control" name="poin" required>
                         </div>
                         <br>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" class="fas fa-save">Save Changes</button>
-                </div>
-                </form>
             </div>
         </div>
     </div>
 
-    @foreach ($data_prestasi as $d)
-        <div class="modal fade" id="modaledit{{ $d->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
+    @foreach ($poinKategori as $p)
+        <div class="modal fade" id="modaledit{{ $p->id }}" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5">Edit {{ $title }}</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h1 class="modal-title fs-5">Edit Poin Kategori</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
-                    <form method="POST" action="/data_prestasi/update/{{ $d->id }}">
+                    <form method="POST" action="{{ route('poin_kategori.update', $p->id) }}">
                         @csrf
+                        @method('PUT')
+                        <input type="hidden" name="kategori" value="prestasi">
                         <div class="modal-body">
                             <div class="form-group">
                                 <label>Nama {{ $title }}</label>
-                                <input type="text" value="{{ $d->prestasi }}" class="form-control text-capitalize"
-                                    name="prestasi"required>
+                                <input type="text" value="{{ $p->nama }}" class="form-control" name="nama"
+                                    required>
                             </div>
                             <br>
                             <div class="form-group">
                                 <label>Poin</label>
-                                <input type="number" value="{{ $d->poin }}" class="form-control"
-                                    name="poin"required>
+                                <input type="number" value="{{ $p->poin }}" class="form-control" name="poin"
+                                    required>
                             </div>
                             <br>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary" class="fas fa-save">Save Changes</button>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
                         </div>
                     </form>
                 </div>
@@ -104,24 +106,22 @@
         </div>
     @endforeach
 
-    @foreach ($data_prestasi as $c)
-        <div class="modal fade" id="modaldelete{{ $c->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
+    @foreach ($poinKategori as $p)
+        <div class="modal fade" id="modaldelete{{ $p->id }}" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Delete {{ $title }}</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h1 class="modal-title fs-5">Hapus Poin Kategori</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
-                    <form method="GET" action="/data_prestasi/destroy/{{ $c->id }}">
+                    <form method="POST" action="{{ route('poin_kategori.destroy', $p->id) }}">
                         @csrf
+                        @method('DELETE')
                         <div class="modal-body">
-                            <div class="form-group">
-                                <h7>Apakah anda yakin ingin menghapus data ini?</h7>
-                            </div>
+                            <p>Apakah anda yakin ingin menghapus data ini?</p>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-outline-danger">Buak</button>
+                            <button type="submit" class="btn btn-outline-danger">Hapus</button>
                         </div>
                     </form>
                 </div>

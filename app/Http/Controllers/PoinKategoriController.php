@@ -8,82 +8,58 @@ use Illuminate\Http\Request;
 class PoinKategoriController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the resource by category.
      */
-    public function index()
+    public function indexByCategory($category)
     {
-        $pelanggaran = PoinKategori::where('kategori', 'pelanggaran')->get();
-        $budaya = PoinKategori::where('kategori', 'budaya_positif')->get();
-        $prestasi = PoinKategori::where('kategori', 'prestasi')->get();
-    
-        return view('data_master.budaya_positif', compact('budaya',));
-        return view('data_master.pelanggaran', compact('pelanggaran',));
-        return view('data_master.prestasi', compact('prestasi',));
-    }
+        $validCategories = ['pelanggaran', 'budaya_positif', 'prestasi'];
+        if (!in_array($category, $validCategories)) {
+            abort(404); 
+        }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $poinKategori = PoinKategori::where('kategori', $category)->get();
+        $title = "Data " . ucfirst(str_replace('_', ' ', $category));
+        return view("poin.$category", compact('poinKategori', 'title'));
     }
-
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        $pelanggaran = PoinKategori::create([
-            'kategori' => 'pelanggaran',
-            'nama_pelanggaran' => $request->nama_pelanggaran,
-            'poin' => $request->poin,
+        $request->validate([
+            'kategori' => 'required|string',
+            'nama' => 'required|string',
+            'poin' => 'required|integer',
         ]);
 
-        $budaya = PoinKategori::create([
-            'kategori' => 'budaya_positif',
-            'nama_budaya' => $request->nama_budaya,
-            'poin' => $request->poin,
-        ]);
+        PoinKategori::create($request->all());
 
-        $prestasi = PoinKategori::create([
-            'kategori' => 'prestasi',
-            'nama_prestasi' => $request->nama_prestasi,
-            'poin' => $request->poin,
-        ]);
-
-        return redirect('/data_master')->with('success', 'Data Berhasil');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(PoinKategori $poinKategori)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(PoinKategori $poinKategori)
-    {
-        //
+        return redirect()->route('poin_kategori.indexByCategory', ['category' => $request->kategori])->with('success', 'Data Berhasil Ditambahkan');
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, PoinKategori $poinKategori)
+    public function update(Request $request, $id)
     {
-        //
+        $poinKategori = PoinKategori::find($id);
+        $poinKategori->update($request->all());
+        return redirect()->route('poin_kategori.indexByCategory', ['category' => $poinKategori->kategori])->with('success', 'Data Berhasil Diupdate');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(PoinKategori $poinKategori)
+    public function destroy($id)
     {
-        //
+        $poinKategori = PoinKategori::find($id);
+        $category = $poinKategori->kategori;
+        $poinKategori->delete();
+        return redirect()->route('poin_kategori.indexByCategory', ['category' => $category])->with('success', 'Data Berhasil Dihapus');
     }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    
 }
