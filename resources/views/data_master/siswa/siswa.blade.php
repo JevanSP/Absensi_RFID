@@ -36,7 +36,13 @@
                     <td class="text-center text-capitalize">{{ $row->jenis_kelamin }}</td>
                     <td class="text-center">{{ $row->kelas }} {{ $row->jurusan->singkatan }}</td>
                     <td class="text-center">{{ $row->rfid_tag }}</td>
-                    <td class="text-center">{{ $row->foto }}
+                    <td class="text-center">
+                        @if ($row->foto)
+                            <img src="{{ asset('/public/siswa/' . $row->foto) }}" alt="Foto Siswa" width="50" style="border: 2px solid #ddd; padding: 5px; border-radius: 5px;">
+                        @else
+                            Tidak ada foto
+                        @endif
+                    </td>
                     <td class="text-center">
                         <a href="{{ route('siswa.edit_siswa', $row->id) }}" class="btn btn-primary">
                             <i class="bi bi-pencil"></i> Edit

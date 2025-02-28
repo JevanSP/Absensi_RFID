@@ -84,15 +84,31 @@
 
             <div class="mb-3">
                 <label for="foto" class="form-label">Foto</label>
-                <input type="file" class="form-control @error('foto') is-invalid @enderror" id="foto" name="foto">
+                <input type="file" class="form-control @error('foto') is-invalid @enderror" id="foto" name="foto" onchange="previewImage(event)">
                 @error('foto')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
+                <br>
+                <img id="preview" alt="Preview Foto" width="100" class="mt-2" style="display: none; border: 2px solid #ddd; padding: 5px; border-radius: 5px;">
             </div>
             <br>
-            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Simpan Data</button>
-            <a href="/data_siswa" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Kembali</a>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i>Simpan Data</button>
+            <a href="/data_siswa" class="btn btn-secondary"><i class="fas fa-arrow-left"></i>Kembali</a>
         </form>
     </div>
 </div>
+<script>
+    function previewImage(event) {
+        const reader = new FileReader();
+        reader.onload = function(){
+            const output = document.getElementById('preview');
+            output.src = reader.result;
+            output.style.display = 'block';
+            output.style.border = '2px solid #ddd';
+            output.style.padding = '5px';
+            output.style.borderRadius = '5px';
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
 @endsection

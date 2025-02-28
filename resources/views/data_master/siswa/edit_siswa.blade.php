@@ -84,7 +84,7 @@
 
             <div class="mb-3">
                 <label for="foto" class="form-label">Foto</label>
-                <input type="file" class="form-control @error('foto') is-invalid @enderror" id="foto" name="foto">
+                <input type="file" class="form-control @error('foto') is-invalid @enderror" id="foto" name="foto" onchange="previewImage(event)">
                 <small class="text-muted">Kosongkan jika tidak ingin mengubah foto.</small>
                 <br>
                 @error('foto')
@@ -92,7 +92,7 @@
                 @enderror
                 <br>
                 @if ($data_siswa->foto)  
-                    <img src="{{ asset('/public/siswa' . $data_siswa->foto) }}" alt="Foto Siswa" width="100" class="mt-2" id="preview">
+                    <img src="{{ asset('/public/siswa/' . $data_siswa->foto) }}" alt="Foto Siswa" width="100" class="mt-2" id="preview" style="border: 2px solid #ddd; padding: 5px; border-radius: 5px;">
                 @endif
             </div>
             <br>
@@ -103,6 +103,9 @@
                     reader.onload = function(){
                         const output = document.getElementById('preview');
                         output.src = reader.result;
+                        output.style.border = '2px solid #ddd';
+                        output.style.padding = '5px';
+                        output.style.borderRadius = '5px';
                     };
                     reader.readAsDataURL(event.target.files[0]);
                 }

@@ -14,7 +14,7 @@
     <button type="button" class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#modalcreate">+ TAMBAH
         DATA</button>
 
-    <table class="table datatable table-success table-striped-columns border-success">
+    <table class="table datatable table-primary table-striped-columns border-primary">
         <thead>
             <tr>
                 <th class="text-center">No</th>

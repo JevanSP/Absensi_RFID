@@ -5,18 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Absensi;
 use App\Models\Siswa;
 use App\Models\PengaturanAbsensi;
-use App\Models\Jurusan;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
 class AbsensiController extends Controller
 {
-    // public function index()
-    // {
-    //     $kehadiran = Absensi::with('siswa')->get();
-    //     return view('absen.list', compact('kehadiran'));
-    // }
-
     public function absenRFID(Request $request)
     {
         $request->validate(['rfid_tag' => 'required|string']);
@@ -41,6 +34,7 @@ class AbsensiController extends Controller
                 'tanggal' => $tanggal,
                 'jam_masuk' => $jamSekarang,
                 'status' => $status,
+                'pengaturan_absensi_id' => $pengaturan->id,
             ]);
 
             return response()->json([
@@ -63,29 +57,4 @@ class AbsensiController extends Controller
         }
     }
 
-    // public function filter(Request $request)
-    // {
-    //     $query = Absensi::with('siswa');
-
-    //     if ($request->filled('jurusan')) {
-    //         $query->whereHas('siswa', function ($q) use ($request) {
-    //             $q->where('jurusan_id', $request->jurusan);
-    //         });
-    //     }
-
-    //     if ($request->filled('kelas')) {
-    //         $query->whereHas('siswa', function ($q) use ($request) {
-    //             $q->where('kelas', $request->kelas);
-    //         }); 
-    //     }
-
-    //     if ($request->filled('tanggal')) {
-    //         $query->where('tanggal', $request->tanggal);
-    //     }
-
-    //     $kehadiran = $query->get();
-    //     $jurusan = Jurusan::all();
-
-    //     return view('absen.filter', compact('kehadiran', 'jurusan'));
-    // }
 }

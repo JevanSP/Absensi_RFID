@@ -19,7 +19,7 @@ class PoinKategoriController extends Controller
 
         $poinKategori = PoinKategori::where('kategori', $category)->get();
         $title = "Data " . ucfirst(str_replace('_', ' ', $category));
-        return view("poin.$category", compact('poinKategori', 'title'));
+        return view("data_master.$category", compact('poinKategori', 'title'));
     }
     /**
      * Store a newly created resource in storage.
