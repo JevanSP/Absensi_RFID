@@ -82,21 +82,21 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="pages-faq.html">
+            <a href="{{ route('poin_siswa.index', 'budaya_positif') }}" class="{{ request()->route('category') == 'budaya_positif' ? 'active' : 'collapsed' }}">
                 <i class="bi-person-plus"></i>
                 <span>Budaya Positif</span>
             </a>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="pages-faq.html">
+            <a href="{{ route('poin_siswa.index', 'prestasi') }}" class="{{ request()->route('category') == 'prestasi' ? 'active' : 'collapsed' }}">
                 <i class="bi-person-plus-fill"></i>
                 <span>Prestasi</span>
             </a>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="pages-faq.html">
+            <a href="{{ route('poin_siswa.index', 'pelanggaran') }}" class="{{ request()->route('category') == 'pelanggaran' ? 'active' : 'collapsed' }}">
                 <i class="bi-person-dash-fill"></i>
                 <span>Pelanggaran</span>
             </a>

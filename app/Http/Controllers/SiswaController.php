@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Absensi;
 use Illuminate\Http\Request;
 use App\Models\Siswa;
 use App\Models\Jurusan;

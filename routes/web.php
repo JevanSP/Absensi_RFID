@@ -39,7 +39,6 @@ Route::post('/user', [UserController::class, 'store'])->name('user.store');
 Route::put('/user/{user}', [UserController::class, 'update'])->name('user.update');
 Route::delete('/user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
 
-
 Route::get('/absen', [AbsensiController::class, 'index'])->name('absen.list');
 Route::post('/absen-rfid', [AbsensiController::class, 'absenRFID']);
 Route::get('/absen/filter', [AbsensiController::class, 'filter'])->name('absen.filter');
@@ -52,3 +51,8 @@ Route::get('poin_kategori/{category}', [PoinKategoriController::class, 'indexByC
 Route::post('poin_kategori', [PoinKategoriController::class, 'store'])->name('poin_kategori.store');
 Route::put('poin_kategori/{category}', [PoinKategoriController::class, 'update'])->name('poin_kategori.update');
 Route::delete('poin_kategori/{category}', [PoinKategoriController::class, 'destroy'])->name('poin_kategori.destroy');
+
+Route::get('poin_siswa/{category}', [PoinSiswaController::class, 'indexByCategory'])->name('poin_siswa.index');
+Route::post('poin_siswa', [PoinSiswaController::class, 'store'])->name('poin_siswa.store');
+Route::put('poin_siswa/{category}', [PoinSiswaController::class, 'update'])->name('poin_siswa.update');
+Route::delete('poin_siswa/{category}', [PoinSiswaController::class, 'destroy'])->name('poin_siswa.destroy');

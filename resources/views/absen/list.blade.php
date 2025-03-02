@@ -10,8 +10,13 @@
             </ol>
         </nav>
     </div><!-- End Page Title -->
+
     <form method="GET" action="{{ route('absen.filter') }}">
         <div class="row mb-3">
+            <div class="col-md-3">
+                <label>NIS</label>
+                <input type="text" name="nis" class="form-control" placeholder="NIS">
+            </div>
             <div class="col-md-3">
                 <label>Kelas</label>
                 <select name="kelas" class="form-control">
@@ -26,9 +31,9 @@
                 <label>Jurusan</label>
                 <select name="jurusan" class="form-control">
                     <option value="">Semua Jurusan</option>
-                    {{-- @foreach ($jurusan as $j)
+                    @foreach ($jurusan as $j)
                         <option value="{{ $j->id }}">{{ $j->nama }}</option>
-                    @endforeach --}}
+                    @endforeach
                 </select>
             </div>
 
@@ -46,6 +51,7 @@
     <table class="table table-bordered">
         <thead>
             <tr>
+                <th>NIS</th>
                 <th>Nama Siswa</th>
                 <th>Kelas</th>
                 <th>Tanggal</th>
@@ -55,16 +61,23 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($kehadiran as $absen)
+            @if($absensi->isEmpty())
                 <tr>
-                    <td>{{ $absen->siswa->nama_siswa }}</td>
-                    <td>{{ $absen->siswa->jurusan->singkatan }} {{ $absen->siswa->kelas }}</td>
-                    <td>{{ $absen->tanggal }}</td>
-                    <td>{{ $absen->jam_masuk }}</td>
-                    <td>{{ $absen->jam_pulang ?? '-' }}</td>
-                    <td>{{ ucfirst($absen->status) }}</td>
+                    <td colspan="7" class="text-center">Tidak ada data absensi</td>
                 </tr>
-            @endforeach
+            @else
+                @foreach ($absensi as $absen)
+                    <tr>
+                        <td>{{ $absen->siswa->nis }}</td>
+                        <td>{{ $absen->siswa->nama_siswa }}</td>
+                        <td>{{ $absen->siswa->jurusan->singkatan }} {{ $absen->siswa->kelas }}</td>
+                        <td>{{ $absen->tanggal }}</td>
+                        <td>{{ $absen->jam_masuk }}</td>
+                        <td>{{ $absen->jam_pulang ?? '-' }}</td>
+                        <td>{{ ucfirst($absen->status) }}</td>
+                    </tr>
+                @endforeach
+            @endif
         </tbody>
     </table>
 @endsection

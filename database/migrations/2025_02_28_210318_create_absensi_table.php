@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('absensi', function (Blueprint $table) {
-            $table->foreign('siswa_id')->references('id')->on('siswa')->onDelete('cascade');
-            $table->foreign('pengaturan_absensi_id')->references('id')->on('pengaturan_absensi')->onDelete('cascade');
+        Schema::create('absensi', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('siswa_id')->constrained('siswa')->onDelete('cascade');
+            $table->foreignId('pengaturan_absensi_id')->constrained('pengaturan_absensi')->onDelete('cascade');
             $table->date('tanggal')->nullable();
             $table->enum('status', ['hadir', 'terlambat', 'izin', 'sakit', 'alpa']);
             $table->time('jam_masuk')->nullable();

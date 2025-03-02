@@ -18,10 +18,11 @@ class PoinSiswaController extends Controller
             abort(404); 
         }
         $poinSiswa = PoinSiswa::where('kategori', $category)->get();
-        $title = "Data " . ucfirst(str_replace('_', ' ', $category));
-        return view("poin.$category", compact('poinSiswa', 'title'));
+        $poinKategori = PoinKategori::where('kategori', $category)->first();
+        $siswa = Siswa::all();
+        $title = "Poin " . ucfirst(str_replace('_', ' ', $category));
+        return view("poin.$category", compact('poinSiswa', 'title', 'poinKategori'));
     }
-
     /**
      * Simpan poin siswa
      */
@@ -42,6 +43,21 @@ class PoinSiswaController extends Controller
             'tanggal' => $request->tanggal,
         ]);
 
-        return redirect()->route('poin.create')->with('success', 'Poin siswa berhasil ditambahkan!');
+        return redirect()->route('poin_siswa.indexByCategory', ['category' => $request->kategori])->with('success', 'Data Berhasil Ditambahkan');
+    }
+
+    public function update(Request $request, $id)
+    {
+        $poinSiswa = PoinSiswa::find($id);
+        $poinSiswa->update($request->all());
+        return redirect()->route('poin_siswa.indexByCategory', ['category' => $poinSiswa->kategori])->with('success', 'Data Berhasil Diupdate');
+    }
+
+    public function destroy($id)
+    {
+        $poinSiswa = PoinSiswa::find($id);
+        $category = $poinSiswa->kategori;
+        $poinSiswa->delete();
+        return redirect()->route('poin_siswa.indexByCategory', ['category' => $category])->with('success', 'Data Berhasil Dihapus');
     }
 }

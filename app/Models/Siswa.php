@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Siswa extends Model
 {
+    use HasFactory;
+
     protected $table = 'siswa';
 
     protected $fillable = [
@@ -19,7 +22,7 @@ class Siswa extends Model
         'foto'
     ];
 
-    public function Jurusan():BelongsTo
+    public function jurusan():BelongsTo
     {
         return $this->belongsTo(Jurusan::class, 'jurusan_id');
     }
