@@ -33,7 +33,7 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function siswa()
+    public function Siswa()
     {
         return $this->hasOne(Siswa::class, 'siswa_id');
     }

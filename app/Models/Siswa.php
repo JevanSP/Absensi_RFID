@@ -22,22 +22,22 @@ class Siswa extends Model
         'foto'
     ];
 
-    public function jurusan():BelongsTo
+    public function Jurusan():BelongsTo
     {
         return $this->belongsTo(Jurusan::class, 'jurusan_id');
     }
 
-    public function user()
+    public function User()
     {
         return $this->hasOne(User::class, 'siswa_id');
     }
 
-    public function absensi()
+    public function Absensi()
     {
         return $this->hasMany(Absensi::class, 'siswa_id');
     }
 
-    public function poin()
+    public function PoinSiswa()
     {
         return $this->hasMany(PoinSiswa::class, 'siswa_id');
     }

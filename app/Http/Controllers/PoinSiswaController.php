@@ -8,29 +8,33 @@ use Illuminate\Http\Request;
 use App\Models\Siswa;
 use Illuminate\Support\Facades\Auth;
 
-
 class PoinSiswaController extends Controller
 {
-    public function indexByCategory($category)
+    public function indexBySiswaCategory($category)
     {
         $validCategories = ['pelanggaran', 'budaya_positif', 'prestasi'];
         if (!in_array($category, $validCategories)) {
             abort(404); 
         }
-        $poinSiswa = PoinSiswa::where('kategori', $category)->get();
-        $poinKategori = PoinKategori::where('kategori', $category)->first();
+        $poinSiswa = PoinSiswa::whereHas('poinKategori', function ($query) use ($category) {
+            $query->where('nama', $category);
+        })->get()
+            ->map(function ($poin) {
+                $poin->kategori_nama = PoinKategori::where('id', $poin->poin_kategori_id)->value('nama');
+                return $poin;
+            });
+        $poinKategori = PoinKategori::where('kategori', $category)->get();
         $siswa = Siswa::all();
         $title = "Poin " . ucfirst(str_replace('_', ' ', $category));
-        return view("poin.$category", compact('poinSiswa', 'title', 'poinKategori'));
+        return view("poin.$category", compact('poinSiswa', 'title', 'poinKategori', 'siswa'));
     }
-    /**
-     * Simpan poin siswa
-     */
+
     public function store(Request $request)
     {
         $request->validate([
             'siswa_id' => 'required|exists:siswa,id',
-            'poin_kategori_id' => 'required|exists:kategori_poin,id',
+            'poin_kategori_id' => 'required|exists:poin_kategori,id',
+            'poin' => 'required|integer',
             'keterangan' => 'nullable|string',
             'tanggal' => 'required|date',
         ]);
@@ -38,19 +42,35 @@ class PoinSiswaController extends Controller
         PoinSiswa::create([
             'siswa_id' => $request->siswa_id,
             'poin_kategori_id' => $request->poin_kategori_id,
-            'user_id' => Auth::id(), // Guru/Admin yang menambahkan
+            'poin' => $request->poin,
+            'user_id' => Auth::id(),
             'keterangan' => $request->keterangan,
             'tanggal' => $request->tanggal,
         ]);
 
-        return redirect()->route('poin_siswa.indexByCategory', ['category' => $request->kategori])->with('success', 'Data Berhasil Ditambahkan');
+        return redirect()->route('poin_siswa.indexBySiswaCategory', ['category' => $request->kategori])->with('success', 'Data Berhasil Ditambahkan');
     }
 
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'siswa_id' => 'required|exists:siswa,id',
+            'poin_kategori_id' => 'required|exists:poin_kategori,id',
+            'poin' => 'required|integer',
+            'keterangan' => 'nullable|string',
+            'tanggal' => 'required|date',
+        ]);
+
         $poinSiswa = PoinSiswa::find($id);
-        $poinSiswa->update($request->all());
-        return redirect()->route('poin_siswa.indexByCategory', ['category' => $poinSiswa->kategori])->with('success', 'Data Berhasil Diupdate');
+        $poinSiswa->update([
+            'siswa_id' => $request->siswa_id,
+            'poin_kategori_id' => $request->poin_kategori_id,
+            'poin' => $request->poin,
+            'keterangan' => $request->keterangan,
+            'tanggal' => $request->tanggal,
+        ]);
+
+        return redirect()->route('poin_siswa.indexBySiswaCategory', ['category' => $poinSiswa->kategori])->with('success', 'Data Berhasil Diupdate');
     }
 
     public function destroy($id)
@@ -58,6 +78,6 @@ class PoinSiswaController extends Controller
         $poinSiswa = PoinSiswa::find($id);
         $category = $poinSiswa->kategori;
         $poinSiswa->delete();
-        return redirect()->route('poin_siswa.indexByCategory', ['category' => $category])->with('success', 'Data Berhasil Dihapus');
+        return redirect()->route('poin_siswa.indexBySiswaCategory', ['category' => $category])->with('success', 'Data Berhasil Dihapus');
     }
 }

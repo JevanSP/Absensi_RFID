@@ -11,22 +11,22 @@ class PoinSiswa extends Model
     protected $fillable = [
         'siswa_id',
         'poin_kategori_id',
-        'guru_id',
+        'user_id',
         'keterangan',
         'tanggal',
     ];
 
-    public function siswa()
+    public function Siswa()
     {
         return $this->belongsTo(Siswa::class);
     }
 
-    public function kategoriPoin()
+    public function PoinKategori()
     {
         return $this->belongsTo(PoinKategori::class);
     }
 
-    public function guru()
+    public function User()
     {
         return $this->belongsTo(User::class, 'user_id');
     }

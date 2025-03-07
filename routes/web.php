@@ -47,12 +47,12 @@ Route::get('/pengaturan', [PengaturanAbsensiController::class, 'index'])->name('
 Route::post('/pengaturan', [PengaturanAbsensiController::class, 'store'])->name('pengaturan.store');
 Route::delete('/pengaturan/{pengaturanAbsensi}', [PengaturanAbsensiController::class, 'destroy'])->name('pengaturan.destroy');
 
-Route::get('poin_kategori/{category}', [PoinKategoriController::class, 'indexByCategory'])->name('poin_kategori.index');
+Route::get('poin_kategori/{category}', [PoinKategoriController::class, 'indexByCategory'])->name('poin_kategori.indexByCategory');
 Route::post('poin_kategori', [PoinKategoriController::class, 'store'])->name('poin_kategori.store');
 Route::put('poin_kategori/{category}', [PoinKategoriController::class, 'update'])->name('poin_kategori.update');
 Route::delete('poin_kategori/{category}', [PoinKategoriController::class, 'destroy'])->name('poin_kategori.destroy');
 
-Route::get('poin_siswa/{category}', [PoinSiswaController::class, 'indexByCategory'])->name('poin_siswa.index');
+Route::get('poin_siswa/{category}', [PoinSiswaController::class, 'indexBySiswaCategory'])->name('poin_siswa.index');
 Route::post('poin_siswa', [PoinSiswaController::class, 'store'])->name('poin_siswa.store');
 Route::put('poin_siswa/{category}', [PoinSiswaController::class, 'update'])->name('poin_siswa.update');
 Route::delete('poin_siswa/{category}', [PoinSiswaController::class, 'destroy'])->name('poin_siswa.destroy');

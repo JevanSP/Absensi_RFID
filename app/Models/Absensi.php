@@ -21,12 +21,12 @@ class Absensi extends Model
         'keterangan',
     ];
 
-    public function siswa()
+    public function Siswa()
     {
         return $this->belongsTo(Siswa::class);
     }
 
-    public function pengaturanAbsensi()
+    public function PengaturanAbsensi()
     {
         return $this->belongsTo(PengaturanAbsensi::class, 'pengaturan_absensi_id');
     }

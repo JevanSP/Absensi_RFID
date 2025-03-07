@@ -25,7 +25,7 @@
                 <th>Poin</th>
                 <th>Tanggal</th>
                 <th>Keterangan</th>
-                <th>Admin</th>
+                <th>Guru</th>
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -61,26 +61,37 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{ route('poin_kategori.store') }}">
+                    <form method="POST" action="{{ route('poin_siswa.store') }}">
                         @csrf
                         <input type="hidden" name="kategori" value="budaya_positif">
-                        <div cals="form-group">
+                        <div class="form-group">
                             <label>Nama Siswa</label>
-                            <select name="nama_siswa" class="form-select" required>
+                            <select name="siswa_id" class="form-select" required>
                                 <option value="">Pilih Nama Siswa</option>
                                 @foreach ($siswa as $s)
-                                    <option value="{{ $s->nama_siswa }}">{{ $s->nama_siswa }}</option>
+                                    <option value="{{ $s->id }}">{{ $s->nama_siswa }}</option>
                                 @endforeach
                             </select>
                         </div>
+                        <br>
                         <div class="form-group">
-                            <label>Nama {{ $title }}</label>
-                            <input type="text" class="form-control text-capitalize" name="nama" required>
+                            <label>Nama Budaya Positif</label>
+                            <select name="poin_kategori_id" class="form-select" id="poinKategoriSelect" required>
+                                <option value="">Pilih Nama Budaya Positif</option>
+                                @foreach ($poinKategori as $pk)
+                                    <option value="{{ $pk->id }}" data-poin="{{ $pk->poin }}">{{ $pk->nama }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <br>
                         <div class="form-group">
                             <label>Poin</label>
-                            <input type="number" class="form-control" name="poin" required>
+                            <input type="number" class="form-control" id="poinInput" name="poin" readonly required>
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <label>Keterangan</label>
+                            <input type="text" class="form-control" name="keterangan" required>
                         </div>
                         <br>
                         <div class="form-group">
@@ -97,7 +108,7 @@
         </div>
     </div>
 
-    @foreach ($poinKategori as $p)
+    @foreach ($poinSiswa as $p)
         <div class="modal fade" id="modaledit{{ $p->id }}" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -105,21 +116,34 @@
                         <h1 class="modal-title fs-5">Edit Poin Kategori</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
-                    <form method="POST" action="{{ route('poin_kategori.update', $p->id) }}">
+                    <form method="POST" action="{{ route('poin_siswa.update', $p->id) }}">
                         @csrf
                         @method('PUT')
                         <input type="hidden" name="kategori" value="budaya_positif">
                         <div class="modal-body">
                             <div class="form-group">
-                                <label>Nama {{ $title }}</label>
-                                <input type="text" value="{{ $p->nama }}" class="form-control" name="nama"
-                                    required>
+                                <label>Nama Siswa</label>
+                                <select name="siswa_id" class="form-select" required>
+                                    <option value="{{ $p->siswa_id }}">{{ $p->siswa->nama_siswa }}</option>
+                                    @foreach ($siswa as $s)
+                                        <option value="{{ $s->id }}">{{ $s->nama_siswa }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label>Nama Budaya Positif</label>
+                                <select name="poin_kategori_id" class="form-select" id="poinKategoriSelect" required>
+                                    <option value="{{ $p->poin_kategori_id }}">{{ $p->poinKategori->nama }}</option>
+                                    @foreach ($poinKategori as $pk)
+                                        <option value="{{ $pk->id }}" data-poin="{{ $pk->poin }}">{{ $pk->nama }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <br>
                             <div class="form-group">
                                 <label>Poin</label>
-                                <input type="number" value="{{ $p->poin }}" class="form-control" name="poin"
-                                    required>
+                                <input type="number" value="{{ $p->poin }}" class="form-control" id="poinInput" name="poin" readonly required>
                             </div>
                             <br>
                             <div class="form-group">
@@ -145,7 +169,7 @@
                         <h1 class="modal-title fs-5">Hapus Poin Kategori</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
-                    <form method="POST" action="{{ route('poin_kategori.destroy', $p->id) }}">
+                    <form method="POST" action="{{ route('poin_siswa.destroy', $p->id) }}">
                         @csrf
                         @method('DELETE')
                         <div class="modal-body">
@@ -159,4 +183,12 @@
             </div>
         </div>
     @endforeach
+
+    <script>
+        document.getElementById('poinKategoriSelect').addEventListener('change', function() {
+            var selectedOption = this.options[this.selectedIndex];
+            var poin = selectedOption.getAttribute('data-poin');
+            document.getElementById('poinInput').value = poin;
+        });
+    </script>
 @endsection
