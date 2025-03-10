@@ -38,7 +38,7 @@
                     <td class="text-center">{{ $row->rfid_tag }}</td>
                     <td class="text-center">
                         @if ($row->foto)
-                            <img src="{{ asset('/public/siswa/' . $row->foto) }}" alt="Foto Siswa" width="50" style="border: 2px solid #ddd; padding: 5px; border-radius: 5px;">
+                            <img src="{{ asset('storage/siswa/' . $row->foto) }}" alt="Foto Siswa" width="50" style="border: 2px solid #ddd; padding: 5px; border-radius: 5px;">
                         @else
                             Tidak ada foto
                         @endif

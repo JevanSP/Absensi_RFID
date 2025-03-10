@@ -108,7 +108,7 @@
                 @enderror
                 <br>
                 @if ($data_siswa->foto)  
-                    <img src="{{ asset('/public/siswa/' . $data_siswa->foto) }}" alt="Foto Siswa" width="100" class="mt-2" id="preview" style="border: 2px solid #ddd; padding: 5px; border-radius: 5px;">
+                    <img src="{{ asset('storage/siswa/' . $data_siswa->foto) }}" alt="Foto Siswa" width="100" class="mt-2" id="preview" style="border: 2px solid #ddd; padding: 5px; border-radius: 5px;">
                 @endif
             </div>
             <br>

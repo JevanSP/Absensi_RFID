@@ -11,7 +11,7 @@
         </nav>
     </div>
 
-    <button type="button" class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#modalcreate">+ TAMBAH DATA</button>
+    <button type="button" class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#modalSelectStudent" id="addDataButton">+ TAMBAH DATA</button>
 
     <table class="table datatable table-success table-striped-columns border-success">
         <thead>
@@ -50,29 +50,49 @@
         </tbody>
     </table>
 
-    <div class="modal fade" id="modalcreate" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
+    <div class="modal fade" id="modalSelectStudent" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5">Tambah Data Poin Kategori</h1>
+                    <h1 class="modal-title fs-5">Pilih Nama Siswa</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" id="selectStudentBody">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>NIS</th>
+                                <th>Nama Siswa</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($siswa as $index => $s)
+                                <tr>
+                                    <td>{{ $index + 1 }}</td>
+                                    <td>{{ $s->nis }}</td>
+                                    <td>{{ $s->nama_siswa }}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary select-student" data-id="{{ $s->id }}" data-name="{{ $s->nama_siswa }}">Pilih</button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-body d-none" id="inputFormBody">
                     <form method="POST" action="{{ route('poin_siswa.store') }}">
                         @csrf
                         <input type="hidden" name="kategori" value="pelanggaran">
+                        <input type="hidden" id="selectedStudentId" name="siswa_id">
                         <div class="form-group">
                             <label>Nama Siswa</label>
-                            <select name="siswa_id" class="form-select" required>
-                                <option value="">Pilih Nama Siswa</option>
-                                @foreach ($siswa as $s)
-                                    <option value="{{ $s->id }}">{{ $s->nama_siswa }}</option>
-                                @endforeach
-                            </select>
+                            <input type="text" id="selectedStudentName" class="form-control" readonly>
                         </div>
                         <br>
                         <div class="form-group">
-                            <label>Nama {{ $title }}</label>
+                            <label>Nama Pelanggaran</label>
                             <select name="poin_kategori_id" class="form-select" id="poinKategoriSelect" required>
                                 <option value="">Pilih Nama Pelanggaran</option>
                                 @foreach ($poinKategori as $pk)
@@ -88,7 +108,7 @@
                         <br>
                         <div class="form-group">
                             <label>Keterangan</label>
-                            <input type="date" class="form-control" name="keterangan" required>
+                            <input type="text" class="form-control" name="keterangan" required>
                         </div>
                         <br>
                         <div class="form-group">
@@ -185,6 +205,22 @@
             var selectedOption = this.options[this.selectedIndex];
             var poin = selectedOption.getAttribute('data-poin');
             document.getElementById('poinInput').value = poin;
+        });
+
+        document.querySelectorAll('.select-student').forEach(button => {
+            button.addEventListener('click', function() {
+                var studentId = this.getAttribute('data-id');
+                var studentName = this.getAttribute('data-name');
+                document.getElementById('selectedStudentId').value = studentId;
+                document.getElementById('selectedStudentName').value = studentName;
+                document.getElementById('selectStudentBody').classList.add('d-none');
+                document.getElementById('inputFormBody').classList.remove('d-none');
+            });
+        });
+
+        document.getElementById('addDataButton').addEventListener('click', function() {
+            document.getElementById('selectStudentBody').classList.remove('d-none');
+            document.getElementById('inputFormBody').classList.add('d-none');
         });
     </script>
 @endsection

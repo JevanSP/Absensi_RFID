@@ -123,7 +123,7 @@ class SiswaController extends Controller
     {
         $siswa = Siswa::findOrFail($id);
 
-        Storage::delete('/public/siswa/' . $siswa->foto);
+        Storage::delete('public/siswa/' . $siswa->foto);
         $siswa->delete();
         return redirect('/data_siswa')->with('success', 'Data Berhasil Dihapus!');
     }
