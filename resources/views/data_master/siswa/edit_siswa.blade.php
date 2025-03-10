@@ -76,10 +76,26 @@
 
             <div class="mb-3">
                 <label for="rfid_tag" class="form-label">RFID</label>
-                <input type="number" class="form-control @error('rfid_tag') is-invalid @enderror" id="rfid_tag" name="rfid_tag" value="{{ old('rfid_tag', $data_siswa->rfid_tag) }}" required>
+                <input type="number" class="form-control @error('rfid_tag') is-invalid @enderror" id="rfid_tag" name="rfid_tag" value="{{ old('rfid_tag', $data_siswa->rfid_tag) }}" required readonly data-bs-toggle="modal" data-bs-target="#rfidModal">
                 @error('rfid_tag')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
+            </div>
+
+            <!-- RFID Modal -->
+            <div class="modal fade" id="rfidModal" tabindex="-1" aria-labelledby="rfidModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Scan RFID</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>  
+                        <div class="modal-body">
+                            <p>Tempelkan kartu RFID Anda pada pembaca.</p>
+                            <input type="number" class="form-control" placeholder="Scanning...." >
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="mb-3">

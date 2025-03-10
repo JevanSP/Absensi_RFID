@@ -84,19 +84,19 @@
         <li class="nav-heading">POIN</li>
 
         <li class="nav-item">
-            <a href="{{ route('poin_siswa.index', 'budaya_positif') }}" class="nav-link {{ request()->route('category') == 'budaya_positif' ? 'active' : 'collapsed' }}">
+            <a href="{{ route('poin_siswa.index', 'budaya_positif') }}" class="nav-link {{ request()->route('kategori') == 'budaya_positif' ? 'active' : 'collapsed' }}">
                 <i class="bi bi-person-plus"></i><span>Budaya Positif</span>
             </a>
         </li>
         
         <li class="nav-item">
-            <a href="{{ route('poin_siswa.index', 'prestasi') }}" class="nav-link {{ request()->route('category') == 'prestasi' ? 'active' : 'collapsed' }}">
+            <a href="{{ route('poin_siswa.index', 'prestasi') }}" class="nav-link {{ request()->route('kategori') == 'prestasi' ? 'active' : 'collapsed' }}">
                 <i class="bi bi-person-plus-fill"></i><span>Prestasi</span>
             </a>
         </li>
         
         <li class="nav-item">
-            <a href="{{ route('poin_siswa.index', 'pelanggaran') }}" class="nav-link {{ request()->route('category') == 'pelanggaran' ? 'active' : 'collapsed' }}">
+            <a href="{{ route('poin_siswa.index', 'pelanggaran') }}" class="nav-link {{ request()->route('kategori') == 'pelanggaran' ? 'active' : 'collapsed' }}">
                 <i class="bi bi-person-dash-fill"></i><span>Pelanggaran</span>
             </a>
         </li>

@@ -10,23 +10,23 @@ use Illuminate\Support\Facades\Auth;
 
 class PoinSiswaController extends Controller
 {
-    public function indexBySiswaCategory($category)
+    public function indexBySiswaCategory($kategori)
     {
         $validCategories = ['pelanggaran', 'budaya_positif', 'prestasi'];
-        if (!in_array($category, $validCategories)) {
+        if (!in_array($kategori, $validCategories)) {
             abort(404); 
         }
-        $poinSiswa = PoinSiswa::whereHas('poinKategori', function ($query) use ($category) {
-            $query->where('nama', $category);
+        $poinSiswa = PoinSiswa::whereHas('poinKategori', function ($query) use ($kategori) {
+            $query->where('nama', $kategori);
         })->get()
             ->map(function ($poin) {
                 $poin->kategori_nama = PoinKategori::where('id', $poin->poin_kategori_id)->value('nama');
                 return $poin;
             });
-        $poinKategori = PoinKategori::where('kategori', $category)->get();
+        $poinKategori = PoinKategori::where('kategori', $kategori)->get();
         $siswa = Siswa::all();
-        $title = "Poin " . ucfirst(str_replace('_', ' ', $category));
-        return view("poin.$category", compact('poinSiswa', 'title', 'poinKategori', 'siswa'));
+        $title = "Poin " . ucfirst(str_replace('_', ' ', $kategori));
+        return view("poin.$kategori", compact('poinSiswa', 'title', 'poinKategori', 'siswa'));
     }
 
     public function store(Request $request)
