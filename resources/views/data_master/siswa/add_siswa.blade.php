@@ -49,27 +49,14 @@
             </div>
 
             <div class="mb-3">
-                <label for="kelas" class="form-label">Kelas</label>
-                <select class="form-control @error('kelas') is-invalid @enderror" id="kelas" name="kelas" required>
-                    <option value="">-- Pilih Kelas --</option>
-                    <option value="X" {{ old('kelas') == 'X' ? 'selected' : '' }}>X</option>
-                    <option value="XI" {{ old('kelas') == 'XI' ? 'selected' : '' }}>XI</option>
-                    <option value="XII" {{ old('kelas') == 'XII' ? 'selected' : '' }}>XII</option>
-                </select>
-                @error('kelas')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <div class="mb-3">
-                <label for="jurusan_id" class="form-label">Jurusan</label>
-                <select class="form-control @error('jurusan_id') is-invalid @enderror" id="jurusan_id" name="jurusan_id" required>
-                    <option value="">-- Pilih Jurusan --</option>
-                    @foreach ($data_jurusan as $jurusan)
-                        <option value="{{ $jurusan->id }}" {{ old('jurusan_id') == $jurusan->id ? 'selected' : '' }}>{{ $jurusan->singkatan }}</option>
+                <label for="kelas_id" class="form-label">Kelas</label>
+                <select class="form-control @error('kelas_id') is-invalid @enderror" id="kelas_id" name="kelas_id" required>
+                    <option value="">-- Pilih kelas --</option>
+                    @foreach ($data_kelas as $kelas)
+                        <option value="{{ $kelas->id }}" {{ old('kelas_id') == $kelas->id ? 'selected' : '' }}>{{ $kelas->nama }}</option>
                     @endforeach
                 </select>
-                @error('jurusan_id')
+                @error('kelas_id')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>

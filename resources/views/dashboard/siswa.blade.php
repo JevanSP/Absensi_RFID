@@ -1,4 +1,4 @@
-@extends('layout.siswa')
+{{-- @extends('layout.siswa')
 @section('content')
 <div class="container-fluid px-4">
     <div class="row ">
@@ -29,4 +29,8 @@
     </div>
 </div>
 
+@endsection --}}
+
+@extends('layout.siswa')
+<p>INI HALAMAN LIST Siswa</p>
 @endsection

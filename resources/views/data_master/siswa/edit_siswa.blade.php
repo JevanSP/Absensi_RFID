@@ -61,15 +61,15 @@
             </div>
 
             <div class="mb-3">
-                <label for="jurusan_id" class="form-label">Jurusan</label>
-                <select class="form-control @error('jurusan_id') is-invalid @enderror" id="jurusan_id" name="jurusan_id" required>
-                    @foreach ($data_jurusan as $jurusan)
-                        <option value="{{ $jurusan->id }}" {{ old('jurusan_id', $data_siswa->jurusan_id) == $jurusan->id ? 'selected' : '' }}>   
-                            {{ $jurusan->singkatan }}
+                <label for="kelas_id" class="form-label">Kelas</label>
+                <select class="form-control @error('kelas_id') is-invalid @enderror" id="kelas_id" name="kelas_id" required>
+                    @foreach ($data_kelas as $kelas)
+                        <option value="{{ $kelas->id }}" {{ old('kelas_id', $data_siswa->kelas_id) == $kelas->id ? 'selected' : '' }}>   
+                            {{ $kelas->singkatan }}
                         </option>
                     @endforeach
                 </select>
-                @error('jurusan_id')
+                @error('kelas_id')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>

@@ -1,18 +1,22 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\kelas;
-use Illuminate\Http\Request;
 
-class SekolahController extends Controller
+use Illuminate\Http\Request;
+use App\Models\Kelas;
+
+class KelasController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()     
+    public function index()
     {
-        $kelas = Kelas::all();
-        return view('sekolah.list ', compact('kelas'));
+        $data = array(
+            'title' => 'Kelas',
+            'data_kelas'   => Kelas::all(),
+        );
+        return view('data_master.kelas', $data);
     }
 
     /**
@@ -28,7 +32,12 @@ class SekolahController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Kelas::create([
+            'tingkatan' => $request->tingkatan,
+            'nama' => $request->nama,
+        ]);
+
+        return redirect('/data_kelas');
     }
 
     /**
@@ -36,7 +45,7 @@ class SekolahController extends Controller
      */
     public function show(string $id)
     {
-        
+        //
     }
 
     /**
@@ -52,7 +61,12 @@ class SekolahController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        Kelas::where('id', $id)->update([
+            'tingkatan' => $request->tingkatan,
+            'nama' => $request->nama,
+        ]);
+
+        return redirect('/data_kelas');
     }
 
     /**
@@ -60,6 +74,9 @@ class SekolahController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $data = Kelas::find($id);
+        $data->delete([
+        ]);
+        return redirect('/data_kelas');
     }
 }

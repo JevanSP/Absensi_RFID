@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Absensi;
 use Illuminate\Http\Request;
 use App\Models\Siswa;
-use App\Models\Jurusan;
+use App\Models\Kelas;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 
@@ -26,8 +26,8 @@ class SiswaController extends Controller
     public function create()
     {
         $title = 'Tambah Siswa';
-        $data_jurusan = Jurusan::all();
-        return view('data_master.siswa.add_siswa', compact('data_jurusan', 'title'));
+        $data_kelas = Kelas::all();
+        return view('data_master.siswa.add_siswa', compact('data_kelas', 'title'));
     }
 
     /**
@@ -43,8 +43,7 @@ class SiswaController extends Controller
             'nis'            => $request->nis,
             'nama_siswa'     => $request->nama_siswa,
             'jenis_kelamin'  => $request->jenis_kelamin,
-            'kelas'          => $request->kelas,
-            'jurusan_id'     => $request->jurusan_id,
+            'kelas_id'          => $request->kelas_id,
             'rfid_tag'       => $request->rfid_tag,
             'foto'           => $image->hashName(),
         ]);
@@ -67,8 +66,8 @@ class SiswaController extends Controller
     {
         $title = 'Update - Siswa';
         $data_siswa = Siswa::with('jurusan')->find($id);
-        $data_jurusan = Jurusan::all();
-        return view('data_master.siswa.edit_siswa', compact('data_siswa', 'data_jurusan', 'title'));
+        $data_kelas = Kelas::all();
+        return view('data_master.siswa.edit_siswa', compact('data_siswa', 'data_kelas', 'title'));
     }
 
     /**
@@ -95,8 +94,7 @@ class SiswaController extends Controller
                 'nis'            => $request->nis,
                 'nama_siswa'     => $request->nama_siswa,
                 'jenis_kelamin'  => $request->jenis_kelamin,
-                'kelas'          => $request->kelas,
-                'jurusan_id'     => $request->jurusan_id,
+                'kelas_id'          => $request->kelas_id,
                 'rfid_tag'       => $request->rfid_tag,
                 'foto'           => $image->hashName(),
             ]);
@@ -107,8 +105,7 @@ class SiswaController extends Controller
                 'nis'            => $request->nis,
                 'nama_siswa'     => $request->nama_siswa,
                 'jenis_kelamin'  => $request->jenis_kelamin,
-                'kelas'          => $request->kelas,
-                'jurusan_id'     => $request->jurusan_id,
+                'kelas_id'          => $request->kelas_id,
                 'rfid_tag'       => $request->rfid_tag,
             ]);
         }

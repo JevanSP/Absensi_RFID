@@ -16,15 +16,14 @@ class Siswa extends Model
         'nis',
         'nama_siswa',
         'jenis_kelamin',
-        'kelas',
-        'jurusan_id',
+        'kelas_id',
         'rfid_tag',
         'foto'
     ];
 
-    public function Jurusan():BelongsTo
+    public function Kelas():BelongsTo
     {
-        return $this->belongsTo(Jurusan::class, 'jurusan_id');
+        return $this->belongsTo(Kelas::class, 'kelas_id');
     }
 
     public function User()

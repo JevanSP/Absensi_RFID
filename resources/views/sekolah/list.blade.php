@@ -44,9 +44,9 @@
                     <div class="card-header">Progam Keahlian Sekolah</div>
                     <br>
                     <div class="card-body">
-                        @foreach ($jurusan as $row)
+                        @foreach ($kelas as $row)
                             <table class="table table-sm">
-                                <td class="text-capitalize">{{ $row->jurusan }}</td>
+                                <td class="text-capitalize">{{ $row->kelas->nama }}</td>
                             </table>
                         @endforeach
                     </div>

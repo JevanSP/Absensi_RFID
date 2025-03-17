@@ -1,4 +1,4 @@
-@extends('layout.layout')
+{{-- @extends('layout.layout')
 @section('content')
 <div id="layoutSidenav_content">
     <div class="container-fluid px-4">
@@ -122,7 +122,7 @@
                                         </a>
                                         {{-- Uncomment the below button if delete action is needed --}}
                                         {{-- <button type="button" data-bs-target="#modaldelete{{ $row->id }}" data-bs-toggle="modal" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</button> --}}
-                                    </td>
+                                    {{-- </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -133,4 +133,9 @@
         </div>
     </main>
 </div>
-@endsection
+@endsection --}} --}}
+
+@extends('layout.layout')
+<p>INI HALAMAN LIST</p>
+@section('content')
+@endsection 

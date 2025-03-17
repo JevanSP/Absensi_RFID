@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Absensi;
 use App\Models\Siswa;
 use App\Models\PengaturanAbsensi;
-use App\Models\Jurusan;
+use App\Models\Kelas;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -100,8 +100,8 @@ class AbsensiController extends Controller
             $query->whereHas('siswa', fn($q) => $q->where('kelas', $request->kelas));
         }
 
-        if ($request->filled('jurusan')) {
-            $query->whereHas('siswa', fn($q) => $q->where('jurusan_id', $request->jurusan));
+        if ($request->filled('kelas')) {
+            $query->whereHas('siswa', fn($q) => $q->where('kelas_id', $request->kelas));
         }
 
         if ($request->filled('tanggal')) {
@@ -109,15 +109,15 @@ class AbsensiController extends Controller
         }
 
         $absensi = $query->latest()->get();
-        $jurusan = Jurusan::all();
+        $kelas = Kelas::all();
 
-        return view('absen.list', compact('absensi', 'jurusan'));
+        return view('absen.list', compact('absensi', 'kelas'));
     }
 
     public function index()
     {
         $absensi = Absensi::with('siswa')->get();
-        $jurusan = Jurusan::all();
-        return view('absen.list', compact('absensi', 'jurusan'));
+        $kelas = Kelas::all();
+        return view('absen.list', compact('absensi', 'kelas'));
     }
 }

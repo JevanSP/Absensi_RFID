@@ -28,10 +28,10 @@
             </div>
 
             <div class="col-md-3">
-                <label>Jurusan</label>
-                <select name="jurusan" class="form-control">
-                    <option value="">Semua Jurusan</option>
-                    @foreach ($jurusan as $j)
+                <label>kelas</label>
+                <select name="kelas" class="form-control">
+                    <option value="">Semua kelas</option>
+                    @foreach ($kelas as $j)
                         <option value="{{ $j->id }}">{{ $j->nama }}</option>
                     @endforeach
                 </select>
@@ -70,7 +70,7 @@
                     <tr>
                         <td>{{ $absen->siswa->nis }}</td>
                         <td>{{ $absen->siswa->nama_siswa }}</td>
-                        <td>{{ $absen->siswa->jurusan->singkatan }} {{ $absen->siswa->kelas }}</td>
+                        <td>{{ $absen->siswa->kelas->nama }}</td>
                         <td>{{ $absen->tanggal }}</td>
                         <td>{{ $absen->jam_masuk }}</td>
                         <td>{{ $absen->jam_pulang ?? '-' }}</td>

@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\PelanggaranController;
 use App\Http\Controllers\PretasiController;
@@ -8,22 +7,42 @@ use App\Http\Controllers\BudayaPositifController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SekolahController;
 use App\Http\Controllers\AbsensiController;
+use App\Http\Controllers\KelasController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PengaturanAbsensiController;
 use App\Http\Controllers\PoinSiswaController;
 use App\Http\Controllers\PoinKategoriController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-
 Route::get('/', function () {
     return view('layout.layout');
 });
+// Route::get('/login', function () {
+//     return view('auth.login');
+// });
 
-route::get('/data_jurusan', [JurusanController::class, 'index']);
-route::get('/data_jurusan/create', [JurusanController::class, 'create']);
-route::post('/data_jurusan/store', [JurusanController::class, 'store']);
-route::post('/data_jurusan/update/{id}', [JurusanController::class, 'update']);
-route::get('/data_jurusan/destroy/{id}', [JurusanController::class, 'destroy']);
+// Route::middleware(['khusus_admin'])->group(function () {
+//     Route::get('/admin', function () {
+//         return view('dashboard.list');
+//     })->name('dashboard.list');
+// });
+
+
+// Route::middleware(['khusus_siswa'])->group(function () {
+//     Route::get('/siswa', function () {
+//         return view('dashboard.siswa');
+//     })->name('dashboard.siswa');
+// });
+
+
+
+// route::post('/login', [LoginController::class, 'store'])->name('login.post');
+route::get('/data_kelas', [KelasController::class, 'index']);
+route::get('/data_kelas/create', [KelasController::class, 'create']);
+route::post('/data_kelas/store', [KelasController::class, 'store']);
+route::post('/data_kelas/update/{id}', [KelasController::class, 'update']);
+route::get('/data_kelas/destroy/{id}', [KelasController::class, 'destroy']);
 
 route::get('/data_siswa', [SiswaController::class, 'index'])->name('siswa.data_siswa');
 route::get('/add_siswa', [SiswaController::class, 'create'])->name('siswa.add_siswa');

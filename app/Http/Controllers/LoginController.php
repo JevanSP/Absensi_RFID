@@ -2,21 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
-use App\Models\Jurusan;
 
-class JurusanController extends Controller
+class LoginController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $data = array(
-            'title' => 'Jurusan',
-            'data_jurusan'   => Jurusan::all(),
-        );
-        return view('data_master.jurusan', $data);
+
     }
 
     /**
@@ -32,12 +28,16 @@ class JurusanController extends Controller
      */
     public function store(Request $request)
     {
-        Jurusan::create([
-            'jurusan' => $request->jurusan,
-            'singkatan' => $request->singkatan,
-        ]);
-
-        return redirect('/data_jurusan');
+        $user = User::where('username', $request->username)->where('password', $request->password)->first();
+            if ($user) {
+                if ($user->role == 'siswa') {
+                    return redirect()->route('dashboard.siswa');
+                } else {
+                    return redirect()->route('dashboard.list');
+                }
+            } else {
+                return redirect()->back()->withErrors(['login' => 'Invalid username or password.']);
+            }
     }
 
     /**
@@ -61,12 +61,7 @@ class JurusanController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        Jurusan::where('id', $id)->update([
-            'jurusan' => $request->jurusan,
-            'singkatan' => $request->singkatan,
-        ]);
-
-        return redirect('/data_jurusan');
+        //
     }
 
     /**
@@ -74,9 +69,6 @@ class JurusanController extends Controller
      */
     public function destroy(string $id)
     {
-        $data = Jurusan::find($id);
-        $data->delete([
-        ]);
-        return redirect('/data_jurusan');
+        //
     }
 }

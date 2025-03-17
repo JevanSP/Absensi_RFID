@@ -6,7 +6,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="home">Beranda</a></li>
                 <li class="breadcrumb-item">Data Master</li>
-                <li class="breadcrumb-item active">Data Jurusan</li>
+                <li class="breadcrumb-item active">Data Kelas</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -16,8 +16,8 @@
         <thead>
             <tr>
                 <th class="text-center">No</th>
-                <th class="text-center">Nama Jurusan</th>
-                <th class="text-center">Singkatan</th>
+                <th class="text-center">Tingkatan</th>
+                <th class="text-center">Nama Kelas</th>
                 <th class="text-center">Aksi</th>
             </tr>
         </thead>
@@ -25,11 +25,11 @@
             @php
                 $no = 1;
             @endphp
-            @foreach ($data_jurusan as $row)
+            @foreach ($data_kelas as $row)
                 <tr>
                     <td class="text-center">{{ $no++ }}</td>
-                    <td class="text-capitalize">{{ $row->jurusan }}</td>
-                    <td class="text-center text-capitalize">{{ $row->singkatan }}</td>
+                    <td class="text-capitalize text-center">{{ $row->tingkatan }}</td>
+                    <td class="text-center text-capitalize">{{ $row->nama }}</td>
                     <td class="text-center">
                         <button type="button" data-bs-target="#modaledit{{ $row->id }}" data-bs-toggle="modal"
                             class="btn btn-primary"><i class="bi bi-pencil"></i> Edit</button>
@@ -49,16 +49,21 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="/data_jurusan/store/">
+                    <form method="POST" action="/data_kelas/store/">
                         @csrf
                         <div class="form-group">
-                            <label>Nama {{ $title }}</label>
-                            <input type="text" class="form-control text-capitalize" name="jurusan"required>
+                            <label>Tingkatan {{ $title }}</label>
+                            <select class="form-control" name="tingkatan" required>
+                                <option value="" disabled selected>Pilih Tingkatan</option>
+                                @foreach (['X', 'XI', 'XII'] as $tingkatan)
+                                    <option value="{{ $tingkatan }}">{{ $tingkatan }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <br>
                         <div class="form-group">
-                            <label>Singkatan</label>
-                            <input type="text" class="form-control text-capitalize" name="singkatan"required>
+                            <label>Nama {{ $title }}</label>
+                            <input type="text" class="form-control text-capitalize" name="nama"required>
                         </div>
                         <br>
                 </div>
@@ -70,7 +75,7 @@
         </div>
     </div>
 
-    @foreach ($data_jurusan as $d)
+    @foreach ($data_kelas as $d)
         <div class="modal fade" id="modaledit{{ $d->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog">
@@ -79,19 +84,23 @@
                         <h1 class="modal-title fs-5">Edit {{ $title }}</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form method="POST" action="/data_jurusan/update/{{ $d->id }}">
+                    <form method="POST" action="/data_kelas/update/{{ $d->id }}">
                         @csrf
                         <div class="modal-body">
                             <div class="form-group">
-                                <label>Nama {{ $title }}</label>
-                                <input type="text" value="{{ $d->jurusan }}" class="form-control text-capitalize"
-                                    name="jurusan"required>
+                                <label>Tingkatan {{ $title }}</label>
+                                <select class="form-control" name="tingkatan" required>
+                                    <option value="{{ $d->tingkatan }}" selected>{{ $d->tingkatan }}</option>
+                                    @foreach (['X', 'XI', 'XII'] as $tingkatan)
+                                        <option value="{{ $tingkatan }}">{{ $tingkatan }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <br>
                             <div class="form-group">
-                                <label>Singkatan</label>
-                                <input type="text" value="{{ $d->singkatan }}" class="form-control"
-                                    name="singkatan"required>
+                                <label>Nama {{ $title }}</label>
+                                <input type="text" value="{{ $d->nama }}" class="form-control"
+                                    name="nama"required>
                             </div>
                             <br>
                         </div>
@@ -104,7 +113,7 @@
         </div>
     @endforeach
 
-    @foreach ($data_jurusan as $c)
+    @foreach ($data_kelas as $c)
         <div class="modal fade" id="modaldelete{{ $c->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog">
@@ -113,7 +122,7 @@
                         <h1 class="modal-title fs-5">Hapus {{ $title }}</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form method="GET" action="/data_jurusan/destroy/{{ $c->id }}">
+                    <form method="GET" action="/data_kelas/destroy/{{ $c->id }}">
                         @csrf
                         <div class="modal-body">
                             <div class="form-group">

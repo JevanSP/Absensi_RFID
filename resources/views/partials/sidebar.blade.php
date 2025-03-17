@@ -17,13 +17,13 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link {{ request()->is('data_jurusan', 'data_siswa', 'poin_kategori/*') ? 'active' : 'collapsed' }}" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+            <a class="nav-link {{ request()->is('data_kelas', 'data_siswa', 'poin_kategori/*') ? 'active' : 'collapsed' }}" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-menu-button-wide"></i><span>Data Master</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="components-nav" class="nav-content collapse {{ request()->is('data_jurusan', 'data_siswa', 'poin_kategori/*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
+            <ul id="components-nav" class="nav-content collapse {{ request()->is('data_kelas', 'data_siswa', 'poin_kategori/*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="/data_jurusan" class="{{ request()->is('data_jurusan') ? 'active' : '' }}">
-                        <i class="bi bi-circle"></i><span>Data Jurusan</span>
+                    <a href="/data_kelas" class="{{ request()->is('data_kelas') ? 'active' : '' }}">
+                        <i class="bi bi-circle"></i><span>Data Kelas</span>
                     </a>
                 </li>
                 <li>

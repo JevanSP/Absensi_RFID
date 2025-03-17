@@ -34,8 +34,8 @@
                     <td class="text-center">{{ $row->nis }}</td>
                     <td class="text-capitalize">{{ $row->nama_siswa }}</td>
                     <td class="text-center text-capitalize">{{ $row->jenis_kelamin }}</td>
-                    <td class="text-center">{{ $row->kelas }} {{ $row->jurusan->singkatan }}</td>
-                    <td class="text-center">{{ $row->rfid_tag }}</td>
+                    <td class="text-center">{{ $row->kelas->nama }}</td>
+                    <td class="text-center">{{ $row->rfid_tag }}</td>   
                     <td class="text-center">
                         @if ($row->foto)
                             <img src="{{ asset('storage/siswa/' . $row->foto) }}" alt="Foto Siswa" width="50" style="border: 2px solid #ddd; padding: 5px; border-radius: 5px;">
