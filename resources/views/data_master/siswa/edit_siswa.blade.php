@@ -49,23 +49,11 @@
             </div>
 
             <div class="mb-3">
-                <label for="kelas" class="form-label">Kelas</label>
-                <select class="form-control @error('kelas') is-invalid @enderror" id="kelas" name="kelas" required>
-                    <option value="X" {{ old('kelas', $data_siswa->kelas) == 'X' ? 'selected' : '' }}>X</option>
-                    <option value="XI" {{ old('kelas', $data_siswa->kelas) == 'XI' ? 'selected' : '' }}>XI</option>
-                    <option value="XII" {{ old('kelas', $data_siswa->kelas) == 'XII' ? 'selected' : '' }}>XII</option>
-                </select>
-                @error('kelas')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <div class="mb-3">
                 <label for="kelas_id" class="form-label">Kelas</label>
                 <select class="form-control @error('kelas_id') is-invalid @enderror" id="kelas_id" name="kelas_id" required>
                     @foreach ($data_kelas as $kelas)
                         <option value="{{ $kelas->id }}" {{ old('kelas_id', $data_siswa->kelas_id) == $kelas->id ? 'selected' : '' }}>   
-                            {{ $kelas->singkatan }}
+                            {{ $kelas->nama }}
                         </option>
                     @endforeach
                 </select>
@@ -108,7 +96,7 @@
                 @enderror
                 <br>
                 @if ($data_siswa->foto)  
-                    <img src="{{ asset('storage/siswa/' . $data_siswa->foto) }}" alt="Foto Siswa" width="100" class="mt-2" id="preview" style="border: 2px solid #ddd; padding: 5px; border-radius: 5px;">
+                    <img src="{{ asset('storage/' . $data_siswa->foto) }}" alt="Foto Siswa" width="100" class="mt-2" id="preview" style="border: 2px solid #ddd; padding: 5px; border-radius: 5px;">
                 @endif
             </div>
             <br>

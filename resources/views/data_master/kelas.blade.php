@@ -86,6 +86,7 @@
                     </div>
                     <form method="POST" action="/data_kelas/update/{{ $d->id }}">
                         @csrf
+                        @method('PUT')
                         <div class="modal-body">
                             <div class="form-group">
                                 <label>Tingkatan {{ $title }}</label>

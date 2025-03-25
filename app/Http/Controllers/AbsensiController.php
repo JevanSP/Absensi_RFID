@@ -94,11 +94,7 @@ class AbsensiController extends Controller
 
     public function filter(Request $request)
     {
-        $query = Absensi::with('siswa');
-
-        if ($request->filled('kelas')) {
-            $query->whereHas('siswa', fn($q) => $q->where('kelas', $request->kelas));
-        }
+        $query = Absensi::with('siswa.kelas');
 
         if ($request->filled('kelas')) {
             $query->whereHas('siswa', fn($q) => $q->where('kelas_id', $request->kelas));
@@ -116,8 +112,31 @@ class AbsensiController extends Controller
 
     public function index()
     {
-        $absensi = Absensi::with('siswa')->get();
+        $absensi = Siswa::with(['kelas', 'absensi' => function ($query) {
+            $query->latest();
+        }])->get();
+
         $kelas = Kelas::all();
         return view('absen.list', compact('absensi', 'kelas'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'jam_masuk' => 'nullable|date_format:H:i',
+            'jam_pulang' => 'nullable|date_format:H:i',
+            'status' => 'required|in:hadir,izin,sakit,alpa',
+            'keterangan' => 'nullable|string',
+        ]);
+
+        $absensi = Absensi::findOrFail($id);
+        $absensi->update([
+            'jam_masuk' => $request->jam_masuk,
+            'jam_pulang' => $request->jam_pulang,
+            'status' => $request->status,
+            'keterangan' => $request->keterangan,
+        ]);
+
+        return redirect()->back()->with('success', 'Data absensi berhasil diperbarui');
     }
 }

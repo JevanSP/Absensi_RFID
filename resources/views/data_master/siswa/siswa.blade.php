@@ -38,7 +38,7 @@
                     <td class="text-center">{{ $row->rfid_tag }}</td>   
                     <td class="text-center">
                         @if ($row->foto)
-                            <img src="{{ asset('storage/siswa/' . $row->foto) }}" alt="Foto Siswa" width="50" style="border: 2px solid #ddd; padding: 5px; border-radius: 5px;">
+                            <img src="{{ asset('storage/' . $row->foto) }}" alt="Foto Siswa" width="50" style="border: 2px solid #ddd; padding: 5px; border-radius: 5px;">
                         @else
                             Tidak ada foto
                         @endif
@@ -65,8 +65,9 @@
                         <h1 class="modal-title fs-5">Hapus {{ $title }}</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form method="GET" action="/data_siswa/destroy/{{ $c->id }}">
+                    <form method="POST" action="/data_siswa/destroy/{{ $c->id }}">
                         @csrf
+                        @method('DELETE')
                         <div class="modal-body">
                             <div class="form-group">
                                 <h7>Apakah anda yakin ingin menghapus data ini?</h7>

@@ -48,8 +48,8 @@ route::get('/data_siswa', [SiswaController::class, 'index'])->name('siswa.data_s
 route::get('/add_siswa', [SiswaController::class, 'create'])->name('siswa.add_siswa');
 route::get('/edit_siswa/{id}', [SiswaController::class, 'edit'])->name('siswa.edit_siswa');
 route::post('/data_siswa/store', [SiswaController::class, 'store'])->name('siswa.store');
-route::post('/data_siswa/update/{id}', [SiswaController::class, 'update']);
-route::get('/data_siswa/destroy/{id}', [SiswaController::class, 'destroy']);
+route::put('/data_siswa/update/{id}', [SiswaController::class, 'update']);
+route::delete('/data_siswa/destroy/{id}', [SiswaController::class, 'destroy']);
 
 Route::get('/data_sekolah', [SekolahController::class, 'index'])->name('data_sekolah');
 
@@ -61,6 +61,7 @@ Route::delete('/user/{user}', [UserController::class, 'destroy'])->name('user.de
 Route::get('/absen', [AbsensiController::class, 'index'])->name('absen.list');
 Route::post('/absen-rfid', [AbsensiController::class, 'absenRFID']);
 Route::get('/absen/filter', [AbsensiController::class, 'filter'])->name('absen.filter');
+Route::put('/absen/{id}', [AbsensiController::class, 'update'])->name('absen.update');
 
 Route::get('/pengaturan', [PengaturanAbsensiController::class, 'index'])->name('pengaturan.index');
 Route::post('/pengaturan', [PengaturanAbsensiController::class, 'store'])->name('pengaturan.store');

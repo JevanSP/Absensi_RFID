@@ -64,14 +64,15 @@
             <!-- Modal for RFID Input -->
             <div class="mb-3">
                 <label for="rfid_tag" class="form-label">RFID</label>
-                <input type="text" class="form-control @error('rfid_tag') is-invalid @enderror" id="rfid_tag" name="rfid_tag" value="{{ old('rfid_tag') }}" required readonly data-bs-toggle="modal" data-bs-target="#rfidModal">
+                <input type="text" class="form-control @error('rfid_tag') is-invalid @enderror" id="rfid_tag" name="rfid_tag" value="{{ old('rfid_tag') }}" required >
+                {{-- readonly data-bs-toggle="modal" data-bs-target="#rfidModal"> --}}
                 @error('rfid_tag')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
 
             <!-- RFID Modal -->
-            <div class="modal fade" id="rfidModal" tabindex="-1" aria-labelledby="rfidModalLabel" aria-hidden="true">
+            {{-- <div class="modal fade" id="rfidModal" tabindex="-1" aria-labelledby="rfidModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -80,11 +81,11 @@
                         </div>
                         <div class="modal-body">
                             <p>Tempelkan kartu RFID Anda pada pembaca.</p>
-                            <input type="text" class="form-control" id="rfid_input" placeholder="Scanning..." readonly>
+                            <input type="text" class="form-control" id="rfid_input" placeholder="Scanning..." readonly >
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
             {{-- <script>
                 document.addEventListener('DOMContentLoaded', function () {
