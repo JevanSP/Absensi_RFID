@@ -21,7 +21,7 @@ class Siswa extends Model
         'foto'
     ];
 
-    public function Kelas():BelongsTo
+    public function kelas():BelongsTo
     {
         return $this->belongsTo(Kelas::class, 'kelas_id');
     }
@@ -31,7 +31,7 @@ class Siswa extends Model
         return $this->hasOne(User::class, 'siswa_id');
     }
 
-    public function Absensi()
+    public function absensi()
     {
         return $this->hasMany(Absensi::class, 'siswa_id');
     }

@@ -87,7 +87,7 @@
                                             <label for="yourPassword" class="form-label">Password</label>
                                             <input type="password" name="password" class="form-control"
                                                 id="yourPassword" required>
-                                            <div class="invalid-feedback">Isi password</div>
+                                            <div class="invalid-feedback">Isi Password</div>
                                         </div>
 
                                         <div class="col-12">

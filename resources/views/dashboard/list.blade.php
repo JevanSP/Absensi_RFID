@@ -133,7 +133,7 @@
         </div>
     </main>
 </div>
-@endsection --}} --}}
+@endsection --}} 
 
 @extends('layout.layout')
 <p>INI HALAMAN LIST</p>

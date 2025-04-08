@@ -10,13 +10,14 @@ class Kelas extends Model
     protected $table = 'kelas';
 
     protected $fillable = [
+        'id',
         'tingkatan',
         'nama',
     ];
 
     public function Siswa():HasMany
     {
-        return $this->hasMany(Siswa::class,'kelas_id');
+        return $this->hasMany(Siswa::class, 'kelas_id');
     }
 
 }

@@ -17,7 +17,7 @@
     <div class="card-body">
         <h5 class="card-title">Form Edit Data Siswa</h5>
 
-        <form method="POST" action="/data_siswa/{{ $data_siswa->id }}" enctype="multipart/form-data">
+        <form method="POST" action="/data_siswa/update/{{ $data_siswa->id }}" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 

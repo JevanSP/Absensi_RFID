@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\kelas;
+use App\Models\Kelas;
 use Illuminate\Http\Request;
 
 class SekolahController extends Controller

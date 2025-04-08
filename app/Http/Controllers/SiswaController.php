@@ -35,15 +35,19 @@ class SiswaController extends Controller
             'foto'          => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
+        // Menyimpan file gambar yang diunggah oleh pengguna (jika ada) ke folder 'siswa' di disk 'public'.
         $imageName = $request->file('foto')?->store('siswa', 'public');
 
+        // Membuat entri baru di tabel 'siswa' menggunakan model Siswa.
+        // Data yang disimpan adalah gabungan dari semua input kecuali 'foto' ($request->except('foto')),
+        // ditambah dengan nama file gambar yang baru saja disimpan.
         Siswa::create(array_merge($request->except('foto'), ['foto' => $imageName]));
 
         return redirect()->route('siswa.data_siswa')->with('success', 'Data Berhasil Disimpan!');
     }
 
     public function edit(string $id)
-    {   
+    {
         $title = 'Update - Siswa';
         $data_siswa = Siswa::findOrFail($id);
         $data_kelas = Kelas::all();
@@ -82,7 +86,7 @@ class SiswaController extends Controller
         if ($siswa->foto) {
             Storage::delete('public/' . $siswa->foto);
         }
-        
+
         $siswa->delete();
         return redirect()->route('siswa.data_siswa')->with('success', 'Data Berhasil Dihapus!');
     }

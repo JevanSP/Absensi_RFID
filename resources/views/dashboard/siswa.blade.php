@@ -32,5 +32,31 @@
 @endsection --}}
 
 @extends('layout.siswa')
-<p>INI HALAMAN LIST Siswa</p>
+@section('siswa')
+{{-- @foreach ( user as siswa )
+<p>Selamat Datang, {{ siswa->nama }}</p>
+@endforeach --}}
+
+<div class="d-flex flex-wrap justify-content-center">
+    <a href="#" class="btn btn-success m-2" style="width: 45%; height: 100px;">
+        <div class="d-flex flex-column justify-content-center align-items-center h-100">
+            <h5>Absensi</h5>
+        </div>
+    </a>
+    <a href="#" class="btn btn-primary m-2" style="width: 45%; height: 100px;">
+        <div class="d-flex flex-column justify-content-center align-items-center h-100">
+            <h5>Poin</h5>
+        </div>
+    </a>
+    <a href="#" class="btn btn-info m-2" style="width: 45%; height: 100px;">
+        <div class="d-flex flex-column justify-content-center align-items-center h-100">
+            <h5>Berita/Acara</h5>
+        </div>
+    </a>
+    <a href="#" class="btn btn-warning m-2" style="width: 45%; height: 100px;">
+        <div class="d-flex flex-column justify-content-center align-items-center h-100">
+            <h5>Pengaturan</h5>
+        </div>
+    </a>
+</div>
 @endsection

@@ -10,6 +10,14 @@
             </ol>
         </nav>
     </div><!-- End Page Title -->
+
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <button type="button" class="btn btn-primary my-3"><a href="/add_siswa" style="color: white">+ TAMBAH DATA</a></button>
     <table class="table datatable table-secondary table-striped-columns border-secondary">
         <thead>

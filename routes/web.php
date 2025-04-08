@@ -7,11 +7,13 @@ use App\Http\Controllers\BudayaPositifController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SekolahController;
 use App\Http\Controllers\AbsensiController;
+use App\Http\Controllers\DashboaordController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PengaturanAbsensiController;
 use App\Http\Controllers\PoinSiswaController;
 use App\Http\Controllers\PoinKategoriController;
+use App\Http\Controllers\TampilanSiswaController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -60,7 +62,7 @@ Route::delete('/user/{user}', [UserController::class, 'destroy'])->name('user.de
 
 Route::get('/absen', [AbsensiController::class, 'index'])->name('absen.list');
 Route::post('/absen-rfid', [AbsensiController::class, 'absenRFID']);
-Route::get('/absen/filter', [AbsensiController::class, 'filter'])->name('absen.filter');
+Route::post('/absen/filter', [AbsensiController::class, 'filter'])->name('absen.filter');
 Route::put('/absen/{id}', [AbsensiController::class, 'update'])->name('absen.update');
 
 Route::get('/pengaturan', [PengaturanAbsensiController::class, 'index'])->name('pengaturan.index');
@@ -76,3 +78,10 @@ Route::get('poin_siswa/{kategori}', [PoinSiswaController::class, 'indexBySiswaCa
 Route::post('poin_siswa', [PoinSiswaController::class, 'store'])->name('poin_siswa.store');
 Route::put('poin_siswa/{kategori}', [PoinSiswaController::class, 'update'])->name('poin_siswa.update');
 Route::delete('poin_siswa/{kategori}', [PoinSiswaController::class, 'destroy'])->name('poin_siswa.destroy');
+
+Route::get('/siswa/poin', [TampilanSiswaController::class, 'poin']);
+Route::get('/siswa/absensi', [TampilanSiswaController::class, 'absensi']);
+Route::get('/siswa/berita', [TampilanSiswaController::class, 'berita']);
+
+Route::get('/dashboard', [DashboaordController::class, 'admin_guru']);
+Route::get('/dashboard/siswa', [DashboaordController::class, 'siswa']);    

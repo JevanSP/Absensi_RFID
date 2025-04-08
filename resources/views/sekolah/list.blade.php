@@ -46,7 +46,7 @@
                     <div class="card-body">
                         @foreach ($kelas as $row)
                             <table class="table table-sm">
-                                <td class="text-capitalize">{{ $row->kelas->nama }}</td>
+                                <td class="text-capitalize">{{ $row->nama }}</td>
                             </table>
                         @endforeach
                     </div>

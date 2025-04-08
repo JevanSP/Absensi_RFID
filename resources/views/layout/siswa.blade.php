@@ -41,11 +41,11 @@
 
 <body>
     <!-- resources/views/layout/header.blade.php -->
-    @include('partials.header')
+    @include('partials.header_siswa')   
 
 
     <main id="main" class="main">
-        @yield('content')
+        @yield('siswa')
     </main>
 
 

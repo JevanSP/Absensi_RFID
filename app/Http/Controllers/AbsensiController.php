@@ -15,49 +15,50 @@ class AbsensiController extends Controller
     {
         $request->validate(['rfid_tag' => 'required|string']);
 
+        // Cari siswa berdasarkan RFID yang diberikan
         $siswa = Siswa::where('rfid_tag', $request->rfid_tag)->first();
         if (!$siswa) {
+            // Jika siswa tidak ditemukan, kembalikan respons error 404
             return response()->json(['message' => 'RFID tidak ditemukan'], 404);
         }
 
+        // Ambil tanggal hari ini dalam format 'Y-m-d'
         $tanggal = Carbon::today()->format('Y-m-d');
+
+        // Ambil waktu sekarang dalam format 'H:i:s'
         $jamSekarang = Carbon::now()->format('H:i:s');
+
+        // Ambil pengaturan absensi (pengaturan jam masuk dan jam pulang)
         $pengaturan = PengaturanAbsensi::first();
 
         if (!$pengaturan) {
+            // Jika pengaturan absensi belum dikonfigurasi, kembalikan respons error 500
             return response()->json(['message' => 'Pengaturan absensi belum dikonfigurasi'], 500);
         }
 
+        // Periksa apakah siswa sudah memiliki absensi untuk hari ini
         $kehadiran = Absensi::where('siswa_id', $siswa->id)->where('tanggal', $tanggal)->first();
 
         if (!$kehadiran) {
+            // Jika belum ada absensi, tentukan status berdasarkan jam masuk
             $status = ($jamSekarang > $pengaturan->jam_masuk) ? 'terlambat' : 'hadir';
 
+            // Buat catatan absensi baru untuk siswa
             Absensi::create([
-                'siswa_id' => $siswa->id,
-                'tanggal' => $tanggal,
-                'jam_masuk' => $jamSekarang,
-                'status' => $status,
-                'pengaturan_absensi_id' => $pengaturan->id,
+                'siswa_id' => $siswa->id, 
+                'tanggal' => $tanggal, 
+                'status' => $status, 
+                'jam_masuk' => $jamSekarang, 
+                'jam_pulang' => null, 
+                'keterangan' => null, 
             ]);
-
-            return response()->json([
-                'message' => 'Absen masuk berhasil',
-                'data' => $siswa,
-                'status' => $status,
-            ]);
+        } else {
+            // Jika absensi sudah ada, kembalikan respons bahwa siswa sudah absen
+            return response()->json(['message' => 'Siswa sudah absen hari ini'], 200);
         }
 
-        if (is_null($kehadiran->jam_pulang)) {
-            $kehadiran->update(['jam_pulang' => $jamSekarang]);
-
-            return response()->json([
-                'message' => 'Absen pulang berhasil',
-                'data' => $siswa,
-            ]);
-        }
-
-        return response()->json(['message' => 'Anda sudah absen pulang hari ini']);
+        // Kembalikan respons sukses
+        return response()->json(['message' => 'Absensi berhasil dicatat'], 200);
     }
 
     public function absenManual(Request $request)
@@ -94,17 +95,28 @@ class AbsensiController extends Controller
 
     public function filter(Request $request)
     {
-        $query = Absensi::with('siswa.kelas');
+        // Query siswa beserta relasi kelas dan absensi
+        $query = Siswa::with(['kelas', 'absensi' => function ($query) {
+            $query->latest(); // Mengurutkan absensi terbaru per siswa
+        }]);
 
         if ($request->filled('kelas')) {
-            $query->whereHas('siswa', fn($q) => $q->where('kelas_id', $request->kelas));
+            $query->where('kelas_id', $request->kelas); 
         }
 
+        if ($request->filled('nis')) {
+            $query->where('nis', $request->nis);
+        }
+
+        // Filter berdasarkan tanggal absensi
         if ($request->filled('tanggal')) {
-            $query->where('tanggal', $request->tanggal);
+            $query->whereHas('absensi', function ($q) use ($request) {
+                $q->whereDate('tanggal', $request->tanggal); // Gunakan whereDate untuk membandingkan tanggal
+            });
         }
+        $absensi = $query->get();
 
-        $absensi = $query->latest()->get();
+        // Ambil semua kelas untuk dropdown
         $kelas = Kelas::all();
 
         return view('absen.list', compact('absensi', 'kelas'));

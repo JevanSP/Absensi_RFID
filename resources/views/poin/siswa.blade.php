@@ -1,5 +1,5 @@
-@extends('layout.layout')
-@section('content')
+@extends('layout.siswa')
+@section('siswa')
 <div class="pagetitle">
     <h1>Data Admin</h1>
     <nav>
