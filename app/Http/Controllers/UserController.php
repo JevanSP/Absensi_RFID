@@ -44,13 +44,15 @@ class UserController extends Controller
             $validatedData['nama'] = $siswa->nama_siswa;
         }
 
-        User::create([
-            'nama' => $validatedData['nama'],
-            'username' => $validatedData['username'],
-            'password' => bcrypt($validatedData['password']),
-            'role' => $validatedData['role'],
-            'siswa_id' => $request->role == 'siswa' ? $request->siswa_id : null,
+        $user = User::create([
+            'nama'      => $validatedData['nama'],
+            'username'  => $validatedData['username'],
+            'password'  => bcrypt($validatedData['password']),
+            'role'      => $validatedData['role'],
+            'siswa_id'  => $validatedData['role'] === 'siswa' ? $validatedData['siswa_id'] : null,
         ]);
+        
+        Auth::login($user);
 
         return redirect("/user/{$request->role}");
     }
