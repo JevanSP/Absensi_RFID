@@ -34,14 +34,14 @@
             @foreach ($poinSiswa as $p)
                 <tr class="text-center text-capitalize">
                     <td>{{ $no++ }}</td>
-                    <td>{{ $p->nis }}</td>
+                    <td>{{ $p->siswa->nis }}</td>
                     <td>{{ $p->siswa->nama_siswa }}</td>
-                    <td>{{ $p->kelas }} {{ $p->jurusan->singkatan }}</td>
-                    <td>{{ $p->nama }}</td>
-                    <td>{{ $p->poin }}</td>
+                    <td>{{ $p->siswa->kelas->nama }}</td>
+                    <td>{{ $p->poinKategori->nama }}</td>
+                    <td>{{ $p->poinKategori->poin }}</td>
                     <td>{{ $p->tanggal }}</td>
                     <td>{{ $p->keterangan }}</td>
-                    <td>{{ $p->user->name }}</td>
+                    <td>{{ $p->user->nama }}</td>
                     <td>
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                             data-bs-target="#modaledit{{ $p->id }}"><i class="bi bi-pencil"></i> Edit</button>
@@ -61,21 +61,23 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body" id="selectStudentBody">
-                    <table class="table table-bordered">
+                    <table class="table datatable table-bordered">
                         <thead>
                             <tr>
                                 <th>No</th>
                                 <th>NIS</th>
                                 <th>Nama Siswa</th>
+                                <th>Kelas</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($siswa as $index => $s)
-                                <tr>
+                                <tr class="text-center text-capitalize">    
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $s->nis }}</td>
                                     <td>{{ $s->nama_siswa }}</td>
+                                    <td>{{ $s->kelas->nama }}</td>
                                     <td>
                                         <button type="button" class="btn btn-primary select-student" data-id="{{ $s->id }}" data-name="{{ $s->nama_siswa }}">Pilih</button>
                                     </td>
@@ -111,7 +113,7 @@
                         <br>
                         <div class="form-group">
                             <label>Keterangan</label>
-                            <input type="text" class="form-control" name="keterangan" required>
+                            <input type="text" class="form-control" name="keterangan">
                         </div>
                         <br>
                         <div class="form-group">
@@ -164,6 +166,11 @@
                             <div class="form-group">
                                 <label>Poin</label>
                                 <input type="number" value="{{ $p->poin }}" class="form-control" id="poinInput" name="poin" readonly required>
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label>Keterangan</label>
+                                <input type="text" value="{{ $p->keterangan }}" class="form-control" name="keterangan">
                             </div>
                             <br>
                             <div class="form-group">

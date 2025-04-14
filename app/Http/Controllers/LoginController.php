@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -28,12 +30,15 @@ class LoginController extends Controller
      */
     public function store(Request $request)
     {
-        $user = User::where('username', $request->username)->where('password', $request->password)->first();
-            if ($user) {
-                if ($user->role == 'siswa') {
+            $user = User::where('username', $request->username)->first();
+
+            // Cek apakah user ditemukan dan password cocok
+            if ($user && Hash::check($request->password, $user->password)) {
+                Auth::login($user);        
+                if ($user->role === 'siswa') {
                     return redirect()->route('dashboard.siswa');
                 } else {
-                    return redirect()->route('dashboard.list');
+                    return redirect()->route('dashboard.admin_guru');
                 }
             } else {
                 return redirect()->back()->withErrors(['login' => 'Invalid username or password.']);

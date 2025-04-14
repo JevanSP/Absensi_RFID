@@ -11,7 +11,6 @@ class SekolahController extends Controller
      */
     public function index()     
     {
-        $kelas = Kelas::all();
         return view('sekolah.list ', compact('kelas'));
     }
 

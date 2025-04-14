@@ -44,17 +44,16 @@ class UserController extends Controller
             $validatedData['nama'] = $siswa->nama_siswa;
         }
 
-        $user = User::create([
-            'nama'      => $validatedData['nama'],
-            'username'  => $validatedData['username'],
-            'password'  => bcrypt($validatedData['password']),
-            'role'      => $validatedData['role'],
-            'siswa_id'  => $validatedData['role'] === 'siswa' ? $validatedData['siswa_id'] : null,
+        User::create([
+            'nama'           => $validatedData['nama'],
+            'username'       => $validatedData['username'],
+            'password'       => bcrypt($validatedData['password']),
+            'password_plain' => $validatedData['password'], // Simpan password asli
+            'role'           => $validatedData['role'],
+            'siswa_id'       => $validatedData['role'] === 'siswa' ? $validatedData['siswa_id'] : null,
         ]);
-        
-        Auth::login($user);
 
-        return redirect("/user/{$request->role}");
+        return back()->with('success', 'User berhasil ditambahkan.');
     }
 
     /**
@@ -72,6 +71,15 @@ class UserController extends Controller
             'username' => 'required|unique:users,username,' . $user->id,
             'role' => 'required',
             'siswa_id' => $request->role == 'siswa' ? 'required' : 'nullable',
+        ]);
+
+        $user->update([
+            'nama'           => $validatedData['nama'],
+            'username'       => $validatedData['username'],
+            'password'       => $request->password ? bcrypt($request->password) : $user->password,
+            'password_plain' => $request->password ? $request->password : $user->password_plain, // Update password asli
+            'role'           => $validatedData['role'],
+            'siswa_id'       => $validatedData['role'] === 'siswa' ? $validatedData['siswa_id'] : null,
         ]);
         
         return back();

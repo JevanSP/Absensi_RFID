@@ -18,4 +18,6 @@ class PoinKategori extends Model
     {
         return $this->hasMany(PoinSiswa::class);
     }
+
+    
 }

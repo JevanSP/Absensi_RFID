@@ -37,6 +37,13 @@
                     <td class="text-center">{{ $row->nama }}</td>
                     <td class="text-center">{{ $row->username }}</td>
                     <td class="text-center">
+                        <span class="password-text" id="password-text-{{ $row->id }}">••••••••</span>
+                        <button type="button" class="btn btn-sm btn-secondary toggle-password" data-id="{{ $row->id }}">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                        <input type="hidden" value="{{ $row->password }}" id="password-hidden-{{ $row->id }}">
+                    </td>
+                    <td class="text-center">
                         <!-- Tombol Edit -->
                         <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modaledit{{ $row->id }}">
                             <i class="bi bi-pencil"></i> Edit
@@ -147,4 +154,21 @@
         </div>
     </div>
     @endforeach
+
+    <script>
+        document.querySelectorAll('.toggle-password').forEach(button => {
+            button.addEventListener('click', function () {
+                const id = this.getAttribute('data-id');
+                const passwordText = document.getElementById(`password-text-${id}`);
+                const hiddenPassword = document.getElementById(`password-hidden-${id}`);
+                if (passwordText.textContent === '••••••••') {
+                    passwordText.textContent = hiddenPassword.value;
+                    this.innerHTML = '<i class="bi bi-eye-slash"></i>';
+                } else {
+                    passwordText.textContent = '••••••••';
+                    this.innerHTML = '<i class="bi bi-eye"></i>';
+                }
+            });
+        });
+    </script>
 @endsection

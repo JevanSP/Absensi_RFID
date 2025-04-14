@@ -43,12 +43,6 @@
 <body>
     <main>
         <div class="container">
-            @if ($errors->has('login'))
-                <div style="color: red;">
-                    {{ $errors->first('login') }}
-                </div>
-            @endif
-
             <section
                 class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
                 <div class="container">
@@ -71,7 +65,12 @@
                                         <p class="text-center small">Sistem Absensi Dan Poin Siswa</p>
                                     </div>
 
-                                    <form action="{{ route('login.post') }}" method="POST"
+                                    @if ($errors->has('login'))
+                                        <div class="alert alert-danger text-center">
+                                            {{ $errors->first('login') }}
+                                        </div>
+                                    @endif
+                                    <form action="{{ route('login.store') }}" method="POST"
                                         class="row g-3 needs-validation" novalidate>
                                         @csrf
                                         <div class="col-12">

@@ -44,7 +44,8 @@
     @include('partials.header_siswa')   
 
 
-    <main id="main" class="main">
+    <main class="main mt-5 px-5">
+    <br>
         @yield('siswa')
     </main>
 
