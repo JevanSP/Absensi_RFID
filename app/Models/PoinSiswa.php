@@ -26,6 +26,11 @@ class PoinSiswa extends Model
         return $this->belongsTo(PoinKategori::class);
     }
 
+    public function kategori()
+    {
+        return $this->belongsTo(PoinKategori::class, 'poin_kategori_id');
+    }
+
     public function User()
     {
         return $this->belongsTo(User::class, 'user_id');

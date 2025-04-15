@@ -70,6 +70,26 @@
         </div>
         <!-- Inner -->
 
+        <!-- === ANIMASI TEKS BERGERAK DI BAWAH VIDEO === -->
+        <div class="position-absolute bottom-0 start-0 end-0 text-center py-3"
+            style="background: rgba(0, 0, 0, 0); z-index: 100; color: white;">
+            <marquee behavior="scroll" direction="left" scrollamount="6" style="font-size: 3rem;">
+                Selamat Datang di Sistem Absensi RFID SMKN 1 PACITAN – Disiplin Adalah Kunci Kesuksesan!
+            </marquee>
+        </div>
+
+        <!-- === TOMBOL DASHBOARD === -->
+        <a href="{{ route('dashboard.admin_guru') }}"
+            class="position-absolute top-0 start-0 m-3 btn btn-light rounded-pill shadow" style="z-index: 1000;">
+            🏠 Dashboard
+        </a>
+
+        <!-- === JAM DIGITAL DI POJOK KANAN ATAS === -->
+        <div id="clock" class="position-absolute top-0 end-0 m-3 px-4 py-2 rounded-4 shadow"
+            style="background-color: rgba(0, 0, 0, 0.75); color: white; font-size: 8rem; z-index: 1000;">
+            00:00:00
+        </div>
+
     </div>
     <!-- Carousel wrapper -->
 
@@ -111,7 +131,7 @@
 
                         // Suara notifikasi (jika mau)
                         const audio = new Audio(
-                            "https://www.myinstants.com/media/sounds/correct.mp3");
+                            "https://www.myinstants.com/media/sounds/cat-laugh-meme-1.mp3");
                         audio.play();
 
                         setTimeout(() => {
@@ -129,6 +149,17 @@
                 form.submit();
             });
         });
+
+        function updateClock() {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock(); // jalankan sekali saat load
     </script>
 
     <script src="{{ asset('assets/vendor/apexcharts/apexcharts.min.js') }}"></script>

@@ -5,7 +5,7 @@
         <li class="nav-item">
             <a href="{{ route('dashboard.admin_guru') }}"
                 class="nav-link {{ request()->routeIs('dashboard.admin_guru') ? 'active' : 'collapsed' }}">
-                <i class="bi bi-grid"></i>  
+                <i class="bi bi-grid"></i>
                 <span>Dashboard</span>
             </a>
         </li>
@@ -86,6 +86,14 @@
         </li>
 
         <li class="nav-heading">ABSENSI</li>
+
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('absensi.masuk', 'absensi.pulang') ? 'active' : 'collapsed' }}"
+                href="{{ now()->hour < 12 ? route('absensi.masuk') : route('absensi.pulang') }}">
+                <i class="bi-file-earmark-person-fill"></i>
+                <span>Tampilan Absensi Siswa</span>
+            </a>
+        </li>
 
         <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('absen.list') ? 'active' : 'collapsed' }}"

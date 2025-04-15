@@ -41,10 +41,10 @@
 
 <body>
     <!-- resources/views/layout/header.blade.php -->
-    @include('partials.header_siswa')   
+    @include('partials.header_siswa', ['user' => Auth::user()]) 
 
 
-    <main class="main mt-5 px-5">
+    <main class="main mt-5 px-5 mb-5">
     <br>
         @yield('siswa')
     </main>
@@ -57,6 +57,35 @@
             class="bi bi-arrow-up-short"></i></a>
 
     <!-- Vendor JS Files -->
+    <script>
+        function animateNumber(id, target, duration = 1500) {
+            const element = document.getElementById(id);
+            const start = 0;
+            const increment = target / (duration / 16); // frame ~60fps
+            let current = start;
+    
+            function update() {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    element.textContent = Math.round(current);
+                } else {
+                    element.textContent = Math.round(current);
+                    requestAnimationFrame(update);
+                }
+            }
+    
+            update();
+        }
+    
+        // Jalankan animasi saat halaman sudah ready
+        document.addEventListener("DOMContentLoaded", () => {
+            const el = document.getElementById("totalPoin");
+            const target = parseInt(el.getAttribute("data-target"));
+            animateNumber("totalPoin", target);
+        });
+    </script>
+    
     <script src="{{ asset('assets/vendor/apexcharts/apexcharts.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/chart.js/chart.umd.js') }}"></script>

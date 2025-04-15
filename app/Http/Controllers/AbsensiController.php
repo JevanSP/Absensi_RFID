@@ -13,13 +13,6 @@ class AbsensiController extends Controller
 {
     public function absen_masuk_RFID(Request $request)
     {
-        $pengaturan = PengaturanAbsensi::first(); // asumsinya hanya ada satu pengaturan
-        $now = Carbon::now();
-    
-        if ($now->gt(Carbon::createFromFormat('H:i:s', $pengaturan->jam_masuk))) {
-            return response()->json(['message' => 'Waktu absen masuk sudah lewat!'], 500);
-        }
-        
         $request->validate(['rfid_tag' => 'required|string']);
 
         // Cari siswa berdasarkan RFID yang diberikan
@@ -60,9 +53,18 @@ class AbsensiController extends Controller
             ]);
         } else {
             // Jika absensi sudah ada, kembalikan respons bahwa siswa sudah absen
-            return response()->json(['message' => 'Siswa sudah absen hari ini'], 200);
+            return response()->json([
+                'message' => 'Siswa sudah absen hari ini',
+                'siswa' => [
+                    'nama_siswa' => $siswa->nama_siswa,
+                    'nis' => $siswa->nis,
+                    'kelas' => $siswa->kelas->nama ?? 'Tidak ada kelas',
+                    'jam_masuk' => $jamSekarang,
+                    'status' => ($jamSekarang > $pengaturan->jam_masuk) ? 'terlambat' : 'hadir',
+                    'foto' => $siswa->foto,
+                ]
+            ], 200);
         }
-
 
         // Tampilkan alert dengan deskripsi siswa
         return response()->json([
@@ -80,14 +82,6 @@ class AbsensiController extends Controller
 
     public function absen_pulang_RFID(Request $request)
     {
-
-        $pengaturan = PengaturanAbsensi::first();
-        $now = Carbon::now();
-    
-        if ($now->lt(Carbon::createFromFormat('H:i:s', $pengaturan->jam_pulang))) {
-            return response()->json(['message' => 'Belum waktunya absen pulang!'], 500);
-        }
-
         $request->validate(['rfid_tag' => 'required|string']);
 
         // Cari siswa berdasarkan RFID yang diberikan

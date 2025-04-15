@@ -41,8 +41,7 @@
 
 <body>
     <!-- resources/views/layout/header.blade.php -->
-    @include('partials.header')
-
+    @include('partials.header', ['user' => Auth::user()])
     <!-- resources/views/layout/sidebar.blade.php -->
     @include('partials.sidebar')
 

@@ -11,7 +11,7 @@ class SekolahController extends Controller
      */
     public function index()     
     {
-        return view('sekolah.list ', compact('kelas'));
+        return view('sekolah.list ');
     }
 
     /**

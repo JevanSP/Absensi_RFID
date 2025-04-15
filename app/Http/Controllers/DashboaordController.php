@@ -34,14 +34,21 @@ class DashboaordController extends Controller
         $siswa = Siswa::where('id', $user->siswa_id)->first();
         $jam_masuk = PengaturanAbsensi::first()->jam_masuk;
         $jam_pulang = PengaturanAbsensi::first()->jam_pulang;
-        $status = Absensi::where('siswa_id', $user->siswa_id)->first();
+        $status = Absensi::where('siswa_id', $user->siswa_id)
+            ->whereDate('created_at', now()->toDateString())
+            ->first();
         if ($status) {
             $status = $status->status;
         } else {
             $status = null;
         }
-        // $total_poin = PoinSiswa::where('siswa_id', $user->siswa_id)->sum('poin');
-        return view('dashboard.siswa', compact('user', 'siswa', 'jam_masuk', 'jam_pulang', 'status', ));
+        $total_poin = PoinSiswa::with('kategori')
+    ->where('siswa_id', $user->siswa_id)
+    ->get()
+    ->sum(function ($item) {
+        return $item->kategori->poin ?? 0;
+    });
+        return view('dashboard.siswa', compact('user', 'siswa', 'jam_masuk', 'jam_pulang', 'status','total_poin' ));
     }
 
 }

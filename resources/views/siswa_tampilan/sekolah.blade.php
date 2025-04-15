@@ -39,16 +39,24 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 mr-2">
+            <div class="col-lg mr-2">
                 <div class="card">
                     <div class="card-header">Progam Keahlian Sekolah</div>
                     <br>
                     <div class="card-body">
                         <table class="table table-sm">
-                            <td class="text-capitalize">Rekaya Perangkat Lunak</td>
-                            <td class="text-capitalize">Teknik Komputer Jaringan</td>
-                            <td class="text-capitalize">Desain Komunikasi Visual</td>
+                            <td class="text-capitalize">Rekaya Perangkat Lunak (RPL)</td>
+                            <td class="text-capitalize">Teknik Komputer Jaringan (TKJ)</td>
+                            <td class="text-capitalize">Desain Komunikasi Visual (DKV)</td>
+                            <td class="text-capitalize">Produksi dan Siaran Program Televisi(PSPT)</td>
                             <td class="text-capitalize">Animasi</td>
+                            <td class="text-capitalize">Desain Pemodelan dan Informasi Bangunan (DPIB)</td>
+                            <td class="text-capitalize">Usaha Perjalanan Wisata (UPW)</td>
+                            <td class="text-capitalize">Tata Kecantikan Kulit dan Rambut (TKKR)</td>
+                            <td class="text-capitalize">Tata Busana (TB)</td>
+                            <td class="text-capitalize">Kriya Kreatif Batik dan Tekstil (KKBT)</td>
+                            <td class="text-capitalize">Kriya Kreatif Kulit dan Imitasi (KKKI)</td>
+                            <td class="text-capitalize">Kriya Kreatif Kayu dan Rotan (KKKR)</td>
                         </table>
                     </div>
                 </div>

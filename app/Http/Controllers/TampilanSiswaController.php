@@ -34,4 +34,9 @@ class TampilanSiswaController extends Controller
     {
         return view('siswa_tampilan.berita');
     }
+
+    public function sekolah()
+    {
+        return view('siswa_tampilan.sekolah');
+    }
 }
