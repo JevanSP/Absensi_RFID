@@ -34,7 +34,7 @@ Route::middleware(['login'])->group(function () {
         route::get('/data_kelas', [KelasController::class, 'index']);
         route::get('/data_kelas/create', [KelasController::class, 'create']);
         route::post('/data_kelas/store', [KelasController::class, 'store']);
-        route::post('/data_kelas/update/{id}', [KelasController::class, 'update']);
+        route::put('/data_kelas/update/{id}', [KelasController::class, 'update']);
         route::get('/data_kelas/destroy/{id}', [KelasController::class, 'destroy']);
 
         route::get('/data_siswa', [SiswaController::class, 'index'])->name('siswa.data_siswa');
@@ -63,7 +63,16 @@ Route::middleware(['login'])->group(function () {
         Route::post('/absen-rfid-masuk', [AbsensiController::class, 'absen_masuk_RFID'])->name('absen_masuk.rfid');
         Route::post('/absen-rfid-pulang', [AbsensiController::class, 'absen_pulang_RFID'])->name('absen_pulang.rfid');
         Route::post('/absen/filter', [AbsensiController::class, 'filter'])->name('absen.filter');
-        Route::put('/absen/manual/{id}', [AbsensiController::class, 'absen_manual'])->name('absen.manual');
+        Route::controller(AbsensiController::class)->group(function () {
+            Route::put('/absen/manual/{id}', 'manual')->name('absen.manual');
+        });
+        
+        Route::get('/laporan-absensi-bulanan-form', function () {
+            $kelas = \App\Models\Kelas::all();
+            return view('absen.form_laporan_bulanan', compact('kelas'));
+        })->name('laporan.absensi.bulanan.form');
+
+        Route::get('/laporan-absensi-bulanan', [AbsensiController::class, 'cetak_laporan_bulanan']);
 
         Route::get('/pengaturan', [PengaturanAbsensiController::class, 'index'])->name('pengaturan.index');
         Route::post('/pengaturan', [PengaturanAbsensiController::class, 'store'])->name('pengaturan.store');

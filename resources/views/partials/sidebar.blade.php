@@ -98,8 +98,16 @@
         <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('absen.list') ? 'active' : 'collapsed' }}"
                 href="{{ route('absen.list') }}">
-                <i class="bi-file-earmark-person-fill"></i>
+                <i class="bi-file-earmark-person"></i>
                 <span>Absensi Siswa</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('laporan.absensi.bulanan.form') ? 'active' : 'collapsed' }}"
+                href="{{ route('laporan.absensi.bulanan.form') }}">
+                <i class="ri-article-line"></i>
+                <span>Cetak Absensi</span>
             </a>
         </li>
 
@@ -131,13 +139,13 @@
         <li class="nav-item">
             <a href="{{ route('berita.list') }}"
                 class="nav-link {{ request()->routeIs('berita.list') ? 'active' : 'collapsed' }}">
-                <i class="bi bi-card-list"></i>
+                <i class="ri-time-line"></i>
                 <span>Pengaturan Berita/Informasi</span>
             </a>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('pengaturan.list') ? 'active' : 'collapsed' }}"
+            <a class="nav-link {{ request()->routeIs('pengaturan.index') ? 'active' : 'collapsed' }}"
                 href="{{ route('pengaturan.index') }}">
                 <i class="bi bi-gear-fill"></i>
                 <span>Pengaturan</span>

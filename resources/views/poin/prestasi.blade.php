@@ -13,6 +13,7 @@
 
     <button type="button" class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#modalSelectStudent" id="addDataButton">+ TAMBAH DATA</button>
 
+    <div class="table-responsive">
     <table class="table datatable table-success table-striped-columns border-success">
         <thead>
             <tr class="text-center">
@@ -49,6 +50,7 @@
             @endforeach
         </tbody>
     </table>
+    </div>
 
     <div class="modal fade" id="modalSelectStudent" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">

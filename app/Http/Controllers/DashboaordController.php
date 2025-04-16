@@ -42,13 +42,13 @@ class DashboaordController extends Controller
         } else {
             $status = null;
         }
-        $total_poin = PoinSiswa::with('kategori')
-    ->where('siswa_id', $user->siswa_id)
-    ->get()
-    ->sum(function ($item) {
-        return $item->kategori->poin ?? 0;
-    });
-        return view('dashboard.siswa', compact('user', 'siswa', 'jam_masuk', 'jam_pulang', 'status','total_poin' ));
+        $total_poin = PoinSiswa::with('PoinKategori')
+            ->where('siswa_id', $user->siswa_id)
+            ->get()
+            ->sum(function ($item) {
+                $poin = $item->kategori->poin ?? 0;
+                return $item->kategori->kategori === 'pelanggaran' ? -$poin : $poin;
+            });
+        return view('dashboard.siswa', compact('user', 'siswa', 'jam_masuk', 'jam_pulang', 'status', 'total_poin'));
     }
-
 }

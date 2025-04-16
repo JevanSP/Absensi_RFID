@@ -44,21 +44,49 @@
                     <div class="card-header">Progam Keahlian Sekolah</div>
                     <br>
                     <div class="card-body">
-                        <table class="table table-sm">
-                            <td class="text-capitalize">Rekaya Perangkat Lunak (RPL)</td>
-                            <td class="text-capitalize">Teknik Komputer Jaringan (TKJ)</td>
-                            <td class="text-capitalize">Desain Komunikasi Visual (DKV)</td>
-                            <td class="text-capitalize">Produksi dan Siaran Program Televisi(PSPT)</td>
-                            <td class="text-capitalize">Animasi</td>
-                            <td class="text-capitalize">Desain Pemodelan dan Informasi Bangunan (DPIB)</td>
-                            <td class="text-capitalize">Usaha Perjalanan Wisata (UPW)</td>
-                            <td class="text-capitalize">Tata Kecantikan Kulit dan Rambut (TKKR)</td>
-                            <td class="text-capitalize">Tata Busana (TB)</td>
-                            <td class="text-capitalize">Kriya Kreatif Batik dan Tekstil (KKBT)</td>
-                            <td class="text-capitalize">Kriya Kreatif Kulit dan Imitasi (KKKI)</td>
-                            <td class="text-capitalize">Kriya Kreatif Kayu dan Rotan (KKKR)</td>
-                        </table>
+                        @php
+                            $keahlian = [
+                                'Rekayasa Perangkat Lunak (RPL)',
+                                'Teknik Komputer Jaringan (TKJ)',
+                                'Desain Komunikasi Visual (DKV)',
+                                'Produksi dan Siaran Program Televisi (PSPT)',
+                                'Animasi',
+                                'Desain Pemodelan dan Informasi Bangunan (DPIB)',
+                                'Usaha Perjalanan Wisata (UPW)',
+                                'Tata Kecantikan Kulit dan Rambut (TKKR)',
+                                'Tata Busana (TB)',
+                                'Kriya Kreatif Batik dan Tekstil (KKBT)',
+                                'Kriya Kreatif Kulit dan Imitasi (KKKI)',
+                                'Kriya Kreatif Kayu dan Rotan (KKKR)',
+                            ];
+                        @endphp
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">No</th>
+                                        <th class="text-capitalize">Nama Keahlian</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($keahlian as $k)
+                                        <tr>
+                                            <td class="text-center">{{ $loop->iteration }}</td>
+                                            <td class="text-capitalize">{{ $k }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
+                </div>
+            </div>
+            <div class="col-lg mr-2">
+                <div class="card">
+                    <div class="card-header">Alamat</div>
+                    <br>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3948.964085516717!2d111.08978727500939!3d-8.206366191825705!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7bdf7de1e8387f%3A0x4d70ae1734962587!2sSMK%20Negeri%201%20Pacitan!5e0!3m2!1sid!2sid!4v1744816900541!5m2!1sid!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
             </div>
         </div>

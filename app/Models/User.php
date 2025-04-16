@@ -33,9 +33,9 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function Siswa()
+    public function siswa()
     {
-        return $this->hasOne(Siswa::class, 'siswa_id');
+        return $this->belongsTo(Siswa::class, 'siswa_id');
     }
 
 }

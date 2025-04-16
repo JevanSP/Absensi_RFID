@@ -12,7 +12,7 @@
 
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">Pengaturan Pengaturan</h5>
+            <h5 class="card-title">Pengaturan Berita/Acara</h5>
             <form action="/berita/update" method="POST">
                 @csrf
                 <div class="mb-3">

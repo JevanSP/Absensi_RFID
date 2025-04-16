@@ -37,7 +37,7 @@ class KelasController extends Controller
             'nama' => $request->nama,
         ]);
 
-        return redirect('/data_kelas');
+        return redirect('/data_kelas')->with('success', 'Data Berhasil Ditambahkan');
     }
 
     /**
@@ -66,7 +66,7 @@ class KelasController extends Controller
             'nama' => $request->nama,
         ]);
 
-        return redirect('/data_kelas');
+        return redirect('/data_kelas')->with('success', 'Data Berhasil Diubah');
     }
 
     /**

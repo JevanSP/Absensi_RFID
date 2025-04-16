@@ -231,3 +231,18 @@ table.datatable-table:focus {
 	outline: solid 1px black;
     outline-offset: -1px;
 }
+
+@media only screen and (max-width: 768px) {
+	.datatable-wrapper {
+		overflow-x: auto;
+		width: 100%;
+	}
+	
+    .datatable {
+		display: block;
+		overflow-x: auto;
+		width: 100%;
+		white-space: nowrap; /* Biar kolom gak turun ke bawah */
+	}
+}
+

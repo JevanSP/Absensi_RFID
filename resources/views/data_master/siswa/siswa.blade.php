@@ -19,6 +19,7 @@
     @endif
 
     <button type="button" class="btn btn-primary my-3"><a href="/add_siswa" style="color: white">+ TAMBAH DATA</a></button>
+
     <table class="table datatable table-secondary table-striped-columns border-secondary">
         <thead>
             <tr>
@@ -38,13 +39,13 @@
             @endphp
             @foreach ($data_siswa as $row)
                 <tr>
-                    <td class="text-center">{{ $no++ }}</td>
-                    <td class="text-center">{{ $row->nis }}</td>
-                    <td class="text-capitalize">{{ $row->nama_siswa }}</td>
-                    <td class="text-center text-capitalize">{{ $row->jenis_kelamin }}</td>
-                    <td class="text-center">{{ $row->kelas->nama }}</td>
-                    <td class="text-center">{{ $row->rfid_tag }}</td>   
-                    <td class="text-center">
+                    <td data-label="No" class="text-center">{{ $no++ }}</td>
+                    <td data-label="NIS" class="text-center">{{ $row->nis }}</td>
+                    <td data-label="Nama" class="text-capitalize">{{ $row->nama_siswa }}</td>
+                    <td data-label="Jenis Kelamin" class="text-center text-capitalize">{{ $row->jenis_kelamin }}</td>
+                    <td data-label="Kelas" class="text-center">{{ $row->kelas->nama }}</td>
+                    <td data-label="RFID" class="text-center">{{ $row->rfid_tag }}</td>   
+                    <td data-label="Aksi" class="text-center">
                         @if ($row->foto)
                             <img src="{{ asset('storage/' . $row->foto) }}" alt="Foto Siswa" width="50" style="border: 2px solid #ddd; padding: 5px; border-radius: 5px;">
                         @else

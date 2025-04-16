@@ -81,7 +81,7 @@
 
         <!-- === JAM DIGITAL DI POJOK KANAN ATAS === -->
         <div id="clock" class="position-absolute top-0 end-0 m-3 px-4 py-2 rounded-4 shadow"
-            style="background-color: rgba(0, 0, 0, 0.75); color: white; font-size: 8rem; z-index: 1000;">
+            style="background-color: rgba(0, 0, 0, 0.75); color: white; font-size: 2rem; z-index: 1000;">
             00:00:00
         </div>
 

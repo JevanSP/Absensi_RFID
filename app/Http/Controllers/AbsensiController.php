@@ -8,6 +8,9 @@ use App\Models\PengaturanAbsensi;
 use App\Models\Kelas;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Exports\LaporanAbsensiExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Auth;
 
 class AbsensiController extends Controller
 {
@@ -51,6 +54,11 @@ class AbsensiController extends Controller
                 'jam_pulang' => null,
                 'keterangan' => null,
             ]);
+
+            // Tambah poin pelanggaran jika terlambat
+            if ($status === 'terlambat') {
+                $this->tambahPelanggaran($siswa->id, 'Terlambat', $tanggal);
+            }
         } else {
             // Jika absensi sudah ada, kembalikan respons bahwa siswa sudah absen
             return response()->json([
@@ -117,6 +125,13 @@ class AbsensiController extends Controller
                 'jam_pulang' => $jamSekarang,
             ]);
 
+            if (!$kehadiran->jam_pulang && $jamSekarang > $pengaturan->jam_pulang) {
+                $kehadiran->update(['jam_pulang' => $jamSekarang]);
+
+                // Tambah pelanggaran bolos
+                $this->tambahPelanggaran($siswa->id, 'Bolos Sekolah', $tanggal);
+            }
+
             return response()->json([
                 'message' => 'Absensi pulang berhasil dicatat',
                 'siswa' => [
@@ -139,6 +154,7 @@ class AbsensiController extends Controller
             ], 200);
         }
     }
+
 
     public function filter(Request $request)
     {
@@ -180,7 +196,9 @@ class AbsensiController extends Controller
     {
         $absensi = Siswa::with(['kelas', 'absensi' => function ($query) {
             $query->latest();
-        }])->get();
+        }])->whereHas('absensi', function ($query) {
+            $query->whereDate('tanggal', Carbon::today());
+        })->get();
 
         $kelas = Kelas::all();
         return view('absen.list', compact('absensi', 'kelas'));
@@ -196,7 +214,7 @@ class AbsensiController extends Controller
         return view('absen.absensi_pulang');
     }
 
-    public function absen_manual(Request $request)
+    public function absen_manual(Request $request, $id = null)
     {
         $request->validate([
             'siswa_id' => 'required|exists:siswa,id',
@@ -210,18 +228,48 @@ class AbsensiController extends Controller
         $siswaId = $request->siswa_id;
         $tanggal = $request->tanggal;
 
-        // Ambil atau buat data absensi
+        // Tambah atau edit absensi
         $absen = Absensi::firstOrNew([
             'siswa_id' => $siswaId,
             'tanggal' => $tanggal,
         ]);
 
-        $absen->jam_masuk = $request->jam_masuk ?? $absen->jam_masuk;
-        $absen->jam_pulang = $request->jam_pulang ?? $absen->jam_pulang;
+        $absen->jam_masuk = $request->jam_masuk;
+        $absen->jam_pulang = $request->jam_pulang;
         $absen->status = $request->status;
         $absen->keterangan = $request->keterangan;
+        $absen->pengaturan_absensi_id = PengaturanAbsensi::first()->id ?? null; // optional, jika ada
         $absen->save();
 
-        return redirect()->back()->with('success', 'Absensi berhasil disimpan atau diperbarui.');
+
+        return redirect()->back()->with('success', 'Absensi berhasil disimpan.');
+    }
+
+    public function cetak_laporan_bulanan(Request $request)
+    {
+        $request->validate([
+            'kelas_id' => 'required|exists:kelas,id',
+            'bulan' => 'required|date_format:Y-m', // Format: 2025-04
+        ]);
+
+        $kelasId = $request->kelas_id;
+        $bulan = $request->bulan;
+
+        return Excel::download(new LaporanAbsensiExport($kelasId, $bulan), 'laporan_absensi_' . $bulan . '.xlsx');
+    }
+
+    private function tambahPelanggaran($siswaId, $kategoriNama, $tanggal, $userId = null)
+    {
+        $kategori = \App\Models\PoinKategori::where('nama', $kategoriNama)->where('kategori', 'pelanggaran')->first();
+
+        if ($kategori) {
+            \App\Models\PoinSiswa::create([
+                'siswa_id' => $siswaId,
+                'poin_kategori_id' => $kategori->id,
+                'user_id' => Auth::id(), // bisa dari guru yang login atau null
+                'keterangan' => "Pelanggaran otomatis: " . $kategoriNama,
+                'tanggal' => $tanggal,
+            ]);
+        }
     }
 }

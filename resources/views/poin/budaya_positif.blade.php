@@ -11,47 +11,50 @@
         </nav>
     </div>
 
-    <button type="button" class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#modalSelectStudent" id="addDataButton">+ TAMBAH
+    <button type="button" class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#modalSelectStudent"
+        id="addDataButton">+ TAMBAH
         DATA</button>
 
-    <table class="table datatable table-success table-striped-columns border-success">
-        <thead>
-            <tr class="text-center">
-                <th>No</th>
-                <th>NIS</th>
-                <th>Nama Siswa</th>
-                <th>Kelas</th>
-                <th>Nama Budaya Positif</th>
-                <th>Poin</th>
-                <th>Tanggal</th>
-                <th>Keterangan</th>
-                <th>Guru</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            @php $no = 1; @endphp
-            @foreach ($poinSiswa as $p)
-                <tr class="text-center text-capitalize">
-                    <td>{{ $no++ }}</td>
-                    <td>{{ $p->siswa->nis }}</td>
-                    <td>{{ $p->siswa->nama_siswa }}</td>
-                    <td>{{ $p->siswa->kelas->nama }}</td>
-                    <td>{{ $p->poinKategori->nama }}</td>
-                    <td>{{ $p->poinKategori->poin }}</td>
-                    <td>{{ $p->tanggal }}</td>
-                    <td>{{ $p->keterangan }}</td>
-                    <td>{{ $p->user->nama }}</td>
-                    <td>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#modaledit{{ $p->id }}"><i class="bi bi-pencil"></i> Edit</button>
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                            data-bs-target="#modaldelete{{ $p->id }}"><i class="bi bi-trash"></i> Hapus</button>
-                    </td>
+    <div class="table-responsive">
+        <table class="table datatable table-success table-striped-columns border-success">
+            <thead>
+                <tr class="text-center">
+                    <th>No</th>
+                    <th>NIS</th>
+                    <th>Nama Siswa</th>
+                    <th>Kelas</th>
+                    <th>Nama Budaya Positif</th>
+                    <th>Poin</th>
+                    <th>Tanggal</th>
+                    <th>Keterangan</th>
+                    <th>Guru</th>
+                    <th>Aksi</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @php $no = 1; @endphp
+                @foreach ($poinSiswa as $p)
+                    <tr class="text-center text-capitalize">
+                        <td>{{ $no++ }}</td>
+                        <td>{{ $p->siswa->nis }}</td>
+                        <td>{{ $p->siswa->nama_siswa }}</td>
+                        <td>{{ $p->siswa->kelas->nama }}</td>
+                        <td>{{ $p->poinKategori->nama }}</td>
+                        <td>{{ $p->poinKategori->poin }}</td>
+                        <td>{{ $p->tanggal }}</td>
+                        <td>{{ $p->keterangan }}</td>
+                        <td>{{ $p->user->nama }}</td>
+                        <td>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#modaledit{{ $p->id }}"><i class="bi bi-pencil"></i> Edit</button>
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                data-bs-target="#modaldelete{{ $p->id }}"><i class="bi bi-trash"></i> Hapus</button>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 
     <div class="modal fade" id="modalSelectStudent" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -73,13 +76,14 @@
                         </thead>
                         <tbody>
                             @foreach ($siswa as $index => $s)
-                                <tr class="text-center text-capitalize">    
+                                <tr class="text-center text-capitalize">
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $s->nis }}</td>
                                     <td>{{ $s->nama_siswa }}</td>
                                     <td>{{ $s->kelas->nama }}</td>
                                     <td>
-                                        <button type="button" class="btn btn-primary select-student" data-id="{{ $s->id }}" data-name="{{ $s->nama_siswa }}">Pilih</button>
+                                        <button type="button" class="btn btn-primary select-student"
+                                            data-id="{{ $s->id }}" data-name="{{ $s->nama_siswa }}">Pilih</button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -101,7 +105,8 @@
                             <select name="poin_kategori_id" class="form-select" id="poinKategoriSelect" required>
                                 <option value="">Pilih Nama Budaya Positif</option>
                                 @foreach ($poinKategori as $pk)
-                                    <option value="{{ $pk->id }}" data-poin="{{ $pk->poin }}">{{ $pk->nama }}</option>
+                                    <option value="{{ $pk->id }}" data-poin="{{ $pk->poin }}">
+                                        {{ $pk->nama }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -158,24 +163,28 @@
                                 <select name="poin_kategori_id" class="form-select" id="poinKategoriSelect" required>
                                     <option value="{{ $p->poin_kategori_id }}">{{ $p->poinKategori->nama }}</option>
                                     @foreach ($poinKategori as $pk)
-                                        <option value="{{ $pk->id }}" data-poin="{{ $pk->poin }}">{{ $pk->nama }}</option>
+                                        <option value="{{ $pk->id }}" data-poin="{{ $pk->poin }}">
+                                            {{ $pk->nama }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <br>
                             <div class="form-group">
                                 <label>Poin</label>
-                                <input type="number" value="{{ $p->poin }}" class="form-control" id="poinInput" name="poin" readonly required>
+                                <input type="number" value="{{ $p->poin }}" class="form-control" id="poinInput"
+                                    name="poin" readonly required>
                             </div>
                             <br>
                             <div class="form-group">
                                 <label>Keterangan</label>
-                                <input type="text" value="{{ $p->keterangan }}" class="form-control" name="keterangan">
+                                <input type="text" value="{{ $p->keterangan }}" class="form-control"
+                                    name="keterangan">
                             </div>
                             <br>
                             <div class="form-group">
                                 <label>Tanggal</label>
-                                <input type="date" value="{{ $p->tanggal }}" class="form-control" name="tanggal" required>
+                                <input type="date" value="{{ $p->tanggal }}" class="form-control" name="tanggal"
+                                    required>
                             </div>
                             <br>
                         </div>
