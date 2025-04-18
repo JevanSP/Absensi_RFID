@@ -3,35 +3,29 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
+use App\Models\Berita;
 
 class BeritaController extends Controller
 {
     public function index()
     {
-        if (!Cache::has('berita_reset')) {
-            session()->forget('berita');
-            Cache::put('berita_reset', true, now()->endOfDay());
-        }
-
-        session()->put('berita', array_merge([
-            'acara' => null,
-            'pakaian' => ['Baju Batik', 'Baju Bebas', 'Baju Muslim', 'Belum Ditentukan'],
-        ], session('berita', [])));
-
         return view('berita.list');
     }
 
-    public function update(Request $request)
+
+    public function store(Request $request)
     {
         $request->validate([
-            'acara' => 'nullable|string|max:255',
-            'pakaian' => 'nullable|array',
-            'pakaian.*' => 'string|max:255',
+            'acara' => 'required|string',
+            'pakaian' => 'required|string',
         ]);
-
-        session()->put('berita.acara', $request->input('acara'));
-        session()->put('berita.pakaian', $request->input('pakaian', []));
+        Berita::updateOrCreate(
+            ['id' => 1], // Assuming you want to update the first record
+            [
+                'acara' => $request->acara,
+                'pakaian' => $request->pakaian,
+            ]
+        );
         return redirect()->back()->with('success', 'Data berhasil diperbarui.');
     }
 }

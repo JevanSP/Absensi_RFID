@@ -42,6 +42,7 @@ Route::middleware(['login'])->group(function () {
         route::get('/edit_siswa/{id}', [SiswaController::class, 'edit'])->name('siswa.edit_siswa');
         route::post('/data_siswa/store', [SiswaController::class, 'store'])->name('siswa.store');
         route::put('/data_siswa/update/{id}', [SiswaController::class, 'update']);
+        route::put('/data_siswa/update/{id}/rfid', [SiswaController::class, 'update_rfid'])->name('siswa.update_rfid');
         route::delete('/data_siswa/destroy/{id}', [SiswaController::class, 'destroy']);
 
         Route::get('berita', [BeritaController::class, 'index'])->name('berita.list');

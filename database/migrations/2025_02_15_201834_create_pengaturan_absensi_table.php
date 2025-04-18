@@ -19,6 +19,12 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        DB::table('pengaturan_absensi')->insert([
+            'jam_masuk' => '07:00',
+            'jam_pulang' => '15:00',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 
     /**

@@ -79,6 +79,18 @@ class SiswaController extends Controller
         return redirect()->route('siswa.data_siswa')->with('success', 'Data siswa berhasil diperbarui!');
     }
 
+    public function update_rfid(Request $request, string $id): RedirectResponse
+    {
+        $siswa = Siswa::findOrFail($id);
+
+        $request->validate([
+            'rfid_tag' => 'required|string|unique:siswa,rfid_tag,' . $id,
+        ]);
+
+        $siswa->update($request->only('rfid_tag'));
+        return redirect()->route('siswa.data_siswa')->with('success', 'RFID berhasil diperbarui!');
+    }
+
     public function destroy(string $id): RedirectResponse
     {
         $siswa = Siswa::findOrFail($id);

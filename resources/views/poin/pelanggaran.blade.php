@@ -13,7 +13,7 @@
 
     <button type="button" class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#modalSelectStudent" id="addDataButton">+ TAMBAH DATA</button>
 
-    <table class="table datatable table-success table-striped-columns border-success">
+    <table class="table datatable table-danger table-striped-columns border-danger">
         <thead>
             <tr class="text-center">
                 <th>No</th>

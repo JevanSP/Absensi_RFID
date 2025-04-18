@@ -24,5 +24,6 @@ class PengaturanAbsensiController extends Controller
             'jam_masuk' => $request->jam_masuk,
             'jam_pulang' => $request->jam_pulang,
         ]);
-        return redirect()->back()->with('success', 'Pengaturan absensi berhasil diubah');    }
+        return redirect()->back()->with('success', 'Pengaturan absensi berhasil diubah');
+    }
 }

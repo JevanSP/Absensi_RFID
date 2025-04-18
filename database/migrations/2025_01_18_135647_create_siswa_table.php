@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('nama_siswa')->nullable();
             $table->enum('jenis_kelamin', ['L', 'P'])->nullable();
             $table->foreignId('kelas_id')->nullable()->constrained('kelas')->onDelete('cascade');
-            $table->string('rfid_tag')->unique();
+            $table->string('rfid_tag')->nullable()->unique();
             $table->string('foto')->nullable();
             $table->timestamps();
         });
