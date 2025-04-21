@@ -45,8 +45,8 @@ Route::middleware(['login'])->group(function () {
         route::put('/data_siswa/update/{id}/rfid', [SiswaController::class, 'update_rfid'])->name('siswa.update_rfid');
         route::delete('/data_siswa/destroy/{id}', [SiswaController::class, 'destroy']);
 
-        Route::get('berita', [BeritaController::class, 'index'])->name('berita.list');
-        Route::post('/berita/update', [BeritaController::class, 'update']);
+        Route::get('/berita', [BeritaController::class, 'index'])->name('berita.list');
+        Route::post('/berita/create', [BeritaController::class, 'store'])->name('berita.store');
 
         Route::get('/data_sekolah', [SekolahController::class, 'index'])->name('data_sekolah');
 
@@ -64,16 +64,16 @@ Route::middleware(['login'])->group(function () {
         Route::post('/absen-rfid-masuk', [AbsensiController::class, 'absen_masuk_RFID'])->name('absen_masuk.rfid');
         Route::post('/absen-rfid-pulang', [AbsensiController::class, 'absen_pulang_RFID'])->name('absen_pulang.rfid');
         Route::post('/absen/filter', [AbsensiController::class, 'filter'])->name('absen.filter');
-        Route::controller(AbsensiController::class)->group(function () {
-            Route::put('/absen/manual/{id}', 'manual')->name('absen.manual');
-        });
-        
+        Route::put('/absen/manual/{id}', [AbsensiController::class, 'absensi_manual'])->name('absen.manual');
+
         Route::get('/laporan-absensi-bulanan-form', function () {
             $kelas = \App\Models\Kelas::all();
             return view('absen.form_laporan_bulanan', compact('kelas'));
         })->name('laporan.absensi.bulanan.form');
 
-        Route::get('/laporan-absensi-bulanan', [AbsensiController::class, 'cetak_laporan_bulanan']);
+        Route::get('/laporan-absensi-bulanan', [AbsensiController::class, 'cetak_laporan_bulanan'])->name('laporan.absensi.bulanan');
+
+        Route::get('/laporan-absensi/pdf', [AbsensiController::class, 'cetak_laporan_bulanan_pdf'])->name('laporan.absensi.bulanan.pdf');
 
         Route::get('/pengaturan', [PengaturanAbsensiController::class, 'index'])->name('pengaturan.index');
         Route::post('/pengaturan', [PengaturanAbsensiController::class, 'store'])->name('pengaturan.store');

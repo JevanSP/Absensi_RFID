@@ -5,13 +5,13 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Charts / ApexCharts - NiceAdmin Bootstrap Template</title>
+    <title>SkaSa++</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
     <!-- Favicons -->
-    <link href="assets/img/favicon.png" rel="icon">
-    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="assets/img/skasa.png" rel="icon" type="image/png">
+    <link href="assets/img/skasa.png" rel="icon" type="image/png">
 
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect">
@@ -49,14 +49,15 @@
                     <div class="row justify-content-center">
                         <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
 
-                            <div class="d-flex justify-content-center py-4">
-                                <a href="index.html" class="logo d-flex align-items-center w-auto">
-                                    <img src="assets/img/logo.png" alt="">
-                                    <span class="d-none d-lg-block">NiceAdmin</span>
-                                </a>
-                            </div><!-- End Logo -->
+                            <div class="text-center">
+                                <div class="justify-content-center flex-column align-items-center text-center">
+                                    <a href="index.html" class="logo align-items-center">
+                                        <img src="assets/img/skasa.png" alt="">
+                                    </a>
+                                </div>
+                            </div>
 
-                            <div class="card mb-3">
+                            <div class="card">
 
                                 <div class="card-body">
 

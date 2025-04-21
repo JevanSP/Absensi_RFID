@@ -1,13 +1,13 @@
 <!-- ======= Header ======= -->
 <header id="header" class="header fixed-top d-flex align-items-center">
 
-    <div class="d-flex align-items-center justify-content-between">
-        <a href="index.html" class="logo d-flex align-items-center">
-            <img src="assets/img/logo.png" alt="">
-            <span class="d-none d-lg-block">NiceAdmin</span>
-        </a>
-        <i class="bi bi-list toggle-sidebar-btn"></i>
-    </div><!-- End Logo -->
+    <div class="text-center">
+        <div class="justify-content-center flex-column align-items-center text-center">
+            <a href="dashboard/admin_guru" class="logo-header align-items-center">
+                <img src="{{ asset('assets/img/skasa.png') }}" alt="">
+            </a>
+        </div>
+    </div>
 
 
     <nav class="header-nav ms-auto">
@@ -17,7 +17,8 @@
             <li class="nav-item dropdown pe-3">
 
                 <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                  <img src="{{ asset('assets/img/default-profile.png') }}" alt="Profile" class="rounded-circle object-fit-cover" style="width: 40px; height: 40px;">
+                    <img src="{{ asset('assets/img/default-profile.png') }}" alt="Profile"
+                        class="rounded-circle object-fit-cover" style="width: 40px; height: 40px;">
                     <span class="d-none d-md-block dropdown-toggle ps-2">{{ $user->nama }}</span>
                 </a><!-- End Profile Iamge Icon -->
 

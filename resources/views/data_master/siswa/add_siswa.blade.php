@@ -78,17 +78,6 @@
                     @enderror
                 </div>
 
-                <!-- Input RFID -->
-                <div class="mb-3">
-                    <label for="rfid_tag" class="form-label">RFID</label>
-                    <input type="text" class="form-control @error('rfid_tag') is-invalid @enderror" id="rfid_tag"
-                    name="rfid_tag" value="{{ old('rfid_tag') }}" required disabled style="opacity: 0.5;">
-                    @error('rfid_tag')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-                <br>
-
                 <!-- Script -->
                 <script>
                     let timer = null;

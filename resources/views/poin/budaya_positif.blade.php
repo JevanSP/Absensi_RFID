@@ -161,7 +161,6 @@
                             <div class="form-group">
                                 <label>Nama Budaya Positif</label>
                                 <select name="poin_kategori_id" class="form-select" id="poinKategoriSelect" required>
-                                    <option value="{{ $p->poin_kategori_id }}">{{ $p->poinKategori->nama }}</option>
                                     @foreach ($poinKategori as $pk)
                                         <option value="{{ $pk->id }}" data-poin="{{ $pk->poin }}">
                                             {{ $pk->nama }}</option>
@@ -221,12 +220,19 @@
     @endforeach
 
     <script>
-        document.getElementById('poinKategoriSelect').addEventListener('change', function() {
-            var selectedOption = this.options[this.selectedIndex];
-            var poin = selectedOption.getAttribute('data-poin');
-            document.getElementById('poinInput').value = poin;
+        // Untuk semua dropdown poin_kategori di form (baik tambah maupun edit)
+        document.querySelectorAll('select[name="poin_kategori_id"]').forEach(select => {
+            select.addEventListener('change', function() {
+                var selectedOption = this.options[this.selectedIndex];
+                var poin = selectedOption.getAttribute('data-poin');
+                var poinInput = this.closest('form').querySelector('input[name="poin"]');
+                if (poinInput) {
+                    poinInput.value = poin;
+                }
+            });
         });
 
+        // Pilih siswa di modal tambah
         document.querySelectorAll('.select-student').forEach(button => {
             button.addEventListener('click', function() {
                 var studentId = this.getAttribute('data-id');
@@ -238,6 +244,7 @@
             });
         });
 
+        // Reset modal tambah saat dibuka ulang
         document.getElementById('addDataButton').addEventListener('click', function() {
             document.getElementById('selectStudentBody').classList.remove('d-none');
             document.getElementById('inputFormBody').classList.add('d-none');

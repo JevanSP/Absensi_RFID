@@ -1,12 +1,13 @@
 <!-- ======= Header ======= -->
 <header id="header" class="header fixed-top d-flex align-items-center">
 
-    <div class="d-flex align-items-center justify-content-between">
-        <a href="index.html" class="logo d-flex align-items-center">
-            <img src="assets/img/logo.png" alt="">
-            <span class="d-none d-lg-block">NiceAdmin</span>
-        </a>
-    </div><!-- End Logo -->
+    <div class="text-center">
+        <div class="justify-content-center flex-column align-items-center text-center">
+            <a href="/dashboard/siswa" class="logo-header align-items-center">
+                <img src="{{ asset('assets/img/skasa.png') }}" alt="">
+            </a>
+        </div>
+    </div>
 
 
     <nav class="header-nav ms-auto">

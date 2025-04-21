@@ -1,7 +1,11 @@
-<aside id="sidebar" class="sidebar">
+@php
+    $role = Auth::user()->role;
+@endphp
 
+<aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
 
+        {{-- Menu Umum (Dashboard & Sekolah) --}}
         <li class="nav-item">
             <a href="{{ route('dashboard.admin_guru') }}"
                 class="nav-link {{ request()->routeIs('dashboard.admin_guru') ? 'active' : 'collapsed' }}">
@@ -18,82 +22,88 @@
             </a>
         </li>
 
-        <li class="nav-item">
-            <a class="nav-link {{ request()->is('data_kelas', 'data_siswa', 'poin_kategori/*') ? 'active' : 'collapsed' }}"
-                data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-menu-button-wide"></i><span>Data Master</span><i class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul id="components-nav"
-                class="nav-content collapse {{ request()->is('data_kelas', 'data_siswa', 'poin_kategori/*') ? 'show' : '' }}"
-                data-bs-parent="#sidebar-nav">
-                <li>
-                    <a href="/data_kelas" class="{{ request()->is('data_kelas') ? 'active' : '' }}">
-                        <i class="bi bi-circle"></i><span>Data Kelas</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/data_siswa" class="{{ request()->is('data_siswa') ? 'active' : '' }}">
-                        <i class="bi bi-circle"></i><span>Data Siswa</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('poin_kategori.indexByCategory', 'budaya_positif') }}"
-                        class="{{ request()->route('category') == 'budaya_positif' ? 'active' : '' }}">
-                        <i class="bi bi-circle"></i><span>Data Budaya Positif</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('poin_kategori.indexByCategory', 'prestasi') }}"
-                        class="{{ request()->route('category') == 'prestasi' ? 'active' : '' }}">
-                        <i class="bi bi-circle"></i><span>Data Prestasi</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('poin_kategori.indexByCategory', 'pelanggaran') }}"
-                        class="{{ request()->route('category') == 'pelanggaran' ? 'active' : '' }}">
-                        <i class="bi bi-circle"></i><span>Data Pelanggaran</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
+        @if ($role === 'admin')
+            {{-- MENU KHUSUS ADMIN --}}
+            <li class="nav-item">
+                <a class="nav-link {{ request()->is('data_kelas', 'data_siswa', 'poin_kategori/*') ? 'active' : 'collapsed' }}"
+                    data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-menu-button-wide"></i><span>Data Master</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="components-nav"
+                    class="nav-content collapse {{ request()->is('data_kelas', 'data_siswa', 'poin_kategori/*') ? 'show' : '' }}"
+                    data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="/data_kelas" class="{{ request()->is('data_kelas') ? 'active' : '' }}">
+                            <i class="bi bi-circle"></i><span>Data Kelas</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/data_siswa" class="{{ request()->is('data_siswa') ? 'active' : '' }}">
+                            <i class="bi bi-circle"></i><span>Data Siswa</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('poin_kategori.indexByCategory', 'budaya_positif') }}"
+                            class="{{ request()->route('category') == 'budaya_positif' ? 'active' : '' }}">
+                            <i class="bi bi-circle"></i><span>Data Budaya Positif</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('poin_kategori.indexByCategory', 'prestasi') }}"
+                            class="{{ request()->route('category') == 'prestasi' ? 'active' : '' }}">
+                            <i class="bi bi-circle"></i><span>Data Prestasi</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('poin_kategori.indexByCategory', 'pelanggaran') }}"
+                            class="{{ request()->route('category') == 'pelanggaran' ? 'active' : '' }}">
+                            <i class="bi bi-circle"></i><span>Data Pelanggaran</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
-        <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('user.index') ? 'active' : 'collapsed' }}"
-                data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-person"></i><span>User Manajemen</span><i class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul id="tables-nav" class="nav-content collapse {{ request()->routeIs('user.index') ? 'show' : '' }}"
-                data-bs-parent="#sidebar-nav">
-                <li>
-                    <a href="{{ route('user.index', 'admin') }}"
-                        class="{{ request()->route('role') == 'admin' ? 'active' : '' }}">
-                        <i class="bi bi-circle"></i><span>User Admin</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('user.index', 'guru') }}"
-                        class="{{ request()->route('role') == 'guru' ? 'active' : '' }}">
-                        <i class="bi bi-circle"></i><span>User Guru</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('user.index', 'siswa') }}"
-                        class="{{ request()->route('role') == 'siswa' ? 'active' : '' }}">
-                        <i class="bi bi-circle"></i><span>User Siswa</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('user.index') ? 'active' : 'collapsed' }}"
+                    data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-person"></i><span>User Manajemen</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="tables-nav" class="nav-content collapse {{ request()->routeIs('user.index') ? 'show' : '' }}"
+                    data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="{{ route('user.index', 'admin') }}"
+                            class="{{ request()->route('role') == 'admin' ? 'active' : '' }}">
+                            <i class="bi bi-circle"></i><span>User Admin</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('user.index', 'guru') }}"
+                            class="{{ request()->route('role') == 'guru' ? 'active' : '' }}">
+                            <i class="bi bi-circle"></i><span>User Guru</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('user.index', 'siswa') }}"
+                            class="{{ request()->route('role') == 'siswa' ? 'active' : '' }}">
+                            <i class="bi bi-circle"></i><span>User Siswa</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        @endif
 
+        {{-- Menu Absensi --}}
         <li class="nav-heading">ABSENSI</li>
 
-        <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('absensi.masuk', 'absensi.pulang') ? 'active' : 'collapsed' }}"
-                href="{{ now()->hour < 12 ? route('absensi.masuk') : route('absensi.pulang') }}">
-                <i class="bi-file-earmark-person-fill"></i>
-                <span>Tampilan Absensi Siswa</span>
-            </a>
-        </li>
+        @if ($role === 'admin')
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('absensi.masuk', 'absensi.pulang') ? 'active' : 'collapsed' }}"
+                    href="{{ now()->hour < 12 ? route('absensi.masuk') : route('absensi.pulang') }}">
+                    <i class="bi-file-earmark-person-fill"></i>
+                    <span>Tampilan Absensi Siswa</span>
+                </a>
+            </li>
+        @endif
 
         <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('absen.list') ? 'active' : 'collapsed' }}"
@@ -103,14 +113,17 @@
             </a>
         </li>
 
-        <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('laporan.absensi.bulanan.form') ? 'active' : 'collapsed' }}"
-                href="{{ route('laporan.absensi.bulanan.form') }}">
-                <i class="ri-article-line"></i>
-                <span>Cetak Absensi</span>
-            </a>
-        </li>
+        @if ($role === 'admin')
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('laporan.absensi.bulanan.form') ? 'active' : 'collapsed' }}"
+                    href="{{ route('laporan.absensi.bulanan.form') }}">
+                    <i class="ri-article-line"></i>
+                    <span>Cetak Absensi</span>
+                </a>
+            </li>
+        @endif
 
+        {{-- Menu Poin --}}
         <li class="nav-heading">POIN</li>
 
         <li class="nav-item">
@@ -134,24 +147,26 @@
             </a>
         </li>
 
-        <li class="nav-heading">PENGATURAN</li>
+        {{-- Menu Pengaturan hanya admin --}}
+        @if ($role === 'admin')
+            <li class="nav-heading">PENGATURAN</li>
 
-        <li class="nav-item">
-            <a href="{{ route('berita.list') }}"
-                class="nav-link {{ request()->routeIs('berita.list') ? 'active' : 'collapsed' }}">
-                <i class="ri-time-line"></i>
-                <span>Pengaturan Berita/Informasi</span>
-            </a>
-        </li>
+            <li class="nav-item">
+                <a href="{{ route('berita.list') }}"
+                    class="nav-link {{ request()->routeIs('berita.list') ? 'active' : 'collapsed' }}">
+                    <i class="ri-time-line"></i>
+                    <span>Pengaturan Berita/Informasi</span>
+                </a>
+            </li>
 
-        <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('pengaturan.index') ? 'active' : 'collapsed' }}"
-                href="{{ route('pengaturan.index') }}">
-                <i class="bi bi-gear-fill"></i>
-                <span>Pengaturan</span>
-            </a>
-        </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('pengaturan.index') ? 'active' : 'collapsed' }}"
+                    href="{{ route('pengaturan.index') }}">
+                    <i class="bi bi-gear-fill"></i>
+                    <span>Pengaturan</span>
+                </a>
+            </li>
+        @endif
 
     </ul>
-
-</aside><!-- End Sidebar-->
+</aside>

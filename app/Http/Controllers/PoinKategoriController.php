@@ -14,25 +14,32 @@ class PoinKategoriController extends Controller
     {
         $validCategories = ['pelanggaran', 'budaya_positif', 'prestasi'];
         if (!in_array($category, $validCategories)) {
-            abort(404); 
+            abort(404);
         }
 
         $poinKategori = PoinKategori::where('kategori', $category)->get();
         $title = "Data " . ucfirst(str_replace('_', ' ', $category));
         return view("data_master.$category", compact('poinKategori', 'title'));
     }
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
+        // Validasi input
         $request->validate([
-            'kategori' => 'required|string',
+            'kategori' => 'required|string|in:pelanggaran,budaya_positif,prestasi',
             'nama' => 'required|string',
             'poin' => 'required|integer',
         ]);
 
-        PoinKategori::create($request->all());
+        // Menyimpan data baru
+        PoinKategori::create([
+            'kategori' => $request->kategori,
+            'nama' => $request->nama,
+            'poin' => $request->poin,
+        ]);
 
         return redirect()->route('poin_kategori.indexByCategory', ['category' => $request->kategori])->with('success', 'Data Berhasil Ditambahkan');
     }
@@ -42,8 +49,26 @@ class PoinKategoriController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // Validasi input
+        $request->validate([
+            'kategori' => 'required|string|in:pelanggaran,budaya_positif,prestasi',
+            'nama' => 'required|string',
+            'poin' => 'required|integer',
+        ]);
+
+        // Cari PoinKategori berdasarkan ID
         $poinKategori = PoinKategori::find($id);
-        $poinKategori->update($request->all());
+        if (!$poinKategori) {
+            return redirect()->back()->with('error', 'Data tidak ditemukan');
+        }
+
+        // Perbarui data
+        $poinKategori->update([
+            'kategori' => $request->kategori,  // Pastikan kategori dikirim dan diperbarui
+            'nama' => $request->nama,
+            'poin' => $request->poin,
+        ]);
+
         return redirect()->route('poin_kategori.indexByCategory', ['category' => $poinKategori->kategori])->with('success', 'Data Berhasil Diupdate');
     }
 
@@ -52,14 +77,18 @@ class PoinKategoriController extends Controller
      */
     public function destroy($id)
     {
+        // Cari PoinKategori berdasarkan ID
         $poinKategori = PoinKategori::find($id);
+        if (!$poinKategori) {
+            return redirect()->back()->with('error', 'Data tidak ditemukan');
+        }
+
+        // Simpan kategori sebelum dihapus untuk digunakan di redirect
         $category = $poinKategori->kategori;
+
+        // Hapus data
         $poinKategori->delete();
+
         return redirect()->route('poin_kategori.indexByCategory', ['category' => $category])->with('success', 'Data Berhasil Dihapus');
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    
 }

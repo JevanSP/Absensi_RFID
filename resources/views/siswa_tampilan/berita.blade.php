@@ -10,6 +10,6 @@
         </nav>
     </div>
 
-    <p><strong>Acara:</strong> {{ session('berita.acara') ?? 'Belum diatur' }}</p>
-    <p><strong>Pakaian:</strong> {{ implode(', ', session('berita.pakaian', [])) }}</p>
+    <p><strong>Acara:</strong> {{ $berita->acara }}</p>
+    <p><strong>Pakaian:</strong> {{ $berita->pakaian }}</p>
 @endsection

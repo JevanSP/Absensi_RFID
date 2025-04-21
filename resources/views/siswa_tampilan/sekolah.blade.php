@@ -34,8 +34,8 @@
                         <p><b>Kepala Sekolah</b> : Joko Supriyadi S.Pd,</p>
                         <p><b>Akredasi</b> : A</p>
                         <p><b>Kurikulum</b> : Kurikulum Merdeka</p>
-                        <p><b>Pendidik</b> : </p>
-                        <p><b>Peserta Didik</b> : </p>
+                        <p><b>Pendidik</b> : {{ $total_siswa }}</p>
+                        <p><b>Peserta Didik</b> : {{ $total_guru }}</p>
                     </div>
                 </div>
             </div>
@@ -85,10 +85,16 @@
             <div class="col-lg mr-2">
                 <div class="card">
                     <div class="card-header">Alamat</div>
-                    <br>
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3948.964085516717!2d111.08978727500939!3d-8.206366191825705!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7bdf7de1e8387f%3A0x4d70ae1734962587!2sSMK%20Negeri%201%20Pacitan!5e0!3m2!1sid!2sid!4v1744816900541!5m2!1sid!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    <div class="ratio ratio-4x3">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3948.964085516717!2d111.08978727500939!3d-8.206366191825705!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7bdf7de1e8387f%3A0x4d70ae1734962587!2sSMK%20Negeri%201%20Pacitan!5e0!3m2!1sid!2sid!4v1744816900541!5m2!1sid!2sid"
+                            style="border:0;" allowfullscreen="" loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
                 </div>
             </div>
+            
         </div>
     </div>
 @endsection

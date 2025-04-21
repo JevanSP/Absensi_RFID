@@ -355,7 +355,7 @@ h6 {
 # Header
 --------------------------------------------------------------*/
 .logo {
-  line-height: 1;
+  background: none !important;
 }
 
 @media (min-width: 1200px) {
@@ -365,16 +365,19 @@ h6 {
 }
 
 .logo img {
-  max-height: 26px;
-  margin-right: 6px;
+  height: 150px;
+  max-width: 100%;
+  background: none !important;
+  display: block;
 }
 
-.logo span {
-  font-size: 26px;
-  font-weight: 700;
-  color: #005324;
-  font-family: "Nunito", sans-serif;
+.logo-header img{
+  height: 100px;
+  max-width: 100%;
+  background: none !important;
+  display: block;
 }
+
 
 .header {
   transition: all 0.5s;

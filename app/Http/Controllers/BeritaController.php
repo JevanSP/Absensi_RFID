@@ -9,7 +9,8 @@ class BeritaController extends Controller
 {
     public function index()
     {
-        return view('berita.list');
+        $berita = Berita::first();
+        return view('berita.list', compact('berita'));
     }
 
 
@@ -17,15 +18,24 @@ class BeritaController extends Controller
     {
         $request->validate([
             'acara' => 'required|string',
-            'pakaian' => 'required|string',
+            'pakaian' => 'required|in:batik,bebas,muslim,seragam,tidak ada'
         ]);
-        Berita::updateOrCreate(
-            ['id' => 1], // Assuming you want to update the first record
-            [
+    
+        $berita = Berita::first(); // ambil berita pertama (karena cuma 1)
+    
+        if ($berita) {
+            $berita->update([
+                'acara' => $request->acara,
+                'pakaian' =>    $request->pakaian,
+            ]);
+        } else {
+            Berita::create([
                 'acara' => $request->acara,
                 'pakaian' => $request->pakaian,
-            ]
-        );
+            ]);
+        }
+    
         return redirect()->back()->with('success', 'Data berhasil diperbarui.');
     }
+    
 }

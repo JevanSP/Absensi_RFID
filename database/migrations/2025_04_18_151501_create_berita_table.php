@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('berita', function (Blueprint $table) {
             $table->id();
             $table->string('acara')->nullable();
-            $table->enum('pakaian', ['batik', 'bebas', 'muslim', 'seragam', 'tidak_ada'])->default('tidak_ada');
+            $table->enum('pakaian', ['batik', 'bebas', 'muslim', 'seragam', 'tidak ada'])->default('tidak ada');
             $table->timestamps();
         });
     }

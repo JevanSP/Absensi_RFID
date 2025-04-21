@@ -41,6 +41,12 @@ class PoinSiswaController extends Controller
             'kategori' => 'required|string|in:prestasi,pelanggaran,budaya_positif',
         ]);
 
+        // Pastikan kategori pada poin kategori sama dengan kategori yang dipilih
+        $poinKategori = PoinKategori::find($request->poin_kategori_id);
+        if ($poinKategori && $poinKategori->kategori !== $request->kategori) {
+            return redirect()->back()->with('error', 'Kategori poin tidak sesuai dengan kategori yang dipilih');
+        }
+
         PoinSiswa::create([
             'siswa_id' => $request->siswa_id,
             'poin_kategori_id' => $request->poin_kategori_id,
@@ -53,6 +59,7 @@ class PoinSiswaController extends Controller
 
         return redirect()->route('poin_siswa.index', ['kategori' => $request->kategori])->with('success', 'Data Berhasil Ditambahkan');
     }
+
 
     public function update(Request $request, $id)
     {

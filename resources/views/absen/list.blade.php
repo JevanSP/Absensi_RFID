@@ -44,7 +44,7 @@
     <!-- Absensi Table -->
     <table class="table table-bordered">
         <thead>
-            <tr>
+            <tr class="text-center">
                 <th>NIS</th>
                 <th>Nama Siswa</th>
                 <th>Kelas</th>
@@ -52,55 +52,65 @@
                 <th>Jam Masuk</th>
                 <th>Jam Pulang</th>
                 <th>Status</th>
+                <th>info</th>
                 <th>Keterangan</th>
                 <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
-            @if ($absensi->isEmpty())
-                <tr>
-                    <td colspan="9" class="text-center">Tidak ada data absensi</td>
+            @foreach ($semuaSiswa as $siswa)
+                @php
+                    $absen = $siswa->absensi->first(); // relasi absensi hanya untuk hari ini
+                @endphp
+                <tr
+                    class="text-center
+                @if (!$absen) table-secondary
+                @elseif ($absen->status == 'terlambat')
+                    table-warning
+                @elseif ($absen->status == 'izin')
+                    table-info
+                @elseif ($absen->status == 'sakit')
+                    table-primary
+                @elseif ($absen->status == 'alpa')
+                    table-danger
+                @elseif ($absen->status == 'hadir')
+                    table-success @endif
+            ">
+                    <td>{{ $siswa->nis }}</td>
+                    <td>{{ $siswa->nama_siswa }}</td>
+                    <td>{{ $siswa->kelas->nama }}</td>
+                    <td>{{ $absen->tanggal ?? '-' }}</td>
+                    <td>{{ $absen->jam_masuk ?? '-' }}</td>
+                    <td>{{ $absen->jam_pulang ?? '-' }}</td>
+                    <td>{{ ucfirst($absen->status ?? 'Belum Absen') }}</td>
+                    <td>
+                        @if (!$absen)
+                            Belum ada data absensi
+                        @elseif (is_null($absen->jam_masuk) && is_null($absen->jam_pulang))
+                            Belum absen masuk & pulang
+                        @elseif (is_null($absen->jam_masuk))
+                            Belum absen masuk
+                        @elseif (is_null($absen->jam_pulang))
+                            Belum absen pulang
+                        @else
+                            Sudah absen lengkap
+                        @endif
+                    </td>
+                    <td>{{ $absen->keterangan ?? '-' }}</td>
+                    <td>
+                        <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                            data-bs-target="#manualAbsenModal{{ $siswa->id }}">
+                            Absen Manual
+                        </button>
+                    </td>
                 </tr>
-            @else
-                @foreach ($absensi as $siswa)
-                    @php
-                        $absen = $siswa->absensi->first();
-                    @endphp
-                    <tr
-                        class="@if ($absen && $absen->status == 'terlambat') table-warning @elseif ($absen && $absen->status == 'izin') table-info @elseif ($absen && $absen->status == 'sakit') table-secondary @elseif ($absen && $absen->status == 'alpa') table-danger @endif{{ $absen && $absen->status == 'hadir' ? 'table-success' : '' }} text-center">
-                        <td>{{ $siswa->nis }}</td>
-                        <td>{{ $siswa->nama_siswa }}</td>
-                        <td>{{ $siswa->kelas->nama }}</td>
-                        <td>{{ $absen->tanggal ?? '-' }}</td>
-                        <td>{{ $absen->jam_masuk ?? '-' }}</td>
-                        <td>{{ $absen->jam_pulang ?? '-' }}</td>
-                        <td>{{ ucfirst($absen->status ?? '-') }}</td>
-                        <td>
-                            @if (is_null($absen))
-                                Belum ada data absensi
-                            @elseif (is_null($absen->jam_masuk))
-                                Belum absen masuk
-                            @elseif (is_null($absen->jam_pulang))
-                                Belum absen pulang
-                            @else
-                                Sudah absen lengkap
-                            @endif
-                        </td>
-                        <td>
-                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#manualAbsenModal{{ $siswa->id }}">
-                                Absen Manual
-                            </button>
-                        </td>
-                    </tr>
-                @endforeach
-            @endif
+            @endforeach
         </tbody>
     </table>
     <!-- End Absensi Table -->
 
     <!-- Modal Absensi Manual -->
-    @foreach ($absensi as $siswa)
+    @foreach ($semuaSiswa as $siswa)
         @php
             $absen = $siswa->absensi->first();
         @endphp
@@ -118,30 +128,29 @@
                         <div class="modal-body">
                             <input type="hidden" name="siswa_id" value="{{ $siswa->id }}">
                             <div class="mb-3">
-                                <label for="tanggal{{ $siswa->id }}" class="form-label">Tanggal</label>
-                                <input type="date" class="form-control" id="tanggal{{ $siswa->id }}" name="tanggal"
-                                    value="{{ old('tanggal', now()->toDateString()) }}">
+                                <label class="form-label">Tanggal</label>
+                                <input type="date" class="form-control" name="tanggal"
+                                    value="{{ now()->toDateString() }}">
                             </div>
                             <div class="mb-3">
-                                <label for="jam_masuk{{ $siswa->id }}" class="form-label">Jam Masuk</label>
-                                <input type="time" class="form-control" id="jam_masuk{{ $siswa->id }}"
-                                    name="jam_masuk" value="{{ $absen->jam_masuk ?? '' }}">
+                                <label class="form-label">Jam Masuk</label>
+                                <input type="time" class="form-control" name="jam_masuk"
+                                    value="{{ $absen->jam_masuk ?? '' }}">
                             </div>
                             <div class="mb-3">
-                                <label for="jam_pulang{{ $siswa->id }}" class="form-label">Jam Pulang</label>
-                                <input type="time" class="form-control" id="jam_pulang{{ $siswa->id }}"
-                                    name="jam_pulang" value="{{ $absen->jam_pulang ?? '' }}">
+                                <label class="form-label">Jam Pulang</label>
+                                <input type="time" class="form-control" name="jam_pulang"
+                                    value="{{ $absen->jam_pulang ?? '' }}">
                             </div>
                             <div class="mb-3">
-                                <label>Status</label><br>
+                                <label class="form-label">Status</label><br>
                                 @foreach (['hadir', 'terlambat', 'izin', 'sakit', 'alpa'] as $status)
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="status"
                                             id="{{ $status . $siswa->id }}" value="{{ $status }}"
-                                            {{ $absen && $absen->status == $status ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="{{ $status . $siswa->id }}">
-                                            {{ ucfirst($status) }}
-                                        </label>
+                                            {{ $absen && $absen->status == $status ? 'checked' : ($status == 'hadir' ? 'checked' : '') }}>
+                                        <label class="form-check-label"
+                                            for="{{ $status . $siswa->id }}">{{ ucfirst($status) }}</label>
                                     </div>
                                 @endforeach
                             </div>

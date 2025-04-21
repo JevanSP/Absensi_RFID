@@ -74,7 +74,7 @@
         <div class="position-absolute bottom-0 start-0 end-0 text-center py-3"
             style="background: rgba(0, 0, 0, 0); z-index: 100; color: white;">
             <marquee behavior="scroll" direction="left" scrollamount="6" style="font-size: 3rem;">
-                Selamat Datang di Sistem Absensi RFID SMKN 1 PACITAN – Disiplin Adalah Kunci Kesuksesan!
+                SELAMAT DATANG DI SISTEM ABSENSI SMIKPA++ SMKN 1 PACITAN – DISIPLIN ADALAH KUNCI KESUKSESAN!
             </marquee>
         </div>
 
@@ -86,14 +86,18 @@
 
         <!-- === JAM DIGITAL DI POJOK KANAN ATAS === -->
         <div id="clock" class="position-absolute top-0 end-0 m-3 px-4 py-2 rounded-4 shadow"
-            style="background-color: rgba(0, 0, 0, 0.75); color: white; font-size: 8rem; z-index: 1000;">
+            style="background-color: rgba(0, 0, 0, 0.75); color: white; font-size: 2rem; z-index: 1000;">
             00:00:00
         </div>
+
+        <div class="
+        "></div>
 
     </div>
     <!-- Carousel wrapper -->
 
-    <form method="POST" action="{{ route('absen_pulang.rfid') }}" style="autocomplete: off; position: absolute; left: -9999999px;">
+    <form method="POST" action="{{ route('absen_pulang.rfid') }}"
+        style="autocomplete: off; position: absolute; left: -9999999px;">
         @csrf
         <div class="form-group">
             <input type="text" class="form-control" name="rfid_tag" autofocus>
@@ -118,20 +122,33 @@
                     },
                     success: function(res) {
                         const resultBox = $('#absen-result');
-                        $('#absen-content').html(`
-        <strong>${res.message}</strong><br>
-        <hr class="text-light my-2">
-        <img src="${res.siswa.foto}" alt="Foto Siswa" class="rounded-circle shadow" style="width: 100px; height: 100px; object-fit: cover;"><br><br>
-        Nama       : <strong>${res.siswa.nama_siswa}</strong><br>
-        NIS        : ${res.siswa.nis}<br>
-        Kelas      : ${res.siswa.kelas}<br>
-        Jam Pulang : ${res.siswa.jam_pulang}<br>`);
+                        const content = $('#absen-content');
+
+                        if (res.message === 'Siswa belum absen masuk hari ini') {
+                            content.html(`
+            <strong class="text-warning">${res.message}</strong><br>
+            <hr class="text-light my-2">
+            <img src="storage/${res.siswa.foto}" alt="Foto Siswa" class="rounded-circle shadow" style="width: 120px; height: 120px; object-fit: cover; border: 3px solid #4caf50;"><br><br>
+            Nama       : <strong>${res.siswa.nama_siswa}</strong><br>
+            NIS        : ${res.siswa.nis}<br>
+            Kelas      : ${res.siswa.kelas}<br>
+        `);
+                        } else {
+                            content.html(`
+            <strong>${res.message}</strong><br>
+            <hr class="text-light my-2">
+            <img src="storage/${res.siswa.foto}" alt="Foto Siswa" class="rounded-circle shadow" style="width: 120px; height: 120px; object-fit: cover; border: 3px solid #4caf50;"><br><br>
+            Nama       : <strong>${res.siswa.nama_siswa}</strong><br>
+            NIS        : ${res.siswa.nis}<br>
+            Kelas      : ${res.siswa.kelas}<br>
+            Jam Pulang : ${res.siswa.jam_pulang}<br>
+        `);
+                        }
 
                         resultBox.removeClass('d-none').hide().fadeIn(500);
 
-                        // Suara notifikasi (jika mau)
                         const audio = new Audio(
-                            "https://www.myinstants.com/media/sounds/cat-laugh-meme-1.mp3");
+                            "https://www.myinstants.com/media/sounds/correct.mp3");
                         audio.play();
 
                         setTimeout(() => {
@@ -140,6 +157,7 @@
 
                         input.val('').focus(); // Kosongkan input dan fokus ulang
                     }
+
 
                 });
             });
@@ -151,15 +169,15 @@
         });
 
         function updateClock() {
-        const now = new Date();
-        const hours = String(now.getHours()).padStart(2, '0');
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-        const seconds = String(now.getSeconds()).padStart(2, '0');
-        document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
-    }
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+        }
 
-    setInterval(updateClock, 1000);
-    updateClock(); // jalankan sekali saat load
+        setInterval(updateClock, 1000);
+        updateClock(); // jalankan sekali saat load
     </script>
 
     <script src="{{ asset('assets/vendor/apexcharts/apexcharts.min.js') }}"></script>

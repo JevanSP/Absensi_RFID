@@ -20,9 +20,9 @@ class DashboaordController extends Controller
             $query->whereDate('created_at', $today)
                 ->whereIn('status', ['hadir', 'terlambat']);
         })->count();
-        $siswa_tidak_hadir_hari_ini = Siswa::whereHas('absensi', function ($query) use ($today) {
+        $siswa_tidak_hadir_hari_ini = Siswa::whereDoesntHave('absensi', function ($query) use ($today) {
             $query->whereDate('created_at', $today)
-                ->whereNotIn('status', ['hadir', 'terlambat']);
+                ->whereIn('status', ['hadir', 'terlambat']);
         })->count();
 
         return view('dashboard.list', compact('user', 'total_siswa', 'siswa_hadir_hari_ini', 'siswa_tidak_hadir_hari_ini'));
