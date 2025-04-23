@@ -27,7 +27,7 @@ class PoinSiswaController extends Controller
         $siswa = Siswa::all();
         $title = "Poin " . ucfirst(str_replace('_', ' ', $kategori));
         $user = Auth::user();
-        return view("poin.budaya_positif", compact('poinSiswa', 'title', 'poinKategori', 'siswa'));
+        return view("poin.$kategori", compact('poinSiswa', 'title', 'poinKategori', 'siswa'));
     }
 
     public function store(Request $request)
@@ -85,11 +85,14 @@ class PoinSiswaController extends Controller
         return redirect()->route('poin_siswa.index', ['kategori' => $request->kategori])->with('success', 'Data Berhasil Diupdate');
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        $poinSiswa = PoinSiswa::find($id);
+        $poinSiswa = PoinSiswa::findOrFail($id);
         $kategori = $poinSiswa->kategori;
+
         $poinSiswa->delete();
-        return redirect()->route('poin_siswa.index', ['kategori' => $kategori])->with('success', 'Data Berhasil Dihapus');
+
+        return redirect()->route('poin_siswa.index', ['kategori' => $poinSiswa->PoinKategori->kategori]);
+
     }
 }

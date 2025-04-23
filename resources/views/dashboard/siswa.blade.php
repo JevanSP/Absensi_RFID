@@ -16,17 +16,17 @@
                     <div class="card-body mt-3">
                         <h5 class="text-white">Status Hari Ini</h5>
                         <h2>
-                            @if ($status == 'Hadir')
+                            @if ($status === 'hadir')
                                 <span class="badge bg-success">Hadir</span>
-                            @elseif ($status == 'sakit')
+                            @elseif ($status === 'sakit')
                                 <span class="badge bg-secondary">Sakit</span>
-                            @elseif ($status == 'alfa')
+                            @elseif ($status === 'alfa')
                                 <span class="badge bg-danger">Alfa</span>
-                            @elseif ($status == 'terlambat')
+                            @elseif ($status === 'terlambat')
                                 <span class="badge bg-warning">Terlambat</span>
-                            @elseif ($status == 'izin')
+                            @elseif ($status === 'izin')
                                 <span class="badge bg-info">Izin</span>
-                            @elseif ($status == null)
+                            @else
                                 <span class="badge bg-black">-</span>
                             @endif
                         </h2>

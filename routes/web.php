@@ -63,7 +63,8 @@ Route::middleware(['login'])->group(function () {
         Route::get('/absen', [AbsensiController::class, 'index'])->name('absen.list');
         Route::post('/absen-rfid-masuk', [AbsensiController::class, 'absen_masuk_RFID'])->name('absen_masuk.rfid');
         Route::post('/absen-rfid-pulang', [AbsensiController::class, 'absen_pulang_RFID'])->name('absen_pulang.rfid');
-        Route::post('/absen/filter', [AbsensiController::class, 'filter'])->name('absen.filter');
+        Route::post('/check_absensi_hari_ini', [AbsensiController::class, 'checkAbsensiHariIni'])->name('check_absensi_hari_ini');
+        Route::get('/absen/filter', [AbsensiController::class, 'filter'])->name('absen.filter');
         Route::put('/absen/manual/{id}', [AbsensiController::class, 'absensi_manual'])->name('absen.manual');
 
         Route::get('/laporan-absensi-bulanan-form', function () {
@@ -84,10 +85,10 @@ Route::middleware(['login'])->group(function () {
         Route::put('poin_kategori/{category}', [PoinKategoriController::class, 'update'])->name('poin_kategori.update');
         Route::delete('poin_kategori/{category}', [PoinKategoriController::class, 'destroy'])->name('poin_kategori.destroy');
 
-        Route::get('poin_siswa/{kategori?}', [PoinSiswaController::class, 'indexBySiswaCategory'])->name('poin_siswa.index');
+        Route::get('poin_siswa/{kategori}', [PoinSiswaController::class, 'indexBySiswaCategory'])->name('poin_siswa.index');
         Route::post('poin_siswa', [PoinSiswaController::class, 'store'])->name('poin_siswa.store');
         Route::put('poin_siswa/{kategori}', [PoinSiswaController::class, 'update'])->name('poin_siswa.update');
-        Route::delete('poin_siswa/{kategori}', [PoinSiswaController::class, 'destroy'])->name('poin_siswa.destroy');
+        Route::delete('poin_siswa/{id}', [PoinSiswaController::class, 'destroy'])->name('poin_siswa.destroy');   
     });
 
 

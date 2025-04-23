@@ -74,7 +74,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body" id="studentSelectBody">
-                    <table class="table table-bordered">
+                    <table class="table datatable table-bordered">
                         <thead>
                             <tr>
                                 <th>No</th>

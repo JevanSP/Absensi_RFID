@@ -1,12 +1,12 @@
 @extends('layout.layout')
 @section('content')
     <div class="pagetitle">
-        <h1>Data Budaya Positif</h1>
+        <h1>Input Budaya Positif</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/dashboard">Beranda</a></li>
-                <li class="breadcrumb-item">Data Master</li>
-                <li class="breadcrumb-item active">Data Budaya Positif</li>
+                <li class="breadcrumb-item">Poinr</li>
+                <li class="breadcrumb-item active">Input Budaya Positif</li>
             </ol>
         </nav>
     </div>
@@ -196,19 +196,21 @@
         </div>
     @endforeach
 
-    @foreach ($poinKategori as $p)
+    @foreach ($poinSiswa as $p)
         <div class="modal fade" id="modaldelete{{ $p->id }}" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5">Hapus Poin Kategori</h1>
+                        <h1 class="modal-title fs-5">Hapus Budaya Positif</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <form method="POST" action="{{ route('poin_siswa.destroy', $p->id) }}">
                         @csrf
                         @method('DELETE')
+                        <input type="hidden" name="kategori" value="{{ $p->kategori }}">
                         <div class="modal-body">
-                            <p>Apakah anda yakin ingin menghapus data ini?</p>
+                            <p>Apakah anda yakin ingin menghapus data <strong>{{ $p->poinKategori->nama }}</strong> untuk
+                                siswa <strong>{{ $p->siswa->nama_siswa }}</strong>?</p>
                         </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-outline-danger">Hapus</button>

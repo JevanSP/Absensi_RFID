@@ -70,29 +70,38 @@
         </div>
         <!-- Inner -->
 
-        <!-- === ANIMASI TEKS BERGERAK DI BAWAH VIDEO === -->
-        <div class="position-absolute bottom-0 start-0 end-0 text-center py-3"
+        <div class="position-absolute bottom-0 start-0 end-0 text-center py-2"
             style="background: rgba(0, 0, 0, 0); z-index: 100; color: white;">
-            <marquee behavior="scroll" direction="left" scrollamount="6" style="font-size: 3rem;">
-                SELAMAT DATANG DI SISTEM ABSENSI SMIKPA++ SMKN 1 PACITAN – DISIPLIN ADALAH KUNCI KESUKSESAN!
+            <marquee behavior="scroll" direction="left" scrollamount="6"
+                style="font-size: 3rem; font-family: 'Poppins', sans-serif;">
+                SELAMAT DATANG DI SISTEM ABSENSI SKASA++ SMKN 1 PACITAN – DISIPLIN ADALAH KUNCI KESUKSESAN!
             </marquee>
         </div>
 
-        <!-- === TOMBOL DASHBOARD === -->
+        <!-- Tombol Dashboard -->
         <a href="{{ route('dashboard.admin_guru') }}"
             class="position-absolute top-0 start-0 m-3 btn btn-light rounded-pill shadow" style="z-index: 1000;">
             🏠 Dashboard
         </a>
 
-        <!-- === JAM DIGITAL DI POJOK KANAN ATAS === -->
-        <div id="clock" class="position-absolute top-0 end-0 m-3 px-4 py-2 rounded-4 shadow"
-            style="background-color: rgba(0, 0, 0, 0.75); color: white; font-size: 2rem; z-index: 1000;">
-            00:00:00
+        <!-- Jam Digital -->
+        <div class="position-absolute top-0 end-0 m-3" style="z-index: 1000;">
+            <!-- Clock Card -->
+            <div id="clock" class="mb-3 px-4 py-2 rounded-4 shadow"
+                style="background-color: rgba(0, 0, 0, 0.75); color: white; font-size: 2rem;">
+                <div id="current-time">00:00:00</div>
+            </div>
+
+            <!-- Card Baru -->
+            <div class="px-4 py-3 rounded-4 shadow" style="background-color: #fff; color: #333; min-width: 250px;">
+                <div class="fw-bold mb-2" style="font-size: 1.2rem;">Waktu Sekolah</div>
+                <div>
+                    Jam Masuk: {{ $pengaturan->jam_masuk }}<br>
+                    Jam Pulang: {{ $pengaturan->jam_pulang }}
+                </div>
+            </div>
         </div>
-
-        <div class="
-        "></div>
-
+        
     </div>
     <!-- Carousel wrapper -->
 

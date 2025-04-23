@@ -10,12 +10,14 @@
     <meta content="" name="keywords">
 
     <!-- Favicons -->
-    <link href="{{ asset('assets/img/favicon.png') }}" rel="icon">
+    <link href="{{ asset('assets/img/skasa.png') }}" rel="icon">
     <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
 
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Nunito:wght@300;400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Nunito:wght@300;400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Vendor CSS Files -->
@@ -57,10 +59,11 @@
         </div>
 
         <!-- Animasi teks berjalan -->
-        <div class="position-absolute bottom-0 start-0 end-0 text-center py-3"
+        <div class="position-absolute bottom-0 start-0 end-0 text-center py-2"
             style="background: rgba(0, 0, 0, 0); z-index: 100; color: white;">
-            <marquee behavior="scroll" direction="left" scrollamount="6" style="font-size: 3rem;">
-                SELAMAT DATANG DI SISTEM ABSENSI SMIKPA++ SMKN 1 PACITAN – DISIPLIN ADALAH KUNCI KESUKSESAN!
+            <marquee behavior="scroll" direction="left" scrollamount="6"
+                style="font-size: 3rem; font-family: 'Poppins', sans-serif;">
+                SELAMAT DATANG DI SISTEM ABSENSI SKASA++ SMKN 1 PACITAN – DISIPLIN ADALAH KUNCI KESUKSESAN!
             </marquee>
         </div>
 
@@ -71,10 +74,23 @@
         </a>
 
         <!-- Jam Digital -->
-        <div id="clock" class="position-absolute top-0 end-0 m-3 px-4 py-2 rounded-4 shadow"
-            style="background-color: rgba(0, 0, 0, 0.75); color: white; font-size: 2rem; z-index: 1000;">
-            00:00:00
+        <div class="position-absolute top-0 end-0 m-3" style="z-index: 1000;">
+            <!-- Clock Card -->
+            <div id="clock" class="mb-3 px-4 py-2 rounded-4 shadow"
+                style="background-color: rgba(0, 0, 0, 0.75); color: white; font-size: 2rem;">
+                <div id="current-time">00:00:00</div>
+            </div>
+
+            <!-- Card Baru -->
+            <div class="px-4 py-3 rounded-4 shadow" style="background-color: #fff; color: #333; min-width: 250px;">
+                <div class="fw-bold mb-2" style="font-size: 1.2rem;">Waktu Sekolah</div>
+                <div>
+                    Jam Masuk: {{ $pengaturan->jam_masuk }}<br>
+                    Jam Pulang: {{ $pengaturan->jam_pulang }}
+                </div>
+            </div>
         </div>
+
 
     </div>
 
@@ -88,13 +104,40 @@
     <!-- Script -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(function () {
+        $(function() {
             const form = $('form[action="{{ route('absen_masuk.rfid') }}"]');
             const input = form.find('input[name="rfid_tag"]');
+            const absenResult = $('#absen-result');
+            const absenContent = $('#absen-content');
 
-            form.on('submit', function (e) {
+            input.on('focus', function() {
+                const rfidTag = $(this).val();
+                if (rfidTag) { // Only check if there's a value (e.g., after a previous scan)
+                    checkAbsensiHariIni(rfidTag);
+                }
+            });
+
+            form.on('submit', function(e) {
                 e.preventDefault();
+                submitAbsensi();
+            });
 
+            input.on('change', function(e) {
+                // Form is submitted on change now (after focus triggers the check)
+            });
+
+            function checkAbsensiHariIni(rfidTag) {
+                $.ajax({
+                    url: '{{ route('check_absensi_hari_ini') }}', // New route to check attendance
+                    method: 'POST',
+                    data: { rfid_tag: rfidTag, _token: '{{ csrf_token() }}' },
+                    success: function(res) {
+                        displayAlert(res.message, res.type, res.siswa);
+                    }
+                });
+            }
+
+            function submitAbsensi() {
                 $.ajax({
                     url: form.attr('action'),
                     method: 'POST',
@@ -102,66 +145,93 @@
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },
-                    success: function (res) {
-                        const resultBox = $('#absen-result');
-                        let warna = '#4caf50';
-                        let icon = 'bi-person-check';
-
-                        if (res.message === 'Siswa sudah absen hari ini') {
-                            warna = '#ffc107';
-                            icon = 'bi-exclamation-circle';
-                        }
-
-                        $('#absen-content').html(`
-                            <i class="bi ${icon}" style="font-size: 2.5rem; color: ${warna};"></i>
-                            <div class="mt-3">
-                                <strong>${res.message}</strong><br>
-                                <hr class="text-light my-2">
-                                <img src="storage/${res.siswa.foto}" alt="Foto Siswa" class="rounded-circle shadow"
-                                    style="width: 120px; height: 120px; object-fit: cover; border: 3px solid ${warna};"><br><br>
-                                <div class="text-start">
-                                    <strong>Nama:</strong> ${res.siswa.nama_siswa}<br>
-                                    <strong>NIS:</strong> ${res.siswa.nis}<br>
-                                    <strong>Kelas:</strong> ${res.siswa.kelas}<br>
-                                    <strong>Jam Masuk:</strong> ${res.siswa.jam_masuk}<br>
-                                    <strong>Status:</strong> ${res.siswa.status}<br>
-                                </div>
-                            </div>
-                        `);
-
-                        resultBox.removeClass('d-none').hide().fadeIn(500);
-
-                        let audio = new Audio(
-                            res.message === 'Siswa sudah absen hari ini'
-                                ? "https://www.myinstants.com/media/sounds/error.mp3"
-                                : "https://www.myinstants.com/media/sounds/correct.mp3"
-                        );
-                        audio.play();
-
-                        setTimeout(() => {
-                            resultBox.fadeOut(500);
-                        }, 5000);
-
+                    success: function(res) {
+                        displayAlert(res.message, res.type, res.siswa);
+                        input.val('').focus(); // Clear input and refocus after successful submission
+                    },
+                    error: function(xhr) {
+                        const judulPesan = xhr.responseJSON?.message || 'Terjadi kesalahan';
+                        displayAlert(judulPesan, 'error');
                         input.val('').focus();
                     }
                 });
-            });
+            }
 
-            input.on('change', function () {
-                form.submit();
-            });
+            function displayAlert(message, type, siswa = null) {
+                let warna, icon, audioSrc;
+
+                switch (type) {
+                    case 'success':
+                        warna = '#28a745';
+                        icon = 'bi-check-circle-fill';
+                        audioSrc = 'https://www.myinstants.com/media/sounds/correct.mp3';
+                        break;
+                    case 'warning':
+                        warna = '#ffc107';
+                        icon = 'bi-exclamation-triangle-fill';
+                        audioSrc = 'https://www.myinstants.com/media/sounds/error.mp3';
+                        break;
+                    case 'error':
+                        warna = '#dc3545';
+                        icon = 'bi-x-octagon-fill';
+                        audioSrc = 'https://www.myinstants.com/media/sounds/error.mp3';
+                        break;
+                    default:
+                        warna = '#007bff';
+                        icon = 'bi-info-circle-fill';
+                        audioSrc = 'https://www.myinstants.com/media/sounds/error.mp3';
+                }
+
+                let siswaInfo = '';
+                if (siswa) {
+                    siswaInfo = `
+                        <hr class="text-light my-2">
+                        <img src="storage/${siswa.foto}" alt="Foto Siswa" class="rounded-circle shadow mb-2"
+                            style="width: 100px; height: 100px; object-fit: cover; border: 3px solid ${warna};">
+                        <div class="text-start">
+                            <strong>Nama:</strong> ${siswa.nama_siswa}<br>
+                            <strong>NIS:</strong> ${siswa.nis}<br>
+                            <strong>Kelas:</strong> ${siswa.kelas}<br>
+                            <strong>Jam Masuk:</strong> ${siswa.jam_masuk}<br>
+                            <strong>Jam Pulang:</strong> ${siswa.jam_pulang}<br>
+                            <strong>Status:</strong> ${siswa.status}<br>
+                        </div>
+                    `;
+                }
+
+                absenContent.html(`
+                    <div class="d-flex align-items-center justify-content-center mb-2">
+                        <i class="bi ${icon} me-2" style="font-size: 2rem; color: ${warna};"></i>
+                        <strong style="font-size: 1.2rem;">${message}</strong>
+                    </div>
+                    ${siswaInfo}
+                `);
+
+                absenResult.removeClass('d-none').hide().fadeIn(300);
+
+                if (audioSrc) {
+                    let audio = new Audio(audioSrc);
+                    audio.play();
+                }
+
+                setTimeout(() => {
+                    absenResult.fadeOut(300);
+                }, 3000);
+            }
+
+            function updateClock() {
+                const now = new Date();
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+                document.getElementById('current-time').textContent = `${hours}:${minutes}:${seconds}`;
+            }
+
+            setInterval(updateClock, 1000);
+            updateClock();
+
+            input.focus(); // Initially focus on the input field
         });
-
-        function updateClock() {
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
-        }
-
-        setInterval(updateClock, 1000);
-        updateClock();
     </script>
 
     <!-- Vendor JS -->

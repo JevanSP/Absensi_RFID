@@ -18,86 +18,141 @@ class AbsensiController extends Controller
     public function absen_masuk_RFID(Request $request)
     {
         $request->validate(['rfid_tag' => 'required|string']);
-
-        // Cari siswa berdasarkan RFID yang diberikan
+    
         $siswa = Siswa::where('rfid_tag', $request->rfid_tag)->first();
         if (!$siswa) {
-            return response()->json(['message' => 'RFID tidak ditemukan'], 404);
+            return response()->json(['message' => 'RFID tidak ditemukan', 'type' => 'error'], 404);
         }
-
+    
         $tanggal = Carbon::today()->format('Y-m-d');
         $jamSekarang = Carbon::now()->format('H:i:s');
         $pengaturan = PengaturanAbsensi::first();
-
+    
         if (!$pengaturan) {
-            return response()->json(['message' => 'Pengaturan absensi belum dikonfigurasi'], 500);
+            return response()->json(['message' => 'Pengaturan absensi belum dikonfigurasi', 'type' => 'error'], 500);
+        }
+    
+        // Cek apakah siswa sudah absen hari ini
+        $kehadiran = Absensi::where('siswa_id', $siswa->id)
+            ->whereDate('tanggal', $tanggal)
+            ->first();
+    
+            if ($kehadiran && $kehadiran->jam_masuk) {
+                return response()->json([
+                    'message' => 'Siswa sudah absen hari ini',
+                    'type' => 'warning',
+                    'siswa' => [
+                        'nama_siswa' => $siswa->nama_siswa,
+                        'nis' => $siswa->nis,
+                        'kelas' => $siswa->kelas->nama ?? 'Tidak ada kelas',
+                        'jam_masuk' => $kehadiran->jam_masuk ?? '-',
+                        'jam_pulang' => $kehadiran->jam_pulang ?? '-',
+                        'status' => $kehadiran->status ?? '-',
+                        'foto' => $siswa->foto,
+                    ]
+                ]);
+            }
+    
+        // Jika belum absen, catat absensi
+        $status = ($jamSekarang > $pengaturan->jam_masuk) ? 'terlambat' : 'hadir';
+    
+        Absensi::create([
+            'siswa_id' => $siswa->id,
+            'pengaturan_absensi_id' => $pengaturan->id,
+            'tanggal' => $tanggal,
+            'status' => $status,
+            'jam_masuk' => $jamSekarang,
+            'jam_pulang' => null,
+            'keterangan' => null,
+        ]);
+    
+        if ($status === 'terlambat') {
+            $this->tambahPelanggaran($siswa->id, 'Terlambat', $tanggal);
+        }
+    
+        return response()->json([
+            'message' => 'Absensi masuk berhasil dicatat',
+            'type' => 'success',
+            'siswa' => [
+                'nama_siswa' => $siswa->nama_siswa,
+                'nis' => $siswa->nis,
+                'kelas' => $siswa->kelas->nama ?? 'Tidak ada kelas',
+                'jam_masuk' => $jamSekarang,
+                'jam_pulang' => '-',
+                'status' => $status,
+                'foto' => $siswa->foto,
+            ]
+        ], 200);
+    }
+
+    public function checkAbsensiHariIni(Request $request)
+    {
+        $request->validate(['rfid_tag' => 'required|string']);
+
+        $siswa = Siswa::where('rfid_tag', $request->rfid_tag)->first();
+        if (!$siswa) {
+            return response()->json(['message' => 'RFID tidak ditemukan', 'type' => 'error'], 404);
         }
 
-        // Periksa apakah siswa sudah memiliki absensi untuk hari ini
+        $tanggal = Carbon::today()->format('Y-m-d');
+
         $kehadiran = Absensi::where('siswa_id', $siswa->id)
-            ->where('tanggal', $tanggal)
-            ->whereNull('jam_pulang') // Pastikan absensi belum pulang
+            ->whereDate('tanggal', $tanggal)
+            ->whereNotNull('jam_masuk')
             ->first();
 
-        if (!$kehadiran) {
-            // Tentukan status berdasarkan jam masuk
-            $status = ($jamSekarang > $pengaturan->jam_masuk) ? 'terlambat' : 'hadir';
-
-            // Buat catatan absensi baru untuk siswa
-            $absensi = Absensi::create([
-                'siswa_id' => $siswa->id,
-                'pengaturan_absensi_id' => $pengaturan->id,
-                'tanggal' => $tanggal,
-                'status' => $status,
-                'jam_masuk' => $jamSekarang,
-                'jam_pulang' => null,
-                'keterangan' => null,
-            ]);
-
-            // Tambah poin pelanggaran jika terlambat
-            if ($status === 'terlambat') {
-                $this->tambahPelanggaran($siswa->id, 'Terlambat', $tanggal);
-            }
-
+        if ($kehadiran) {
             return response()->json([
-                'message' => 'Absensi masuk berhasil dicatat',
+                'message' => 'Siswa sudah absen hari ini',
+                'type' => 'warning',
                 'siswa' => [
                     'nama_siswa' => $siswa->nama_siswa,
                     'nis' => $siswa->nis,
                     'kelas' => $siswa->kelas->nama ?? 'Tidak ada kelas',
-                    'jam_masuk' => $jamSekarang,
-                    'status' => $status,
+                    'jam_masuk' => $kehadiran->jam_masuk ?? '-',
+                    'jam_pulang' => $kehadiran->jam_pulang ?? '-',
+                    'status' => $kehadiran->status ?? '-',
                     'foto' => $siswa->foto,
                 ]
-            ], 200);
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Siswa belum absen hari ini',
+                'type' => 'success', // Or perhaps 'info', depending on how you want to style it
+                'siswa' => [
+                    'nama_siswa' => $siswa->nama_siswa,
+                    'nis' => $siswa->nis,
+                    'kelas' => $siswa->kelas->nama ?? 'Tidak ada kelas',
+                    'foto' => $siswa->foto,
+                ]
+            ]);
         }
     }
-
 
     public function absen_pulang_RFID(Request $request)
     {
         $request->validate(['rfid_tag' => 'required|string']);
-
+    
         // Cari siswa berdasarkan RFID yang diberikan
         $siswa = Siswa::where('rfid_tag', $request->rfid_tag)->first();
         if (!$siswa) {
             return response()->json(['message' => 'RFID tidak ditemukan'], 404);
         }
-
+    
         $tanggal = Carbon::today()->format('Y-m-d');
         $jamSekarang = Carbon::now()->format('H:i:s');
         $pengaturan = PengaturanAbsensi::first();
-
+    
         if (!$pengaturan) {
             return response()->json(['message' => 'Pengaturan absensi belum dikonfigurasi'], 500);
         }
-
+    
         // Periksa apakah siswa sudah memiliki absensi untuk hari ini dan sudah absen masuk
         $kehadiran = Absensi::where('siswa_id', $siswa->id)
             ->where('tanggal', $tanggal)
             ->whereNotNull('jam_masuk') // Pastikan sudah absen masuk
             ->first();
-
+    
         if ($kehadiran) {
             // Periksa jika absensi sudah ada dan jam pulang belum dicatat
             if ($kehadiran->jam_pulang) {
@@ -112,15 +167,28 @@ class AbsensiController extends Controller
                     ]
                 ], 200);
             }
-
+    
             // Update jam pulang
             $kehadiran->update(['jam_pulang' => $jamSekarang]);
-
-            // Tambah pelanggaran jika bolos (jam pulang lebih dari jam yang ditentukan)
-            if ($jamSekarang > $pengaturan->jam_pulang) {
+    
+            // Jika jam pulang tidak dicatat hingga besok, tambahkan pelanggaran
+            if (Carbon::parse($kehadiran->tanggal)->lt(Carbon::today())) {
+                // Tambahkan pelanggaran bolos untuk siswa
                 $this->tambahPelanggaran($siswa->id, 'Bolos Sekolah', $tanggal);
             }
-
+    
+            // Pengecekan pelanggaran bolos otomatis untuk absensi kemarin
+            $absensiKemarinTanpaPulang = Absensi::where('tanggal', Carbon::yesterday()->format('Y-m-d'))
+                ->where('siswa_id', $siswa->id)
+                ->whereNotNull('jam_masuk')
+                ->whereNull('jam_pulang')
+                ->first();
+    
+            if ($absensiKemarinTanpaPulang) {
+                // Tambahkan pelanggaran bolos otomatis jika tidak ada jam pulang kemarin
+                $this->tambahPelanggaran($siswa->id, 'Bolos Sekolah', Carbon::yesterday()->format('Y-m-d'));
+            }
+    
             return response()->json([
                 'message' => 'Absensi pulang berhasil dicatat',
                 'siswa' => [
@@ -132,7 +200,7 @@ class AbsensiController extends Controller
                 ]
             ], 200);
         }
-
+    
         // Jika absensi masuk belum tercatat
         return response()->json([
             'message' => 'Siswa belum absen masuk hari ini',
@@ -144,6 +212,7 @@ class AbsensiController extends Controller
             ]
         ], 200);
     }
+    
 
     public function filter(Request $request)
     {
@@ -190,12 +259,14 @@ class AbsensiController extends Controller
 
     public function absensi_masuk()
     {
-        return view('absen.absensi_masuk');
+        $pengaturan = PengaturanAbsensi::first();
+        return view('absen.absensi_masuk',compact('pengaturan'));
     }
 
     public function absensi_pulang()
     {
-        return view('absen.absensi_pulang');
+        $pengaturan = PengaturanAbsensi::first();
+        return view('absen.absensi_pulang',compact('pengaturan'));
     }
 
     public function absensi_manual(Request $request, $id = null)
@@ -225,7 +296,6 @@ class AbsensiController extends Controller
         $absen->pengaturan_absensi_id = PengaturanAbsensi::first()->id ?? null; // optional, jika ada
         $absen->save();
 
-
         return redirect()->back()->with('success', 'Absensi berhasil disimpan.');
     }
 
@@ -247,7 +317,8 @@ class AbsensiController extends Controller
 
 
     private function tambahPelanggaran($siswaId, $kategoriNama, $tanggal, $userId = null)
-    {
+    {   
+        // Cek apakah kategori pelanggaran ada pada database
         $kategori = \App\Models\PoinKategori::where('nama', $kategoriNama)->where('kategori', 'pelanggaran')->first();
 
         if ($kategori) {

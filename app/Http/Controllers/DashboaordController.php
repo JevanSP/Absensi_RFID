@@ -7,6 +7,7 @@ use App\Models\PengaturanAbsensi;
 use Illuminate\Http\Request;
 use App\Models\Siswa;
 use App\Models\PoinSiswa;
+use App\Models\Berita;
 use Illuminate\Support\Facades\Auth;
 
 class DashboaordController extends Controller
@@ -24,8 +25,24 @@ class DashboaordController extends Controller
             $query->whereDate('created_at', $today)
                 ->whereIn('status', ['hadir', 'terlambat']);
         })->count();
+        $jam_masuk = PengaturanAbsensi::first()->jam_masuk;
+        $jam_pulang = PengaturanAbsensi::first()->jam_pulang;
+        $peringkat_poin = \App\Models\PoinSiswa::selectRaw('siswa_id, SUM(poin_kategori.poin) as total_poin')
+            ->join('poin_kategori', 'poin_siswa.poin_kategori_id', '=', 'poin_kategori.id')
+            ->groupBy('siswa_id')
+            ->orderByDesc('total_poin')
+            ->take(5)
+            ->get();
+        $peringkat_poin->transform(function ($item) {
+            $item->siswa = Siswa::with('kelas')->find($item->siswa_id);
+            return $item;
+        });
 
-        return view('dashboard.list', compact('user', 'total_siswa', 'siswa_hadir_hari_ini', 'siswa_tidak_hadir_hari_ini'));
+        $berita = Berita::first();
+        $acara = $berita ? $berita->acara : '-';
+        $pakaian = $berita ? $berita->pakaian : '-';
+
+        return view('dashboard.list', compact('user', 'total_siswa', 'siswa_hadir_hari_ini', 'siswa_tidak_hadir_hari_ini', 'jam_masuk', 'jam_pulang', 'peringkat_poin', 'acara', 'pakaian'));
     }
 
     public function siswa()
@@ -35,8 +52,8 @@ class DashboaordController extends Controller
         $jam_masuk = PengaturanAbsensi::first()->jam_masuk;
         $jam_pulang = PengaturanAbsensi::first()->jam_pulang;
         $status = Absensi::where('siswa_id', $user->siswa_id)
-            ->whereDate('created_at', now()->toDateString())
-            ->first();
+        ->whereDate('tanggal', today())
+        ->first();
         if ($status) {
             $status = $status->status;
         } else {

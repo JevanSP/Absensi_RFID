@@ -12,7 +12,7 @@
     </div><!-- End Page Title -->
 
     <!-- Filter Form -->
-    <form method="POST" action="{{ route('absen.filter') }}">
+    <form method="GET" action="{{ route('absen.filter') }}">
         @csrf
         <div class="row mb-3">
             <div class="col-md-3">
@@ -111,61 +111,61 @@
 
     <!-- Modal Absensi Manual -->
     @foreach ($semuaSiswa as $siswa)
-        @php
-            $absen = $siswa->absensi->first();
-        @endphp
-        <div class="modal fade" id="manualAbsenModal{{ $siswa->id }}" tabindex="-1"
-            aria-labelledby="manualAbsenModalLabel{{ $siswa->id }}" aria-hidden="true">
-            <div class="modal-dialog">
-                <form method="POST" action="{{ route('absen.manual', $siswa->id) }}">
-                    @csrf
-                    @method('PUT')
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Edit Absensi - {{ $siswa->nama_siswa }}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    @php
+        $absen = $siswa->absensi->first();
+    @endphp
+    <div class="modal fade" id="manualAbsenModal{{ $siswa->id }}" tabindex="-1"
+        aria-labelledby="manualAbsenModalLabel{{ $siswa->id }}" aria-hidden="true">
+        <div class="modal-dialog">
+            <form method="POST" action="{{ route('absen.manual', $siswa->id) }}">
+                @csrf
+                @method('PUT')
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Absensi - {{ $siswa->nama_siswa }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="siswa_id" value="{{ $siswa->id }}">
+                        <div class="mb-3">
+                            <label class="form-label">Tanggal</label>
+                            <input type="date" class="form-control" name="tanggal"
+                                value="{{ now()->toDateString() }}">
                         </div>
-                        <div class="modal-body">
-                            <input type="hidden" name="siswa_id" value="{{ $siswa->id }}">
-                            <div class="mb-3">
-                                <label class="form-label">Tanggal</label>
-                                <input type="date" class="form-control" name="tanggal"
-                                    value="{{ now()->toDateString() }}">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Jam Masuk</label>
-                                <input type="time" class="form-control" name="jam_masuk"
-                                    value="{{ $absen->jam_masuk ?? '' }}">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Jam Pulang</label>
-                                <input type="time" class="form-control" name="jam_pulang"
-                                    value="{{ $absen->jam_pulang ?? '' }}">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Status</label><br>
-                                @foreach (['hadir', 'terlambat', 'izin', 'sakit', 'alpa'] as $status)
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="status"
-                                            id="{{ $status . $siswa->id }}" value="{{ $status }}"
-                                            {{ $absen && $absen->status == $status ? 'checked' : ($status == 'hadir' ? 'checked' : '') }}>
-                                        <label class="form-check-label"
-                                            for="{{ $status . $siswa->id }}">{{ ucfirst($status) }}</label>
-                                    </div>
-                                @endforeach
-                            </div>
-                            <div class="mb-3">
-                                <label for="keterangan{{ $siswa->id }}" class="form-label">Keterangan</label>
-                                <textarea class="form-control" name="keterangan" id="keterangan{{ $siswa->id }}">{{ $absen->keterangan ?? '' }}</textarea>
-                            </div>
+                        <div class="mb-3">
+                            <label class="form-label">Jam Masuk</label>
+                            <input type="time" class="form-control" name="jam_masuk"
+                                value="{{ $absen->jam_masuk ?? '' }}">
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        <div class="mb-3">
+                            <label class="form-label">Jam Pulang</label>
+                            <input type="time" class="form-control" name="jam_pulang"
+                                value="{{ $absen->jam_pulang ?? '' }}">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Status</label><br>
+                            @foreach (['hadir', 'terlambat', 'izin', 'sakit', 'alpa'] as $status)
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="status"
+                                        id="{{ $status . $siswa->id }}" value="{{ $status }}"
+                                        {{ $absen && $absen->status == $status ? 'checked' : ($status == 'hadir' ? 'checked' : '') }}>
+                                    <label class="form-check-label"
+                                        for="{{ $status . $siswa->id }}">{{ ucfirst($status) }}</label>
+                                </div>
+                            @endforeach
+                        </div>
+                        <div class="mb-3">
+                            <label for="keterangan{{ $siswa->id }}" class="form-label">Keterangan</label>
+                            <textarea class="form-control" name="keterangan" id="keterangan{{ $siswa->id }}">{{ $absen->keterangan ?? '' }}</textarea>
                         </div>
                     </div>
-                </form>
-            </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </div>
+            </form>
         </div>
-    @endforeach
+    </div>
+@endforeach
 @endsection

@@ -10,6 +10,13 @@
         </nav>
     </div>
 
-    <p><strong>Acara:</strong> {{ $berita->acara }}</p>
-    <p><strong>Pakaian:</strong> {{ $berita->pakaian }}</p>
+    <div class="card bg-success text-white mb-4">
+        <div class="card-body mt-3">
+            <p class="text-capitalize"><strong>Acara : <br>
+                </strong> {{ $berita->acara }}</p>
+            <br>
+            <p class="text-capitalize"><strong>Pakaian : <br>
+                </strong> {{ $berita->pakaian }}</p>
+        </div>
+    </div>
 @endsection

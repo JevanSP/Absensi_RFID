@@ -1,7 +1,7 @@
 @extends('layout.layout')
 @section('content')
     <div class="pagetitle">
-        <h1>Data Jurusan</h1>
+        <h1>Data Kelas</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="home">Beranda</a></li>

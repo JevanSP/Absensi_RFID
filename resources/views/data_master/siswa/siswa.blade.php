@@ -41,7 +41,7 @@
                 <tr>
                     <td data-label="No" class="text-center">{{ $no++ }}</td>
                     <td data-label="NIS" class="text-center">{{ $row->nis }}</td>
-                    <td data-label="Nama" class="text-capitalize">{{ $row->nama_siswa }}</td>
+                    <td data-label="Nama" class="text-center text-capitalize">{{ $row->nama_siswa }}</td>
                     <td data-label="Jenis Kelamin" class="text-center text-capitalize">{{ $row->jenis_kelamin }}</td>
                     <td data-label="Kelas" class="text-center">{{ $row->kelas->nama }}</td>
                     <td data-label="RFID" class="text-center">{{ $row->rfid_tag }}</td>

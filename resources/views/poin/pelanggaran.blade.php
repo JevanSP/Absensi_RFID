@@ -1,17 +1,18 @@
 @extends('layout.layout')
 @section('content')
     <div class="pagetitle">
-        <h1>Data Pelanggaran</h1>
+        <h1>Input Pelanggaran</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/dashboard">Beranda</a></li>
-                <li class="breadcrumb-item">Data Master</li>
-                <li class="breadcrumb-item active">Data Pelanggaran</li>
+                <li class="breadcrumb-item">Poin</li>
+                <li class="breadcrumb-item active">Input Pelanggaran</li>
             </ol>
         </nav>
     </div>
 
-    <button type="button" class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#modalSelectStudent" id="addDataButton">+ TAMBAH DATA</button>
+    <button type="button" class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#modalSelectStudent"
+        id="addDataButton">+ TAMBAH DATA</button>
 
     <table class="table datatable table-danger table-striped-columns border-danger">
         <thead>
@@ -33,17 +34,19 @@
             @foreach ($poinSiswa as $p)
                 <tr class="text-center text-capitalize">
                     <td>{{ $no++ }}</td>
-                    <td>{{ $p->nis }}</td>
+                    <td>{{ $p->siswa->nis }}</td>
                     <td>{{ $p->siswa->nama_siswa }}</td>
-                    <td>{{ $p->kelas }} {{ $p->jurusan->singkatan }}</td>
-                    <td>{{ $p->nama }}</td>
-                    <td>{{ $p->poin }}</td>
+                    <td>{{ $p->siswa->kelas->nama }}</td>
+                    <td>{{ $p->poinKategori->nama }}</td>
+                    <td>{{ $p->poinKategori->poin }}</td>
                     <td>{{ $p->tanggal }}</td>
                     <td>{{ $p->keterangan }}</td>
-                    <td>{{ $p->user->name }}</td>
+                    <td>{{ $p->user->nama }}</td>
                     <td>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modaledit{{ $p->id }}"><i class="bi bi-pencil"></i> Edit</button>
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modaldelete{{ $p->id }}"><i class="bi bi-trash"></i> Hapus</button>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#modaledit{{ $p->id }}"><i class="bi bi-pencil"></i> Edit</button>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                            data-bs-target="#modaldelete{{ $p->id }}"><i class="bi bi-trash"></i> Hapus</button>
                     </td>
                 </tr>
             @endforeach
@@ -74,7 +77,8 @@
                                     <td>{{ $s->nis }}</td>
                                     <td>{{ $s->nama_siswa }}</td>
                                     <td>
-                                        <button type="button" class="btn btn-primary select-student" data-id="{{ $s->id }}" data-name="{{ $s->nama_siswa }}">Pilih</button>
+                                        <button type="button" class="btn btn-primary select-student"
+                                            data-id="{{ $s->id }}" data-name="{{ $s->nama_siswa }}">Pilih</button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -96,7 +100,8 @@
                             <select name="poin_kategori_id" class="form-select" id="poinKategoriSelect" required>
                                 <option value="">Pilih Nama Pelanggaran</option>
                                 @foreach ($poinKategori as $pk)
-                                    <option value="{{ $pk->id }}" data-poin="{{ $pk->poin }}">{{ $pk->nama }}</option>
+                                    <option value="{{ $pk->id }}" data-poin="{{ $pk->poin }}">
+                                        {{ $pk->nama }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -108,7 +113,7 @@
                         <br>
                         <div class="form-group">
                             <label>Keterangan</label>
-                            <input type="text" class="form-control" name="keterangan" required>
+                            <input type="text" class="form-control" name="keterangan">
                         </div>
                         <br>
                         <div class="form-group">
@@ -151,19 +156,22 @@
                                 <label>Nama {{ $title }}</label>
                                 <select name="poin_kategori_id" class="form-select" id="poinKategoriSelect" required>
                                     @foreach ($poinKategori as $pk)
-                                        <option value="{{ $pk->id }}" data-poin="{{ $pk->poin }}">{{ $pk->nama }}</option>
+                                        <option value="{{ $pk->id }}" data-poin="{{ $pk->poin }}">
+                                            {{ $pk->nama }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <br>
                             <div class="form-group">
                                 <label>Poin</label>
-                                <input type="number" value="{{ $p->poin }}" class="form-control" id="poinInput" name="poin" readonly required>
+                                <input type="number" value="{{ $p->poin }}" class="form-control" id="poinInput"
+                                    name="poin" readonly required>
                             </div>
                             <br>
                             <div class="form-group">
                                 <label>Tanggal</label>
-                                <input type="date" value="{{ $p->tanggal }}" class="form-control" name="tanggal" required>
+                                <input type="date" value="{{ $p->tanggal }}" class="form-control" name="tanggal"
+                                    required>
                             </div>
                             <br>
                         </div>
@@ -176,19 +184,20 @@
         </div>
     @endforeach
 
-    @foreach ($poinKategori as $p)
+    @foreach ($poinSiswa as $p)
         <div class="modal fade" id="modaldelete{{ $p->id }}" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5">Hapus Poin Kategori</h1>
+                        <h1 class="modal-title fs-5">Hapus Pelanggaran</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <form method="POST" action="{{ route('poin_siswa.destroy', $p->id) }}">
                         @csrf
                         @method('DELETE')
+                        <input type="hidden" name="kategori" value="{{ $p->kategori }}">
                         <div class="modal-body">
-                            <p>Apakah anda yakin ingin menghapus data ini?</p>
+                            <p>Apakah anda yakin ingin menghapus data <strong>{{ $p->poinKategori->nama }}</strong> untuk siswa <strong>{{ $p->siswa->nama_siswa }}</strong>?</p>
                         </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-outline-danger">Hapus</button>

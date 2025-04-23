@@ -18,12 +18,12 @@
                 <div class="mb-3">
                     <label for="jam_masuk" class="form-label">Jam Masuk</label>
                     <input type="time" class="form-control" id="jam_masuk" name="jam_masuk"
-                        value="{{ old('jam_masuk', $pengaturanAbsensi->jam_masuk ?? '07:00') }}" required>
+                        value="{{ old('jam_masuk', $pengaturanAbsensi->jam_masuk ?? '07:00') }}">
                 </div>
                 <div class="mb-3">
                     <label for="jam_pulang" class="form-label">Jam Pulang</label>
                     <input type="time" class="form-control" id="jam_pulang" name="jam_pulang"
-                        value="{{ old('jam_pulang', $pengaturanAbsensi->jam_pulang ?? '15:00') }}" required>
+                        value="{{ old('jam_pulang', $pengaturanAbsensi->jam_pulang ?? '15:00') }}">
                 </div>
                 <button type="submit" class="btn btn-primary">Simpan</button>
             </form>

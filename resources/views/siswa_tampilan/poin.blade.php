@@ -38,7 +38,7 @@
                     <td class="text-center">{{ \Carbon\Carbon::parse($p->tanggal)->format('d-m-Y') }}</td>
                     <td class="text-capitalize">{{ $p->poinKategori->nama ?? '-' }}</td>
                     <td class="text-capitalize">{{ $p->poinKategori->kategori ?? '-' }}</td>
-                    <td class="text-center">{{ $p->poinKategori->poin }}</td>
+                    <td class="text-center">{{ $p->poinKategori->kategori == 'pelanggaran' ? '- ' : '' }}{{ $p->poinKategori->poin }}</td>
                 </tr>
             @endforeach
         </tbody>
