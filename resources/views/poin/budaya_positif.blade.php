@@ -4,8 +4,8 @@
         <h1>Input Budaya Positif</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/dashboard">Beranda</a></li>
-                <li class="breadcrumb-item">Poinr</li>
+                <li class="breadcrumb-item"><a href="/dashboard/admin_guru">Dashboard</a></li>
+                <li class="breadcrumb-item">Poin</li>
                 <li class="breadcrumb-item active">Input Budaya Positif</li>
             </ol>
         </nav>

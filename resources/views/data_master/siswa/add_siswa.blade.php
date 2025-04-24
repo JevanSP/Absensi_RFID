@@ -5,7 +5,7 @@
         <h1>Tambah Data Siswa</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/dashboard">Beranda</a></li>
+                <li class="breadcrumb-item"><a href="/dashboard/admin_guru">Dashboard</a></li>
                 <li class="breadcrumb-item">Data Master</li>
                 <li class="breadcrumb-item"><a href="/data_siswa">Data Siswa</a></li>
                 <li class="breadcrumb-item active">Tambah Data Siswa</li>

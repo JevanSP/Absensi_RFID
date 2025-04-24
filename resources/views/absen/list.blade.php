@@ -5,7 +5,7 @@
         <h1>Absensi Siswa</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="home">Beranda</a></li>
+                <li class="breadcrumb-item"><a href="/dashboard/admin_guru">Dashboard</a></li>
                 <li class="breadcrumb-item active">Absensi Siswa</li>
             </ol>
         </nav>

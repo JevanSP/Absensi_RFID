@@ -4,7 +4,7 @@
         <h1>User Guru</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/dashboard">Beranda</a></li>
+                <li class="breadcrumb-item"><a href="/dashboard/admin_guru">Dashboard</a></li>
                 <li class="breadcrumb-item">User Manajemen</li>
                 <li class="breadcrumb-item active">User Guru</li>
             </ol>

@@ -5,7 +5,7 @@
         <h1>Cetak Laporan Absensi Bulanan</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/dashboard">Beranda</a></li>
+                <li class="breadcrumb-item"><a href="/dashboard/admin_guru">Dashboard</a></li>
                 <li class="breadcrumb-item">Absensi</li>
                 <li class="breadcrumb-item active">Cetak Laporan Absensi Bulanan</li>
             </ol>
