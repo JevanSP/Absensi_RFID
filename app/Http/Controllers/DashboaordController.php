@@ -27,17 +27,17 @@ class DashboaordController extends Controller
         })->count();
         $jam_masuk = PengaturanAbsensi::first()->jam_masuk;
         $jam_pulang = PengaturanAbsensi::first()->jam_pulang;
-        $peringkat_poin = \App\Models\PoinSiswa::selectRaw('siswa_id, SUM(poin_kategori.poin) as total_poin')
+        $peringkat_poin = \App\Models\PoinSiswa::selectRaw('siswa_id, SUM(CASE WHEN poin_kategori.kategori = "pelanggaran" THEN -poin_kategori.poin ELSE poin_kategori.poin END) as total_poin')
             ->join('poin_kategori', 'poin_siswa.poin_kategori_id', '=', 'poin_kategori.id')
             ->groupBy('siswa_id')
             ->orderByDesc('total_poin')
             ->take(5)
             ->get();
+
         $peringkat_poin->transform(function ($item) {
-            $item->siswa = Siswa::with('kelas')->find($item->siswa_id);
+            $item->siswa = \App\Models\Siswa::with('kelas')->find($item->siswa_id);
             return $item;
         });
-
         $berita = Berita::first();
         $acara = $berita ? $berita->acara : '-';
         $pakaian = $berita ? $berita->pakaian : '-';
@@ -52,8 +52,8 @@ class DashboaordController extends Controller
         $jam_masuk = PengaturanAbsensi::first()->jam_masuk;
         $jam_pulang = PengaturanAbsensi::first()->jam_pulang;
         $status = Absensi::where('siswa_id', $user->siswa_id)
-        ->whereDate('tanggal', today())
-        ->first();
+            ->whereDate('tanggal', today())
+            ->first();
         if ($status) {
             $status = $status->status;
         } else {
