@@ -69,6 +69,7 @@
                                 <th>No</th>
                                 <th>NIS</th>
                                 <th>Nama Siswa</th>
+                                <th>Kelas</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -78,6 +79,7 @@
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $s->nis }}</td>
                                     <td>{{ $s->nama_siswa }}</td>
+                                    <td>{{ $s->kelas->nama }}</td>
                                     <td>
                                         <button type="button" class="btn btn-primary select-student"
                                             data-id="{{ $s->id }}" data-name="{{ $s->nama_siswa }}">Pilih</button>
@@ -156,7 +158,7 @@
                             </div>
                             <br>
                             <div class="form-group">
-                                <label>Nama Prestasi</label>
+                                <label>Nama Budaya Positif</label>
                                 <select name="poin_kategori_id" class="form-select" id="poinKategoriSelect" required>
                                     @foreach ($poinKategori as $pk)
                                         <option value="{{ $pk->id }}" data-poin="{{ $pk->poin }}">
@@ -173,7 +175,8 @@
                             <br>
                             <div class="form-group">
                                 <label>Keterangan</label>
-                                <input type="date" class="form-control" name="keterangan" required>
+                                <input type="text" value="{{ $p->keterangan }}" class="form-control"
+                                    name="keterangan">
                             </div>
                             <br>
                             <div class="form-group">
@@ -193,28 +196,29 @@
     @endforeach
 
     @foreach ($poinSiswa as $p)
-    <div class="modal fade" id="modaldelete{{ $p->id }}" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5">Hapus Prestasi</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        <div class="modal fade" id="modaldelete{{ $p->id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5">Hapus Prestasi</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <form method="POST" action="{{ route('poin_siswa.destroy', $p->id) }}">
+                        @csrf
+                        @method('DELETE')
+                        <input type="hidden" name="kategori" value="{{ $p->kategori }}">
+                        <div class="modal-body">
+                            <p>Apakah anda yakin ingin menghapus data <strong>{{ $p->poinKategori->nama }}</strong> untuk
+                                siswa <strong>{{ $p->siswa->nama_siswa }}</strong>?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-outline-danger">Hapus</button>
+                        </div>
+                    </form>
                 </div>
-                <form method="POST" action="{{ route('poin_siswa.destroy', $p->id) }}">
-                    @csrf
-                    @method('DELETE')
-                    <input type="hidden" name="kategori" value="{{ $p->kategori }}">
-                    <div class="modal-body">
-                        <p>Apakah anda yakin ingin menghapus data <strong>{{ $p->poinKategori->nama }}</strong> untuk siswa <strong>{{ $p->siswa->nama_siswa }}</strong>?</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-outline-danger">Hapus</button>
-                    </div>
-                </form>
             </div>
         </div>
-    </div>
-@endforeach
+    @endforeach
 
     <script>
         // Untuk semua dropdown poin_kategori di form (baik tambah maupun edit)
@@ -245,6 +249,10 @@
         document.getElementById('addDataButton').addEventListener('click', function() {
             document.getElementById('selectStudentBody').classList.remove('d-none');
             document.getElementById('inputFormBody').classList.add('d-none');
+        });
+
+        $(document).ready(function() {
+            $('.datatable').DataTable();
         });
     </script>
 @endsection

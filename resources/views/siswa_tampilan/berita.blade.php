@@ -12,6 +12,15 @@
 
     <div class="card bg-success text-white mb-4">
         <div class="card-body mt-3">
+            <p class="text-capitalize"><strong>Tanggal : <br>
+                </strong>
+                @if ($tanggalDibuat instanceof \Carbon\Carbon)
+                    {{ $tanggalDibuat->format('d M Y') }}
+                @else
+                    {{ $tanggalDibuat ?: '-' }}
+                @endif
+            </p>
+            <br>
             <p class="text-capitalize"><strong>Acara : <br>
                 </strong> {{ $berita->acara }}</p>
             <br>

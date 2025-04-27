@@ -251,5 +251,9 @@
             document.getElementById('selectStudentBody').classList.remove('d-none');
             document.getElementById('inputFormBody').classList.add('d-none');
         });
+
+        $(document).ready(function() {
+            $('.datatable').DataTable();
+        });
     </script>
 @endsection

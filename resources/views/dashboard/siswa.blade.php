@@ -67,11 +67,31 @@
             <a href="{{ route('siswa.berita') }}"
                 class="btn btn-light border-success d-flex flex-column justify-content-center align-items-center text-white"
                 style="height: 120px;">
-                <img src="{{ asset('assets/img/berita.svg') }}" alt="Berita"
-                    style="width: 60px; height: 60px; object-fit: contain;">
+                <div
+                    style="position: relative; width: 60px; height: 60px; object-fit: contain; display: flex; justify-content: center; align-items: center;">
+                    <img src="{{ asset('assets/img/berita.svg') }}" alt="Berita"
+                        style="width: 100%; height: 100%; object-fit: contain;">
+                    @if ($adaUpdateBeritaBaru)
+                        <span class="position-absolute top-0 end-0 bg-danger border border-light rounded-circle"
+                            style="padding: 4px; font-size: 0.7rem;"></span>
+                    @endif
+                </div>
                 <h5 class="mb-2 text-success">Berita/Acara</h5>
             </a>
         </div>
+        <style>
+            .position-absolute {
+                position: absolute !important;
+            }
+
+            .top-0 {
+                top: 0 !important;
+            }
+
+            .end-0 {
+                right: 0 !important;
+            }
+        </style>
         <div class="col-xl-6 col-md-6 col-6 mb-4">
             <a href="{{ route('siswa.sekolah') }}"
                 class="btn btn-light border-success d-flex flex-column justify-content-center align-items-center text-white"

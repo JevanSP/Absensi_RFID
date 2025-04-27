@@ -14,7 +14,7 @@ class BeritaSeeder extends Seeder
     public function run(): void
     {
         DB::table('berita')->insert([
-            ['acara' => 'tidak ada', 'pakaian' => 'tidak_ada'],
+            ['acara' => 'tidak ada', 'pakaian' => 'tidak ada'],
         ]);
     }
 }

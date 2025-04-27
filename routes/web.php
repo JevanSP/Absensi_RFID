@@ -66,7 +66,7 @@ Route::middleware(['login'])->group(function () {
         Route::post('/check_absensi_hari_ini', [AbsensiController::class, 'checkAbsensiHariIni'])->name('check_absensi_hari_ini');
         Route::get('/absen/filter', [AbsensiController::class, 'filter'])->name('absen.filter');
         Route::put('/absen/manual/{id}', [AbsensiController::class, 'absensi_manual'])->name('absen.manual');
-
+        
         Route::get('/laporan-absensi-bulanan-form', function () {
             $kelas = \App\Models\Kelas::all();
             return view('absen.form_laporan_bulanan', compact('kelas'));

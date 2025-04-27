@@ -10,9 +10,9 @@ class KelasSeeder extends Seeder
     public function run()
     {
         DB::table('kelas')->insert([
-            ['tingkatan' => 'X', 'nama' => 'X IPA 1'],
-            ['tingkatan' => 'XI', 'nama' => 'XI IPA 1'],
-            ['tingkatan' => 'XII', 'nama' => 'XII IPA 1'],
+            ['tingkatan' => 'X', 'nama' => 'X RPL 1'],
+            ['tingkatan' => 'XI', 'nama' => 'XI RPL 1'],
+            ['tingkatan' => 'XII', 'nama' => 'XII RPL 1'],
         ]);
     }
 }

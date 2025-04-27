@@ -30,8 +30,7 @@
                     } elseif ($p->poinKategori && $p->poinKategori->kategori == 'pelanggaran') {
                         $rowClass = 'table-danger';
                     } elseif ($p->poinKategori && $p->poinKategori->kategori == 'prestasi') {
-                        $rowClass = 'table-primary';
-                        $rowClass = '';
+                        $rowClass = 'table-info';
                     }
                 @endphp
                 <tr class="{{ $rowClass }}">

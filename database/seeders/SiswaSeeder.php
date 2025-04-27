@@ -13,7 +13,7 @@ class SiswaSeeder extends Seeder
         $data = [
             [
                 'nis' => '1234567890',
-                'nama_siswa' => 'Ahmad Fauzi',
+                'nama_siswa' => 'Jevan Surya Pratama',
                 'jenis_kelamin' => 'L',
                 'kelas_id' => 1, // Pastikan kelas_id ini ada di tabel kelas
                 'rfid_tag' => 'RFID123456A',

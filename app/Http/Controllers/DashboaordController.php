@@ -41,8 +41,9 @@ class DashboaordController extends Controller
         $berita = Berita::first();
         $acara = $berita ? $berita->acara : '-';
         $pakaian = $berita ? $berita->pakaian : '-';
+        $tanggalDibuat = $berita ? $berita->updated_at->format('d M Y') : '-';
 
-        return view('dashboard.list', compact('user', 'total_siswa', 'siswa_hadir_hari_ini', 'siswa_tidak_hadir_hari_ini', 'jam_masuk', 'jam_pulang', 'peringkat_poin', 'acara', 'pakaian'));
+        return view('dashboard.list', compact('user', 'total_siswa', 'siswa_hadir_hari_ini', 'siswa_tidak_hadir_hari_ini', 'jam_masuk', 'jam_pulang', 'peringkat_poin', 'acara', 'pakaian', 'tanggalDibuat'));
     }
 
     public function siswa()
@@ -66,6 +67,13 @@ class DashboaordController extends Controller
                 $poin = $item->kategori->poin ?? 0;
                 return $item->kategori->kategori === 'pelanggaran' ? -$poin : $poin;
             });
-        return view('dashboard.siswa', compact('user', 'siswa', 'jam_masuk', 'jam_pulang', 'status', 'total_poin'));
+        // Ambil berita terbaru
+        $beritaTerbaru = Berita::latest()->first();
+        $adaUpdateBeritaBaru = false;
+
+        if ($beritaTerbaru && $beritaTerbaru->updated_at->isToday()) {
+            $adaUpdateBeritaBaru = true;
+        }
+        return view('dashboard.siswa', compact('user', 'siswa', 'jam_masuk', 'jam_pulang', 'status', 'total_poin','adaUpdateBeritaBaru'));
     }
 }

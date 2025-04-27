@@ -36,7 +36,7 @@
         <table class="table table-bordered table-hover">
             <thead class="thead-dark">
                 <tr>
-                    <th class="text-center">No</th>
+                    <th class="text-center">Peringkat</th>
                     <th class="text-center">Nama</th>
                     <th class="text-center">Kelas</th>
                     <th class="text-center">Total Poin</th>
@@ -104,6 +104,15 @@
         <div class="col-xl-6 col-md-6">
             <div class="card text-black mb-4 border border-success">
                 <div class="card-body mt-3">
+                    <h5 class="text-capitalize"><span class="badge bg-success">Tanggal :</span><br></h5>
+                    <p class="text-capitalize">
+                        @if ($tanggalDibuat instanceof \Carbon\Carbon)
+                            {{ $tanggalDibuat->format('d M Y') }}
+                        @else
+                            {{ $tanggalDibuat ?: '-' }}
+                        @endif
+                    </p>
+                    <br>
                     <h5 class="text-capitalize"><span class="badge bg-success">Acara :</span><br></h5>
                     <p class="text-capitalize">{{ $acara }}</p>
                     <br>

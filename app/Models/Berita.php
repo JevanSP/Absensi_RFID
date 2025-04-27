@@ -16,5 +16,8 @@ class Berita extends Model
         'pakaian',
     ];
 
-    
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
 }
