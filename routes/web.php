@@ -7,7 +7,7 @@ use App\Http\Controllers\BudayaPositifController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SekolahController;
 use App\Http\Controllers\AbsensiController;
-use App\Http\Controllers\DashboaordController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PengaturanAbsensiController;
@@ -30,7 +30,7 @@ Route::post('/logout', function () {
 
 Route::middleware(['login'])->group(function () {
     Route::middleware(['khusus_admin'])->group(function () {
-        Route::get('/dashboard/admin_guru', [DashboaordController::class, 'admin_guru'])->name('dashboard.admin_guru');
+        Route::get('/dashboard/admin_guru', [DashboardController::class, 'admin_guru'])->name('dashboard.admin_guru');
         route::get('/data_kelas', [KelasController::class, 'index']);
         route::get('/data_kelas/create', [KelasController::class, 'create']);
         route::post('/data_kelas/store', [KelasController::class, 'store']);
@@ -44,6 +44,8 @@ Route::middleware(['login'])->group(function () {
         route::put('/data_siswa/update/{id}', [SiswaController::class, 'update']);
         route::put('/data_siswa/update/{id}/rfid', [SiswaController::class, 'update_rfid'])->name('siswa.update_rfid');
         route::delete('/data_siswa/destroy/{id}', [SiswaController::class, 'destroy']);
+        Route::get('/data_siswa/import', [SiswaController::class, 'import_excel_form'])->name('siswa.import_excel_form');
+        Route::post('/data_siswa/import', [SiswaController::class, 'import_excel_store'])->name('siswa.import_excel_store');
 
         Route::get('/berita', [BeritaController::class, 'index'])->name('berita.list');
         Route::post('/berita/create', [BeritaController::class, 'store'])->name('berita.store');
@@ -66,7 +68,7 @@ Route::middleware(['login'])->group(function () {
         Route::post('/check_absensi_hari_ini', [AbsensiController::class, 'checkAbsensiHariIni'])->name('check_absensi_hari_ini');
         Route::get('/absen/filter', [AbsensiController::class, 'filter'])->name('absen.filter');
         Route::put('/absen/manual/{id}', [AbsensiController::class, 'absensi_manual'])->name('absen.manual');
-        
+
         Route::get('/laporan-absensi-bulanan-form', function () {
             $kelas = \App\Models\Kelas::all();
             return view('absen.form_laporan_bulanan', compact('kelas'));
@@ -88,12 +90,16 @@ Route::middleware(['login'])->group(function () {
         Route::get('poin_siswa/{kategori}', [PoinSiswaController::class, 'indexBySiswaCategory'])->name('poin_siswa.index');
         Route::post('poin_siswa', [PoinSiswaController::class, 'store'])->name('poin_siswa.store');
         Route::put('poin_siswa/{kategori}', [PoinSiswaController::class, 'update'])->name('poin_siswa.update');
-        Route::delete('poin_siswa/{id}', [PoinSiswaController::class, 'destroy'])->name('poin_siswa.destroy');   
+        Route::delete('poin_siswa/{id}', [PoinSiswaController::class, 'destroy'])->name('poin_siswa.destroy');
+
+
+        // sementara
+        Route::get('/reset/display', [AbsensiController::class, 'reset_display'])->name('reset.display');
     });
 
 
     Route::middleware(['khusus_siswa'])->group(function () {
-        Route::get('/dashboard/siswa', [DashboaordController::class, 'siswa'])->name('dashboard.siswa');
+        Route::get('/dashboard/siswa', [DashboardController::class, 'siswa'])->name('dashboard.siswa');
         Route::get('/siswa/poin', [TampilanSiswaController::class, 'poin'])->name('siswa.poin');
         Route::get('/siswa/absensi', [TampilanSiswaController::class, 'absensi'])->name('siswa.absensi');
         Route::get('/siswa/berita', [TampilanSiswaController::class, 'berita'])->name('siswa.berita');

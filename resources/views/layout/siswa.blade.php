@@ -15,7 +15,8 @@
 
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
         rel="stylesheet">
 
     <!-- Vendor CSS Files -->
@@ -41,11 +42,11 @@
 
 <body>
     <!-- resources/views/layout/header.blade.php -->
-    @include('partials.header_siswa', ['user' => Auth::user()]) 
+    @include('partials.header_siswa', ['user' => Auth::user()])
 
 
     <main class="main mt-5 px-5 mb-5">
-    <br>
+        <br>
         @yield('siswa')
     </main>
 
@@ -63,7 +64,7 @@
             const start = 0;
             const increment = target / (duration / 16); // frame ~60fps
             let current = start;
-    
+
             function update() {
                 current += increment;
                 if (current >= target) {
@@ -74,18 +75,19 @@
                     requestAnimationFrame(update);
                 }
             }
-    
+
             update();
         }
-    
+
         // Jalankan animasi saat halaman sudah ready
         document.addEventListener("DOMContentLoaded", () => {
             const el = document.getElementById("totalPoin");
             const target = parseInt(el.getAttribute("data-target"));
             animateNumber("totalPoin", target);
         });
+
     </script>
-    
+
     <script src="{{ asset('assets/vendor/apexcharts/apexcharts.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/chart.js/chart.umd.js') }}"></script>
@@ -94,6 +96,7 @@
     <script src="{{ asset('assets/vendor/simple-datatables/simple-datatables.js') }}"></script>
     <script src="{{ asset('assets/vendor/tinymce/tinymce.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/php-email-form/validate.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- Template Main JS File -->
     <script src="{{ asset('assets/js/main.js') }}"></script>

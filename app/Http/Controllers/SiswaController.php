@@ -7,6 +7,8 @@ use App\Models\Kelas;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\SiswaImport;
 
 class SiswaController extends Controller
 {
@@ -14,7 +16,8 @@ class SiswaController extends Controller
     {
         $title = 'Data Siswa';
         $data_siswa = Siswa::with('kelas')->get();
-        return view('data_master.siswa.siswa', compact('data_siswa', 'title'));
+        $data_kelas = Kelas::all();
+        return view('data_master.siswa.siswa', compact('data_siswa', 'title', 'data_kelas'));
     }
 
     public function create()
@@ -101,5 +104,47 @@ class SiswaController extends Controller
 
         $siswa->delete();
         return redirect()->route('siswa.data_siswa')->with('success', 'Data Berhasil Dihapus!');
+    }
+
+
+    public function import_excel_store(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'file_excel' => 'required|mimes:xlsx,xls|max:10240', // Max 10MB
+        ], [
+            'file_excel.required' => 'File Excel wajib diunggah.',
+            'file_excel.mimes' => 'File harus berformat .xlsx atau .xls.',
+        ]);
+
+        try {
+            // Inisialisasi Import Class
+            $import = new SiswaImport;
+
+            Excel::import($import, $request->file('file_excel'));
+
+            // Cek jika ada baris yang gagal
+            if ($import->failures()->isNotEmpty()) {
+                // Kumpulkan pesan error
+                $errorMessages = 'Beberapa data gagal diimpor: <br>';
+                foreach ($import->failures() as $failure) {
+                    $row = $failure->row();
+                    $attribute = $failure->attribute();
+                    $errors = implode(', ', $failure->errors());
+                    $errorMessages .= "Baris $row (Kolom $attribute): $errors. <br>";
+                }
+                return redirect()->route('siswa.data_siswa')->with('error', $errorMessages);
+            }
+        } catch (\Exception $e) {
+            return redirect()->route('siswa.data_siswa')->with('error', 'Gagal mengimpor data. Pastikan format file sudah benar. Error: ' . $e->getMessage());
+        }
+
+        return redirect()->route('siswa.data_siswa')->with('success', 'Semua data siswa dari Excel berhasil diimpor!');
+    }
+
+    // SiswaController.php
+    public function import_excel_form()
+    {
+        $title = 'Import Data Siswa (Excel)';
+        return view('data_master.siswa.import_siswa', compact('title'));
     }
 }

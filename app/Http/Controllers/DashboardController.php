@@ -10,7 +10,7 @@ use App\Models\PoinSiswa;
 use App\Models\Berita;
 use Illuminate\Support\Facades\Auth;
 
-class DashboaordController extends Controller
+class DashboardController extends Controller
 {
     public function admin_guru()
     {
@@ -74,6 +74,15 @@ class DashboaordController extends Controller
         if ($beritaTerbaru && $beritaTerbaru->updated_at->isToday()) {
             $adaUpdateBeritaBaru = true;
         }
-        return view('dashboard.siswa', compact('user', 'siswa', 'jam_masuk', 'jam_pulang', 'status', 'total_poin','adaUpdateBeritaBaru'));
+
+        return view('dashboard.siswa', compact(
+            'user',
+            'siswa',
+            'jam_masuk',
+            'jam_pulang',
+            'status',
+            'total_poin',
+            'adaUpdateBeritaBaru',
+        ));
     }
 }

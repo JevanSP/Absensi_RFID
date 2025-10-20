@@ -59,13 +59,13 @@
         </div>
 
         <!-- Animasi teks berjalan -->
-        <div class="position-absolute bottom-0 start-0 end-0 text-center py-2"
+        {{-- <div class="position-absolute bottom-0 start-0 end-0 text-center py-2"
             style="background: rgba(0, 0, 0, 0); z-index: 100; color: white;">
             <marquee behavior="scroll" direction="left" scrollamount="6"
                 style="font-size: 3rem; font-family: 'Poppins', sans-serif;">
                 SELAMAT DATANG DI SISTEM ABSENSI SKASA++ SMKN 1 PACITAN – DISIPLIN ADALAH KUNCI KESUKSESAN!
             </marquee>
-        </div>
+        </div> --}}
 
         <!-- Tombol Dashboard -->
         <a href="{{ route('dashboard.admin_guru') }}"
@@ -76,6 +76,9 @@
         <!-- Jam Digital -->
         <div class="position-absolute top-0 end-0 m-3" style="z-index: 1000;">
             <!-- Clock Card -->
+
+            <a href="/reset/display" class="btn btn-sm text-black hover:bg-white border" style="opacity: 0.5; text-decoration: underline;">Reset</a>
+
             <div id="clock" class="mb-3 px-4 py-2 rounded-4 shadow"
                 style="background-color: rgba(0, 0, 0, 0.75); color: white; font-size: 2rem;">
                 <div id="current-time">00:00:00</div>

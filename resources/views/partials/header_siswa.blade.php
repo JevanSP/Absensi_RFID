@@ -4,7 +4,7 @@
     <div class="text-center">
         <div class="justify-content-center flex-column align-items-center text-center">
             <a href="/dashboard/siswa" class="logo-header align-items-center">
-                <img src="{{ asset('assets/img/skasa.png') }}" alt="">
+                <img src="{{ asset('assets/img/redicius.png') }}" alt="">
             </a>
         </div>
     </div>
@@ -24,6 +24,8 @@
 
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                     <li class="dropdown-header">
+                        <img src="{{ asset('storage/' . $siswa->foto) }}" alt="Profile"
+                        class="rounded-circle object-fit-cover" style="width: 40px; height: 40px;">
                         <h6>{{ $user->nama }}</h6>
                         <span>{{ $siswa->kelas->nama }}</span>
                     </li>

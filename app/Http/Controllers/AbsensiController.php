@@ -16,37 +16,47 @@ use Illuminate\Support\Facades\Storage;
 
 class AbsensiController extends Controller
 {
+    //sementara
+    public function reset_display(){
+
+        Absensi::whereDate('tanggal', now()->toDateString())->delete();   
+        
+        return redirect()->route('absensi.masuk');
+    }
+
     public function absen_masuk_RFID(Request $request)
-    {
-        $request->validate(['rfid_tag' => 'required|string']);
+{
+    $request->validate(['rfid_tag' => 'required|string']);
 
-        $siswa = Siswa::where('rfid_tag', $request->rfid_tag)->first();
-        if (!$siswa) {
-            return response()->json(['message' => 'RFID tidak ditemukan', 'type' => 'error'], 404);
-        }
+    $siswa = Siswa::where('rfid_tag', $request->rfid_tag)->first();
+    if (!$siswa) {
+        return response()->json(['message' => 'RFID tidak ditemukan', 'type' => 'error'], 404);
+    }
 
-        $tanggal = Carbon::today()->format('Y-m-d');
-        $jamSekarang = Carbon::now()->format('H:i:s');
-        $pengaturan = PengaturanAbsensi::first();
+    $tanggal = Carbon::today();
+    $jamSekarang = Carbon::now()->format('H:i:s');
+    $pengaturan = PengaturanAbsensi::first();
 
-        if (!$pengaturan) {
-            return response()->json(['message' => 'Pengaturan absensi belum dikonfigurasi', 'type' => 'error'], 500);
-        }
+    if (!$pengaturan) {
+        return response()->json(['message' => 'Pengaturan absensi belum dikonfigurasi', 'type' => 'error'], 500);
+    }
 
-        // Cek apakah siswa sudah absen hari ini
-        $kehadiran = Absensi::where('siswa_id', $siswa->id)
-            ->whereDate('tanggal', $tanggal)
-            ->first();
+    $kehadiran = Absensi::where('siswa_id', $siswa->id)
+        ->whereDate('tanggal', $tanggal)
+        ->first();
 
-        if ($kehadiran) { // Modifikasi di sini
-            // Update jika sudah ada record
+    if ($kehadiran) {
+        if (!$kehadiran->jam_masuk) {
+            // Kalau belum ada jam masuk, catat
+            $status = ($jamSekarang > $pengaturan->jam_masuk) ? 'terlambat' : 'hadir';
+
             $kehadiran->update([
                 'jam_masuk' => $jamSekarang,
-                'status' => ($jamSekarang > $pengaturan->jam_masuk) ? 'terlambat' : 'hadir',
+                'status' => $status,
             ]);
 
-            if ($kehadiran->status === 'terlambat') {
-                $this->tambahPelanggaran($siswa->id, 'Terlambat', $tanggal);
+            if ($status === 'terlambat') {
+                $this->tambahPelanggaran($siswa->id, 'Terlambat', $tanggal->format('Y-m-d'));
             }
 
             return response()->json([
@@ -58,43 +68,61 @@ class AbsensiController extends Controller
                     'kelas' => $siswa->kelas->nama ?? 'Tidak ada kelas',
                     'jam_masuk' => $jamSekarang,
                     'jam_pulang' => $kehadiran->jam_pulang ?? '-',
-                    'status' => ($jamSekarang > $pengaturan->jam_masuk) ? 'terlambat' : 'hadir',
-                    'foto' => $siswa->foto,
-                ]
-            ], 200);
-        } else {
-            // Jika belum absen, catat absensi
-            $status = ($jamSekarang > $pengaturan->jam_masuk) ? 'terlambat' : 'hadir';
-
-            Absensi::create([
-                'siswa_id' => $siswa->id,
-                'pengaturan_absensi_id' => $pengaturan->id,
-                'tanggal' => $tanggal,
-                'status' => $status,
-                'jam_masuk' => $jamSekarang,
-                'jam_pulang' => null,
-                'keterangan' => null,
-            ]);
-
-            if ($status === 'terlambat') {
-                $this->tambahPelanggaran($siswa->id, 'Terlambat', $tanggal);
-            }
-
-            return response()->json([
-                'message' => 'Absensi masuk berhasil dicatat',
-                'type' => 'success',
-                'siswa' => [
-                    'nama_siswa' => $siswa->nama_siswa,
-                    'nis' => $siswa->nis,
-                    'kelas' => $siswa->kelas->nama ?? 'Tidak ada kelas',
-                    'jam_masuk' => $jamSekarang,
-                    'jam_pulang' => '-',
                     'status' => $status,
                     'foto' => $siswa->foto,
                 ]
             ], 200);
+
+        } else {
+            // Sudah ada jam masuk, jangan update
+            return response()->json([
+                'message' => 'Siswa sudah absen masuk hari ini',
+                'type' => 'warning',
+                'siswa' => [
+                    'nama_siswa' => $siswa->nama_siswa,
+                    'nis' => $siswa->nis,
+                    'kelas' => $siswa->kelas->nama ?? 'Tidak ada kelas',
+                    'jam_masuk' => $kehadiran->jam_masuk ?? '-',
+                    'jam_pulang' => $kehadiran->jam_pulang ?? '-',
+                    'status' => $kehadiran->status ?? '-',
+                    'foto' => $siswa->foto,
+                ]
+            ], 200);
         }
+    } else {
+        // Belum absen hari ini, buat baru
+        $status = ($jamSekarang > $pengaturan->jam_masuk) ? 'terlambat' : 'hadir';
+
+        Absensi::create([
+            'siswa_id' => $siswa->id,
+            'pengaturan_absensi_id' => $pengaturan->id,
+            'tanggal' => $tanggal->format('Y-m-d'),
+            'status' => $status,
+            'jam_masuk' => $jamSekarang,
+            'jam_pulang' => null,
+            'keterangan' => null,
+        ]);
+
+        if ($status === 'terlambat') {
+            $this->tambahPelanggaran($siswa->id, 'Terlambat', $tanggal->format('Y-m-d'));
+        }
+
+        return response()->json([
+            'message' => 'Absensi masuk berhasil dicatat',
+            'type' => 'success',
+            'siswa' => [
+                'nama_siswa' => $siswa->nama_siswa,
+                'nis' => $siswa->nis,
+                'kelas' => $siswa->kelas->nama ?? 'Tidak ada kelas',
+                'jam_masuk' => $jamSekarang,
+                'jam_pulang' => '-',
+                'status' => $status,
+                'foto' => $siswa->foto,
+            ]
+        ], 200);
     }
+}
+
 
     public function checkAbsensiHariIni(Request $request)
     {
@@ -128,7 +156,7 @@ class AbsensiController extends Controller
         } else {
             return response()->json([
                 'message' => 'Siswa belum absen hari ini',
-                'type' => 'success', // Or perhaps 'info', depending on how you want to style it
+                'type' => 'success', 
                 'siswa' => [
                     'nama_siswa' => $siswa->nama_siswa,
                     'nis' => $siswa->nis,
@@ -157,9 +185,7 @@ class AbsensiController extends Controller
             return response()->json(['message' => 'Pengaturan absensi belum dikonfigurasi'], 500);
         }
 
-        // ======================
         // CEK absensi KEMARIN
-        // ======================
         $absensiKemarin = Absensi::where('siswa_id', $siswa->id)
             ->whereDate('tanggal', Carbon::yesterday()->format('Y-m-d'))
             ->first();
@@ -171,9 +197,7 @@ class AbsensiController extends Controller
             }
         }
 
-        // ======================
         // UPDATE absensi HARI INI
-        // ======================
         $kehadiranHariIni = Absensi::where('siswa_id', $siswa->id)
             ->whereDate('tanggal', $tanggalHariIni)
             ->first();
@@ -316,6 +340,36 @@ class AbsensiController extends Controller
         // Tambahkan pelanggaran jika statusnya 'terlambat'
         if ($request->status === 'terlambat') {
             $this->tambahPelanggaran($siswa->id, 'Terlambat', $tanggal);
+        }
+
+        if ($request->status === 'alpa') {
+            $this->tambahPelanggaran($siswa->id, 'Alfa', $tanggal);
+        }
+
+        if ($request->status === 'none') {
+            Absensi::where('siswa')->delete();   
+        }
+
+        // Pastikan data absensi yang akan diedit sudah ada
+        $absen = Absensi::where('siswa_id', $siswa->id)
+            ->whereDate('tanggal', $tanggal)
+            ->first();
+
+        if ($absen) {
+            // Update data absensi yang sudah ada
+            $absen->update([
+            'jam_masuk' => $request->filled('jam_masuk') ? $request->jam_masuk : $absen->jam_masuk,
+            'jam_pulang' => $request->filled('jam_pulang') ? $request->jam_pulang : $absen->jam_pulang,
+            'status' => $request->status,
+            'keterangan' => $request->keterangan,
+            ]);
+
+            if (in_array($request->status, ['izin', 'sakit']) && $request->hasFile('bukti_file')) {
+            $file = $request->file('bukti_file');
+            $namaFile = 'bukti_' . $siswa->id . '_' . now()->format('YmdHis') . '.' . $file->getClientOriginalExtension();
+            $path = $file->storeAs('bukti_absensi', $namaFile, 'public');
+            $absen->update(['keterangan' => "Bukti: " . $path]);
+            }
         }
 
         return back()->with('success', 'Absensi berhasil diperbarui.');

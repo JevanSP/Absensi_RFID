@@ -3,7 +3,7 @@
 
     <div class="d-flex align-items-center justify-content-between">
         <a href="dashboard/admin_guru" class="logo-header d-flex align-items-center">
-            <img src="{{ asset('assets/img/skasa.png') }}" alt="">
+            <img src="{{ asset('assets/img/redicius.png') }}" alt="">
         </a>
         <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->

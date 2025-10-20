@@ -70,13 +70,13 @@
         </div>
         <!-- Inner -->
 
-        <div class="position-absolute bottom-0 start-0 end-0 text-center py-2"
+        {{-- <div class="position-absolute bottom-0 start-0 end-0 text-center py-2"
             style="background: rgba(0, 0, 0, 0); z-index: 100; color: white;">
             <marquee behavior="scroll" direction="left" scrollamount="6"
                 style="font-size: 3rem; font-family: 'Poppins', sans-serif;">
                 SELAMAT DATANG DI SISTEM ABSENSI SKASA++ SMKN 1 PACITAN – DISIPLIN ADALAH KUNCI KESUKSESAN!
             </marquee>
-        </div>
+        </div> --}}
 
         <!-- Tombol Dashboard -->
         <a href="{{ route('dashboard.admin_guru') }}"
